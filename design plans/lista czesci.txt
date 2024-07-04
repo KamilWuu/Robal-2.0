@@ -1,2 +1,16 @@
-przetwornica 6V
+przetwornica: 6V 2x
 https://ntii.pl/przetwornice-step-down/780-przetwornica-12-24v-9-32v-do-6v-10a-step-down-5905249870467
+
+
+bms z ladowarka 3s:
+https://allegro.pl/oferta/bms-3s-60a-li-ion-18650-12-6v-z-balanserem-15096419343?utm_feed=aa34192d-eee2-4419-9a9a-de66b9dfae24&utm_source=google&utm_medium=freelisting&srsltid=AfmBOopm5l0WvWq349rYLWdc0MzYcUxCFGizqNQ2BrYn3YlS-SU_OEwH5kc
+
+akumulator 3s Lipo ~5000mAh:
+https://allegro.pl/oferta/pakiet-lipo-gens-bashing-11-1v-5000mah-3s-60c-xt90-11261046252
+
+Serwa (mocniejsze) x12:
+
+
+Serwa słabsze: x6:
+
+
