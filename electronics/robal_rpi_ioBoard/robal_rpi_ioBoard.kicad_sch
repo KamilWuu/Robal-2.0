@@ -7029,6 +7029,16 @@
 	)
 	(wire
 		(pts
+			(xy 247.65 134.62) (xy 245.11 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7d43d9d4-db9b-4d18-9664-b853da733d62")
+	)
+	(wire
+		(pts
 			(xy 17.78 186.69) (xy 17.78 185.42)
 		)
 		(stroke
@@ -7249,7 +7259,7 @@
 	)
 	(wire
 		(pts
-			(xy 134.62 77.47) (xy 132.08 77.47)
+			(xy 248.92 160.02) (xy 246.38 160.02)
 		)
 		(stroke
 			(width 0)
@@ -7326,6 +7336,16 @@
 			(type default)
 		)
 		(uuid "9e23ec2c-b427-4325-b9ff-53a6e5482a28")
+	)
+	(wire
+		(pts
+			(xy 273.05 135.89) (xy 270.51 135.89)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a1254835-d155-4045-9a93-7f1459a6e3cb")
 	)
 	(wire
 		(pts
@@ -7906,6 +7926,16 @@
 			(type default)
 		)
 		(uuid "e2a46361-3326-4f07-aa59-b6157688de4e")
+	)
+	(wire
+		(pts
+			(xy 275.59 157.48) (xy 273.05 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e319e1c0-d3f4-4bf2-a771-3573c6a03e07")
 	)
 	(wire
 		(pts
@@ -8577,6 +8607,28 @@
 			)
 		)
 	)
+	(global_label "I2C_SDA"
+		(shape input)
+		(at 270.51 140.97 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3eb08d7e-5053-4eb3-8f00-e475e6fda365")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 281.1152 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "SPI_MISO"
 		(shape input)
 		(at 162.56 83.82 180)
@@ -8639,6 +8691,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C_SDA"
+		(shape input)
+		(at 245.11 139.7 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "4ddcd17a-f930-4b37-bbfb-4988264336e3")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 255.7152 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -8749,6 +8823,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C_SDA"
+		(shape input)
+		(at 273.05 162.56 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5dea35bf-5aff-431d-9345-829995aad9ed")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 283.6552 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -8885,9 +8981,31 @@
 			)
 		)
 	)
+	(global_label "I2C_SCL"
+		(shape input)
+		(at 270.51 138.43 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7ebd290c-6e12-46d0-952a-f46f855be128")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 281.0547 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "I2C_SDA"
 		(shape input)
-		(at 132.08 82.55 0)
+		(at 246.38 165.1 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8897,7 +9015,7 @@
 		)
 		(uuid "7f1b2492-b05a-48e5-a312-193186dbe019")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 142.6852 82.55 0)
+			(at 256.9852 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9259,6 +9377,28 @@
 			)
 		)
 	)
+	(global_label "I2C_SCL"
+		(shape input)
+		(at 273.05 160.02 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "bb32c263-027a-46e3-86d5-0d95f9f83a88")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 283.5947 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "TS_6"
 		(shape input)
 		(at 82.55 62.23 0)
@@ -9321,6 +9461,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "I2C_SCL"
+		(shape input)
+		(at 245.11 137.16 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c8afd75c-4279-415d-97ed-ba2b124d4b91")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 255.6547 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -9481,7 +9643,7 @@
 	)
 	(global_label "I2C_SCL"
 		(shape input)
-		(at 132.08 80.01 0)
+		(at 246.38 162.56 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -9491,7 +9653,7 @@
 		)
 		(uuid "ec0daa49-bfde-4550-a368-7a3f89e7f6a6")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 142.6247 80.01 0)
+			(at 256.9247 162.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10481,6 +10643,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 245.11 142.24 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0b6aacea-5fd8-434b-b7a7-e79ad60ef00a")
+		(property "Reference" "#PWR079"
+			(at 245.11 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 245.11 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 245.11 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 245.11 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 245.11 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "cf57d69d-6790-4e25-a954-d63007871061")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "#PWR079")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 34.29 114.3 0)
 		(unit 1)
@@ -10548,6 +10776,80 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:Conn_01x04_Socket")
+		(at 267.97 162.56 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0c51eb18-1af8-43f3-958e-a042748ca674")
+		(property "Reference" "J6"
+			(at 268.605 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x04_Socket"
+			(at 268.605 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical"
+			(at 267.97 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 267.97 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated"
+			(at 267.97 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "daa93dfe-5cc6-4dc5-9cff-6a6fcbe62adb")
+		)
+		(pin "4"
+			(uuid "3c8a0d79-ae19-4a06-b4c6-93fda3d88b61")
+		)
+		(pin "3"
+			(uuid "161a4293-4648-4f2b-a3ce-262f5e2bc351")
+		)
+		(pin "2"
+			(uuid "a720e3f2-7c31-48e2-ac3d-f0d3679fab9d")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "J6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 139.7 137.16 0)
 		(unit 1)
@@ -10608,6 +10910,72 @@
 			(project "robal_rpi_ioBoard"
 				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
 					(reference "#PWR030")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 247.65 134.62 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0d64fa68-f9ad-42a8-b6ff-b145dd4292d6")
+		(property "Reference" "#PWR080"
+			(at 247.65 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V_RP"
+			(at 247.65 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 247.65 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 247.65 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "270712ac-b2d8-4614-b8dd-77f80be1db58")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "#PWR080")
 					(unit 1)
 				)
 			)
@@ -11557,6 +11925,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 273.05 165.1 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2709129b-a067-4002-b73a-0a3933bc35ac")
+		(property "Reference" "#PWR077"
+			(at 273.05 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 273.05 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 273.05 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 273.05 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 273.05 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "562b19ed-9a1e-4632-81ea-bb46e90a0087")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "#PWR077")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 83.82 130.81 90)
 		(unit 1)
@@ -12046,6 +12480,80 @@
 			(project "robal_rpi_ioBoard"
 				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
 					(reference "#PWR050")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x04_Socket")
+		(at 240.03 139.7 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2ed4a60c-51a3-45fa-b282-15127ec13a05")
+		(property "Reference" "J7"
+			(at 240.665 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x04_Socket"
+			(at 240.665 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical"
+			(at 240.03 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 240.03 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated"
+			(at 240.03 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "eb25c2b9-863a-4e22-8021-cfca4735d2ef")
+		)
+		(pin "4"
+			(uuid "5469259e-88b1-4291-8309-9ce8055ec686")
+		)
+		(pin "3"
+			(uuid "742e91d0-a579-4756-a166-21c30301cb2e")
+		)
+		(pin "2"
+			(uuid "491490a8-8eb7-45b8-9486-cc8e4be85fa7")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "J7")
 					(unit 1)
 				)
 			)
@@ -13932,7 +14440,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 134.62 77.47 0)
+		(at 248.92 160.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13941,7 +14449,7 @@
 		(fields_autoplaced yes)
 		(uuid "5838250a-9984-4adc-96d0-7ffce6ead00f")
 		(property "Reference" "#PWR028"
-			(at 134.62 81.28 0)
+			(at 248.92 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13950,7 +14458,7 @@
 			)
 		)
 		(property "Value" "+3.3V_RP"
-			(at 134.62 72.39 0)
+			(at 248.92 154.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13958,7 +14466,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 134.62 77.47 0)
+			(at 248.92 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13967,7 +14475,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 134.62 77.47 0)
+			(at 248.92 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13976,7 +14484,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 134.62 77.47 0)
+			(at 248.92 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14805,6 +15313,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3.3V")
+		(at 275.59 157.48 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6c3e0c90-bfea-4b42-99e3-9629cda50a1f")
+		(property "Reference" "#PWR078"
+			(at 275.59 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V_RP"
+			(at 275.59 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 275.59 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 275.59 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 275.59 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "cbf4375f-b092-4aa3-869a-bdc7001f4fdc")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "#PWR078")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 82.55 85.09 0)
 		(unit 1)
@@ -15228,6 +15802,72 @@
 			(project "robal_rpi_ioBoard"
 				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
 					(reference "#PWR017")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 273.05 135.89 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "75116c73-b0d3-4713-87f6-a7ca180f1b07")
+		(property "Reference" "#PWR082"
+			(at 273.05 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V_RP"
+			(at 273.05 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 273.05 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 273.05 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 273.05 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "12ea40fd-9919-431d-8520-1f28ba87957c")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "#PWR082")
 					(unit 1)
 				)
 			)
@@ -16205,7 +16845,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x04_Socket")
-		(at 127 82.55 180)
+		(at 241.3 165.1 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -16214,7 +16854,7 @@
 		(fields_autoplaced yes)
 		(uuid "88d061ef-c1d2-4068-a2e9-034176ed938f")
 		(property "Reference" "J5"
-			(at 127.635 72.39 0)
+			(at 241.935 154.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16222,7 +16862,7 @@
 			)
 		)
 		(property "Value" "Conn_01x04_Socket"
-			(at 127.635 74.93 0)
+			(at 241.935 157.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16230,7 +16870,7 @@
 			)
 		)
 		(property "Footprint" "Connector_JST:JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical"
-			(at 127 82.55 0)
+			(at 241.3 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16239,7 +16879,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 127 82.55 0)
+			(at 241.3 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16248,7 +16888,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x04, script generated"
-			(at 127 82.55 0)
+			(at 241.3 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17166,16 +17806,16 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 132.08 85.09 0)
+		(at 270.51 143.51 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "979956c9-5d02-407b-80da-c68ad1917b96")
-		(property "Reference" "#PWR027"
-			(at 132.08 91.44 0)
+		(uuid "95bbf05d-5be7-4894-877c-4fb6170f7620")
+		(property "Reference" "#PWR081"
+			(at 270.51 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17184,7 +17824,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 132.08 90.17 0)
+			(at 270.51 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17192,7 +17832,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 132.08 85.09 0)
+			(at 270.51 143.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17201,7 +17841,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 132.08 85.09 0)
+			(at 270.51 143.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17210,7 +17850,73 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 132.08 85.09 0)
+			(at 270.51 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "865844b0-1edf-4fd4-9b74-03d68be29bb6")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "#PWR081")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 246.38 167.64 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "979956c9-5d02-407b-80da-c68ad1917b96")
+		(property "Reference" "#PWR027"
+			(at 246.38 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 246.38 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 246.38 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 246.38 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 246.38 167.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19337,6 +20043,80 @@
 			(project "robal_rpi_ioBoard"
 				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
 					(reference "R26")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x04_Socket")
+		(at 265.43 140.97 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b8f8b078-eab4-476d-8013-a6b5ff27c075")
+		(property "Reference" "J8"
+			(at 266.065 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x04_Socket"
+			(at 266.065 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical"
+			(at 265.43 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 265.43 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated"
+			(at 265.43 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "124edf63-b957-4ca4-a86a-d77ee35d35ce")
+		)
+		(pin "4"
+			(uuid "e67de876-9e71-44f6-b4f9-caba45961d6d")
+		)
+		(pin "3"
+			(uuid "be8f4aa4-94e4-412b-84d7-b565e03e89f5")
+		)
+		(pin "2"
+			(uuid "8a50f7a3-16dc-48e7-bbd2-326f2e5f37ae")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "J8")
 					(unit 1)
 				)
 			)
