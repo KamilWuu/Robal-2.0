@@ -1745,7 +1745,7 @@
 	(footprint "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
 		(layer "F.Cu")
 		(uuid "25694bf6-08e4-4996-a497-fceab6617dce")
-		(at 165.862 66.802)
+		(at 165.862 65.532)
 		(descr "JST PH series connector, B2B-PH-K (http://www.jst-mfg.com/product/pdf/eng/ePH.pdf), generated with kicad-footprint-generator")
 		(tags "connector JST PH side entry")
 		(property "Reference" "J7"
@@ -3695,7 +3695,7 @@
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R1"
-			(at 0 -1.43 270)
+			(at 0 -1.43 -90)
 			(layer "F.SilkS")
 			(uuid "7081a8a7-895e-427e-bb4b-b92be42e78ca")
 			(effects
@@ -3706,7 +3706,7 @@
 			)
 		)
 		(property "Value" "10K"
-			(at 0 1.43 270)
+			(at 0 1.43 -90)
 			(layer "F.Fab")
 			(uuid "e42acb0b-07ab-4706-adf1-d6a4e47706bc")
 			(effects
@@ -3858,7 +3858,7 @@
 			(uuid "c4b34f2c-5e2e-4319-86be-45f426bdc533")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 270)
+			(at 0 0 -90)
 			(layer "F.Fab")
 			(uuid "a2b251ca-d49d-4faa-9ca4-4d2e0b607fa5")
 			(effects
@@ -4676,7 +4676,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "9446eccf-6fd2-4c4f-ad59-11800b3db13c")
-		(at 153.607 66.802)
+		(at 153.924 67.056)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R5"
@@ -5920,7 +5920,7 @@
 	(footprint "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
 		(layer "F.Cu")
 		(uuid "aff30a62-4f9a-42b3-bcd9-3c9097a11fa6")
-		(at 173.736 66.802)
+		(at 173.736 65.532)
 		(descr "JST PH series connector, B2B-PH-K (http://www.jst-mfg.com/product/pdf/eng/ePH.pdf), generated with kicad-footprint-generator")
 		(tags "connector JST PH side entry")
 		(property "Reference" "J10"
@@ -6805,11 +6805,11 @@
 	(footprint "Package_TO_SOT_SMD:TO-252-2"
 		(layer "F.Cu")
 		(uuid "dd7508fd-2b7f-4f90-8874-33e21124cf20")
-		(at 157.641 72.899)
+		(at 157.812 73.6625)
 		(descr "TO-252/DPAK SMD package, http://www.infineon.com/cms/en/product/packages/PG-TO252/PG-TO252-3-1/")
 		(tags "DPAK TO-252 DPAK-3 TO-252-3 SOT-428")
 		(property "Reference" "Q2"
-			(at 0 -4.5 360)
+			(at 0 -4.5 0)
 			(layer "F.SilkS")
 			(uuid "7bb29f7c-115f-4037-9019-86bb6a4e3d10")
 			(effects
@@ -6820,7 +6820,7 @@
 			)
 		)
 		(property "Value" "Q_PMOS_GDS"
-			(at 0 4.5 360)
+			(at 0 4.5 0)
 			(layer "F.Fab")
 			(uuid "8a4453b8-e1aa-4d4d-a071-f8b88e585eaa")
 			(effects
@@ -7103,7 +7103,7 @@
 			(uuid "d375bc0c-2794-4d28-9b84-baa4b50a74bd")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(uuid "b897b3bc-b2b3-4520-b6c9-66f53645c816")
 			(effects
@@ -8877,8 +8877,6 @@
 			)
 		)
 		(path "/1e064c8b-f253-4065-8985-873cd10691ed")
-		(sheetname "Główny")
-		(sheetfile "robal_power_board.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -27.5 5.5)
@@ -9381,6 +9379,28 @@
 			(fill none)
 			(layer "Edge.Cuts")
 			(uuid "4bf53ddd-9706-4e62-a37a-14554b8ebfdc")
+		)
+		(fp_circle
+			(center 4.74139 19.186016)
+			(end 5.74139 19.186016)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "b59f4cd6-ddd6-47f9-8b06-187051830bd1")
+		)
+		(fp_circle
+			(center 4.815665 11.275828)
+			(end 5.815665 11.275828)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill none)
+			(layer "Edge.Cuts")
+			(uuid "efc587c2-43a6-4490-8d4d-64d5827ca5e0")
 		)
 		(fp_circle
 			(center 19.5 27)
