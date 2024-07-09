@@ -7250,6 +7250,77 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:Q_PMOS_GDS")
+		(at 140.97 44.45 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d142e361-adf3-4036-b15a-dd780a154dcd")
+		(property "Reference" "Q1"
+			(at 140.97 35.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Q_PMOS_GDS"
+			(at 140.97 38.1 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:TO-252-2"
+			(at 143.51 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 140.97 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "P-MOSFET transistor, gate/drain/source"
+			(at 140.97 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "0ef2aad5-264e-41e6-a17e-29c3293fba34")
+		)
+		(pin "1"
+			(uuid "2d495699-f8b5-402f-94f8-4557f5ae1fdd")
+		)
+		(pin "2"
+			(uuid "f25138f1-0ec5-425b-b83b-c6dbd9bdcd66")
+		)
+		(instances
+			(project "robal_power_board"
+				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
+					(reference "Q1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+5V")
 		(at 58.42 86.36 0)
 		(unit 1)
@@ -7513,7 +7584,7 @@
 			(uuid "15af68c4-7814-404f-8a4c-77b66171cda5")
 		)
 		(instances
-			(project ""
+			(project "robal_power_board"
 				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
 					(reference "C7")
 					(unit 1)
