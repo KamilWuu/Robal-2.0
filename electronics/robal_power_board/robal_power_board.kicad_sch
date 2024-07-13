@@ -3511,16 +3511,6 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 102.87) (xy 109.22 102.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3d14a767-8ae5-4185-a35b-a0f472c4cb92")
-	)
-	(wire
-		(pts
 			(xy 27.94 48.26) (xy 59.69 48.26)
 		)
 		(stroke
@@ -4081,16 +4071,6 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 105.41) (xy 109.22 105.41)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aec5e844-f786-44e2-80fd-a29435fcb653")
-	)
-	(wire
-		(pts
 			(xy 38.1 139.7) (xy 41.91 139.7)
 		)
 		(stroke
@@ -4118,6 +4098,16 @@
 			(type default)
 		)
 		(uuid "b4b268c6-a464-4a88-9203-7dcb859fa97c")
+	)
+	(wire
+		(pts
+			(xy 226.06 45.72) (xy 262.89 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b6387aa2-6b1a-44e5-9cb1-57472d946b29")
 	)
 	(wire
 		(pts
@@ -4218,16 +4208,6 @@
 			(type default)
 		)
 		(uuid "cd742fc9-4389-4191-b221-d236bba58168")
-	)
-	(wire
-		(pts
-			(xy 128.27 107.95) (xy 130.81 107.95)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cea99253-1408-40d9-ad43-e7633f0443ff")
 	)
 	(wire
 		(pts
@@ -4491,16 +4471,6 @@
 	)
 	(wire
 		(pts
-			(xy 128.27 105.41) (xy 130.81 105.41)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f443ff33-5090-4541-94c2-672a859c6063")
-	)
-	(wire
-		(pts
 			(xy 107.95 156.21) (xy 107.95 161.29)
 		)
 		(stroke
@@ -4691,17 +4661,16 @@
 				(justify right)
 			)
 		)
-		(property "Value" "22uF"
+		(property "Value" "1uF"
 			(at 191.77 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
-				(hide yes)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 190.8048 43.18 0)
 			(effects
 				(font
@@ -5037,7 +5006,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Chilisin_BMRF00101040"
+		(property "Footprint" "Inductor_THT:cewka_XL4015"
 			(at 237.49 29.21 0)
 			(effects
 				(font
@@ -5360,76 +5329,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
-		(at 243.84 36.83 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "11397554-013f-4649-9d6b-d2ae588c7cd4")
-		(property "Reference" "C13"
-			(at 246.38 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "22uF"
-			(at 243.84 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 242.8748 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 243.84 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 243.84 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "47cbe161-f509-4038-8215-50ed508986ec")
-		)
-		(pin "2"
-			(uuid "d5b07880-efd0-4190-8d2e-999fbb270ceb")
-		)
-		(instances
-			(project "robal_power_board"
-				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
-					(reference "C13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:Q_PMOS_GDS")
 		(at 125.73 26.67 270)
 		(mirror x)
@@ -5495,75 +5394,6 @@
 			(project "robal_power_board"
 				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
 					(reference "Q2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:Conn_01x02_Socket")
-		(at 123.19 107.95 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "1914da98-f501-492d-bb9f-32ebc5605599")
-		(property "Reference" "J8"
-			(at 122.5549 104.14 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "bat_low_current"
-			(at 137.668 112.776 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
-			(at 123.19 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 123.19 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x02, script generated"
-			(at 123.19 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a98c931f-80f4-478a-8516-3ebd011a4071")
-		)
-		(pin "2"
-			(uuid "13d821e2-cf00-400e-a4a8-1b0d830e4b37")
-		)
-		(instances
-			(project "robal_power_board"
-				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
-					(reference "J8")
 					(unit 1)
 				)
 			)
@@ -5662,7 +5492,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_SMD:Nexperia_CFP3_SOD-123W"
+		(property "Footprint" "Diode_SMD:D_MELF"
 			(at 229.87 40.64 0)
 			(effects
 				(font
@@ -6646,6 +6476,75 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 236.22 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4af4036b-a92b-4cfc-9a57-da6923bede8c")
+		(property "Reference" "C12"
+			(at 232.156 73.406 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "330uF"
+			(at 233.426 75.946 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_Tantalum_SMD:CP_EIA-7343-43_Kemet-X"
+			(at 237.1852 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 236.22 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 236.22 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "d67759e6-5a9d-4305-8abc-f380fb058c60")
+		)
+		(pin "1"
+			(uuid "2cc29805-9e7e-465e-8f87-7671ea9ac056")
+		)
+		(instances
+			(project "robal_power_board"
+				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
+					(reference "C12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VCC")
 		(at 149.86 86.36 0)
 		(unit 1)
@@ -6706,6 +6605,75 @@
 			(project "robal_power_board"
 				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
 					(reference "#PWR015")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 254 36.83 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "514d1ad2-5bdc-4058-b291-08ab79863b81")
+		(property "Reference" "C16"
+			(at 249.936 39.116 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "330uF"
+			(at 251.206 41.656 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:CP_Elec_10x10.5"
+			(at 254.9652 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 254 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 254 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "21404c54-eecc-4752-b67a-34b4e2b40052")
+		)
+		(pin "1"
+			(uuid "79f6a83e-35e6-4a0f-860c-6db0bdd86c0e")
+		)
+		(instances
+			(project "robal_power_board"
+				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
+					(reference "C16")
 					(unit 1)
 				)
 			)
@@ -6773,72 +6741,6 @@
 			(project "robal_power_board"
 				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
 					(reference "R6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 130.81 107.95 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "582ead18-948a-4c9c-afd6-c034bc5fb4fc")
-		(property "Reference" "#PWR037"
-			(at 130.81 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 130.81 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 130.81 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 130.81 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 130.81 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ee6740e3-c444-4bb9-8d9e-cc5ac9dacda0")
-		)
-		(instances
-			(project "robal_power_board"
-				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
-					(reference "#PWR037")
 					(unit 1)
 				)
 			)
@@ -7319,72 +7221,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VCC")
-		(at 109.22 102.87 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6dcfefcb-7d17-4344-bb2c-4193d668e5c0")
-		(property "Reference" "#PWR09"
-			(at 109.22 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VCC"
-			(at 109.22 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 109.22 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 109.22 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 109.22 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "db7f0be9-366f-429f-8e6c-b7a65f1208ec")
-		)
-		(instances
-			(project "robal_power_board"
-				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
-					(reference "#PWR09")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 180.34 66.04 0)
 		(unit 1)
@@ -7445,6 +7281,75 @@
 			(project "robal_power_board"
 				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
 					(reference "#PWR033")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 243.84 36.83 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "7867fd31-db38-4b4a-9e75-1868682fc149")
+		(property "Reference" "C17"
+			(at 243.84 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "1uF"
+			(at 243.84 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 242.8748 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 243.84 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 243.84 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "cde4feda-a131-423c-874d-b83315b088f2")
+		)
+		(pin "2"
+			(uuid "afb8db5c-4a00-4c98-96c4-b028cab533bc")
+		)
+		(instances
+			(project "robal_power_board"
+				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
+					(reference "C17")
 					(unit 1)
 				)
 			)
@@ -8007,7 +7912,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_AMASS:AMASS_MR30PW-M_1x03_P3.50mm_Horizontal"
+		(property "Footprint" "Connector_AMASS:AMASS_MR30PW-FB_1x03_P3.50mm_Horizontal"
 			(at 109.22 90.17 0)
 			(effects
 				(font
@@ -8047,72 +7952,6 @@
 			(project "robal_power_board"
 				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
 					(reference "J9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VCC")
-		(at 130.81 105.41 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "977e5059-6257-442d-bb5d-d783410d1be2")
-		(property "Reference" "#PWR036"
-			(at 130.81 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VCC"
-			(at 130.81 100.33 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 130.81 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 130.81 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 130.81 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "0a2494c9-a06d-4718-9d1c-fc80b04ff386")
-		)
-		(instances
-			(project "robal_power_board"
-				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
-					(reference "#PWR036")
 					(unit 1)
 				)
 			)
@@ -8608,72 +8447,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 109.22 105.41 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b9ae669f-1ec2-4dc2-addb-2f69b80928e7")
-		(property "Reference" "#PWR010"
-			(at 109.22 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 109.22 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 109.22 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 109.22 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 109.22 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "3e8c075a-5cfd-40d2-a031-86e9ed000613")
-		)
-		(instances
-			(project "robal_power_board"
-				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
-					(reference "#PWR010")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:VCC")
 		(at 135.89 31.75 0)
 		(unit 1)
@@ -8734,76 +8507,6 @@
 			(project "robal_power_board"
 				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
 					(reference "#PWR07")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Polarized")
-		(at 254 36.83 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "becc17d1-7a43-4e07-b441-3adc4c8e0f33")
-		(property "Reference" "C14"
-			(at 254.254 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "C_Polarized"
-			(at 238.252 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x5.7"
-			(at 254.9652 40.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 254 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Polarized capacitor"
-			(at 254 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "f6cc8b4f-8e0f-4a9c-90a7-3f67c59604ec")
-		)
-		(pin "1"
-			(uuid "c4410949-400e-4d7c-acef-d84daaf41fa7")
-		)
-		(instances
-			(project "robal_power_board"
-				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
-					(reference "C14")
 					(unit 1)
 				)
 			)
@@ -9164,14 +8867,13 @@
 				(justify right)
 			)
 		)
-		(property "Value" "22uF"
+		(property "Value" "33nF"
 			(at 269.24 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
@@ -9419,6 +9121,75 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C")
+		(at 198.12 41.91 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d98ca05c-44ea-4fda-b473-82abd50f25c9")
+		(property "Reference" "C14"
+			(at 198.12 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "1uF"
+			(at 198.12 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 197.1548 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 198.12 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 198.12 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6440d780-de7f-464b-9115-cd8b6829d398")
+		)
+		(pin "2"
+			(uuid "dc5d4cde-0eb9-4ed4-aa0a-dbf7fe2367c4")
+		)
+		(instances
+			(project "robal_power_board"
+				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
+					(reference "C14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:Q_PMOS_GDS")
 		(at 125.73 36.83 270)
 		(mirror x)
@@ -9560,35 +9331,33 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
-		(at 198.12 41.91 180)
+		(lib_id "Device:L")
+		(at 237.49 21.59 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "e76b3504-b8fc-4786-ae67-b7deda986cdc")
-		(property "Reference" "C12"
-			(at 200.66 41.91 0)
+		(fields_autoplaced yes)
+		(uuid "e61c11ba-739a-494f-989f-26a7459d82ba")
+		(property "Reference" "L3"
+			(at 237.49 16.51 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
-		(property "Value" "22uF"
-			(at 198.12 44.45 0)
+		(property "Value" "2.2uH"
+			(at 237.49 19.05 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
-				(hide yes)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 197.1548 38.1 0)
+		(property "Footprint" "Inductor_SMD:L_Chilisin_BMRF00101040"
+			(at 237.49 21.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9597,7 +9366,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 198.12 41.91 0)
+			(at 237.49 21.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9606,7 +9375,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 198.12 41.91 0)
+			(at 237.49 21.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9615,15 +9384,15 @@
 			)
 		)
 		(pin "1"
-			(uuid "612c7eb5-c5cd-4883-9e7e-51672666b887")
+			(uuid "4a4ebdcb-d586-46df-85ab-b9a80484f7cf")
 		)
 		(pin "2"
-			(uuid "a00e5ed4-241e-4ac4-9863-ed04138b54bb")
+			(uuid "6069098d-f6ca-4319-826d-dd4ec8d22d78")
 		)
 		(instances
 			(project "robal_power_board"
 				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
-					(reference "C12")
+					(reference "L3")
 					(unit 1)
 				)
 			)
@@ -9848,17 +9617,16 @@
 				(justify left)
 			)
 		)
-		(property "Value" "C_Polarized"
-			(at 168.402 46.99 0)
+		(property "Value" "220uF"
+			(at 174.752 46.736 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x5.7"
+		(property "Footprint" "Capacitor_SMD:CP_Elec_10x10.5"
 			(at 185.1152 50.8 0)
 			(effects
 				(font
@@ -10030,75 +9798,6 @@
 			(project "robal_power_board"
 				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
 					(reference "R1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:Conn_01x02_Socket")
-		(at 100.33 105.41 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "fa59a230-ec34-4d3f-8620-25def010ce2a")
-		(property "Reference" "J5"
-			(at 99.6949 101.6 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "V_BAT"
-			(at 98.552 106.934 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Connector_AMASS:AMASS_XT30PW-M_1x02_P2.50mm_Horizontal"
-			(at 100.33 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 100.33 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x02, script generated"
-			(at 100.33 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a82730b5-934e-4063-b16c-ddebadae2c15")
-		)
-		(pin "2"
-			(uuid "17c092d7-3989-4fd8-a428-4b24eb21a2aa")
-		)
-		(instances
-			(project "robal_power_board"
-				(path "/996ebf14-c42c-4ace-b172-788c034735a1"
-					(reference "J5")
 					(unit 1)
 				)
 			)
