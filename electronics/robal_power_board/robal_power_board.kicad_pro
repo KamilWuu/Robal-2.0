@@ -37,7 +37,7 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 1.2,
+          "drill": 0.0,
           "height": 6.0,
           "width": 8.0
         },
@@ -497,7 +497,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "../../mechanics/robal_power_board_2.step",
+      "step": "../../mechanics/robal_power_board_6.step",
       "svg": "",
       "vrml": ""
     },
