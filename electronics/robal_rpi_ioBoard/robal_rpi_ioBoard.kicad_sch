@@ -13695,75 +13695,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
-		(at 27.94 184.15 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "49503589-7b8d-46da-9e79-45d412feac7c")
-		(property "Reference" "C2"
-			(at 30.48 182.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10uF"
-			(at 30.48 185.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 28.9052 187.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 27.94 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 27.94 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "f2aae914-eb58-4741-804f-88bf29a0965a")
-		)
-		(pin "1"
-			(uuid "279889d7-9320-4d81-9e1b-dc02dd960b80")
-		)
-		(instances
-			(project "robal_rpi_ioBoard"
-				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
-					(reference "C2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C_Polarized")
 		(at 38.1 184.15 0)
 		(unit 1)
@@ -14439,6 +14370,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 27.94 184.15 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "56283c8a-25ce-455b-9e6a-20294340c3cc")
+		(property "Reference" "C2"
+			(at 31.75 181.9909 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" ">1mF"
+			(at 31.75 184.5309 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_Tantalum_SMD:CP_EIA-3528-21_Kemet-B"
+			(at 28.9052 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 27.94 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 27.94 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bf5e31ba-0735-4bd2-b69f-a21b12d9612b")
+		)
+		(pin "2"
+			(uuid "6422827c-f794-4d95-b894-3686bec0003a")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3.3V")
 		(at 248.92 160.02 0)
 		(unit 1)
@@ -14566,75 +14567,6 @@
 			(project "robal_rpi_ioBoard"
 				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
 					(reference "R5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 137.16 179.07 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "619556c0-b613-473f-9651-b8b68b8a3e29")
-		(property "Reference" "C5"
-			(at 139.7 177.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10uF"
-			(at 139.7 180.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 138.1252 182.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 137.16 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 137.16 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "80d2c594-ed32-4e70-b26e-50891b993aab")
-		)
-		(pin "1"
-			(uuid "06fd7834-354d-4f08-9592-578699770d02")
-		)
-		(instances
-			(project "robal_rpi_ioBoard"
-				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
-					(reference "C5")
 					(unit 1)
 				)
 			)
@@ -21032,6 +20964,76 @@
 			(project "robal_rpi_ioBoard"
 				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
 					(reference "#PWR044")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 137.16 179.07 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d2d2407a-7756-437c-becf-7985694310ba")
+		(property "Reference" "C9"
+			(at 140.97 176.9109 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" ">1mF"
+			(at 140.97 179.4509 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_Tantalum_SMD:CP_EIA-3528-21_Kemet-B"
+			(at 138.1252 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 137.16 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 137.16 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2778c28f-64b0-488f-b971-9496095fac59")
+		)
+		(pin "2"
+			(uuid "f1af8d12-9b79-4645-bcd6-1e2e9f24c03b")
+		)
+		(instances
+			(project "robal_rpi_ioBoard"
+				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
+					(reference "C9")
 					(unit 1)
 				)
 			)
