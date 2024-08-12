@@ -498,7 +498,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "robal_rpi_ioBoard.step",
       "svg": "",
       "vrml": ""
     },
