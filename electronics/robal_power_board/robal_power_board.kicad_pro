@@ -494,7 +494,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "../fabric_robal_power_board/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "../../mechanics/robal_power_board_6.step",
