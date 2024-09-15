@@ -47,7 +47,8 @@ void setup() {
   setServoAngle(pwmController1, 0, 116);
   setServoAngle(pwmController1, 1, 116);
   setServoAngle(pwmController1, 2, 116);
-  delay(2000);
+  delay(500);
+  /*delay(2000);
 
   setServoAngle(pwmController1, 0, 150);
   setServoAngle(pwmController1, 1, 116);
@@ -57,7 +58,7 @@ void setup() {
   setServoAngle(pwmController1, 0, 116);
   setServoAngle(pwmController1, 1, 116);
   setServoAngle(pwmController1, 2, 116);
-  delay(2000);
+  delay(2000);*/
 
 }
 
@@ -105,15 +106,32 @@ void loop() {
   setServoAngle(pwmController1, 2, 100);
   delay(1000);*/
 
-  setServoAngle(pwmController1, 0, 116);
-  setServoAngle(pwmController1, 1, 116);
-  setServoAngle(pwmController1, 2, 116);
-  delay(1000);
+  setServoAngle(pwmController1, 5, 170);
+  setServoAngle(pwmController1, 6, 60);
+  setServoAngle(pwmController1, 7, 220);
+  delay(2000);
 
-  /*setServoAngle(pwmController1, 0, 160);
-  setServoAngle(pwmController1, 1, 80);
-  setServoAngle(pwmController1, 2, 130);
-  delay(1000);*/
+  
+
+  
+
+  setServoAngle(pwmController1, 0, 60);
+  setServoAngle(pwmController1, 1, 170);
+  setServoAngle(pwmController1, 2, 30);
+  delay(2000);
+
+  setServoAngle(pwmController1, 5, 116);
+  setServoAngle(pwmController1, 6, 100);
+  setServoAngle(pwmController1, 7, 180);
+  delay(2000);
+
+  setServoAngle(pwmController1, 0, 116);
+  setServoAngle(pwmController1, 1, 140);
+  setServoAngle(pwmController1, 2, 50);
+  delay(2000);
+
+
+  
 
   /*setServoAngle(pwmController1, 0, 116);
   setServoAngle(pwmController1, 1, 116);

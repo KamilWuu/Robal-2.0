@@ -498,7 +498,7 @@
       "plot": "fabric_rpi_board/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "robal_rpi_ioBoard.step",
+      "step": "../../mechanics/step/robal_rpi_ioBoard.step",
       "svg": "",
       "vrml": ""
     },

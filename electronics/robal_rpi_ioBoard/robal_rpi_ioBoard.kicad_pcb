@@ -5035,7 +5035,7 @@
 				(xyz 0 0 0)
 			)
 		)
-		(model "E:/PROJECTS_REPOS/Robal-2.0/electronics/step/XT30PW-F.STEP"
+		(model "C:/Users/kamil/Documents/PROJECTS - repos/Robal-2.0/electronics/step/XT30PW-F.STEP"
 			(offset
 				(xyz 2.5 5.5 0)
 			)
@@ -7351,6 +7351,17 @@
 				(xyz 0 0 0)
 			)
 		)
+		(model "C:/Users/kamil/Documents/PROJECTS - repos/Robal-2.0/electronics/step/MR30PW-FB v2.step"
+			(offset
+				(xyz -3.5 5.5 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "LOGO"
 		(layer "F.Cu")
@@ -8039,6 +8050,17 @@
 			(uuid "9bfd4034-1503-471b-bfe1-5c882ca6381a")
 		)
 		(model "${KICAD8_3DMODEL_DIR}/LED_THT.3dshapes/LED_D5.0mm.wrl"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(model "${KICAD8_3DMODEL_DIR}/LED_THT.3dshapes/LED_D8.0mm.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -11571,6 +11593,17 @@
 			(pintype "power_in")
 			(solder_mask_margin 0.102)
 			(uuid "766d988f-4303-4f3e-893d-a87f4e7c62fe")
+		)
+		(model "C:/Users/kamil/Downloads/Raspberry Pi 4 Model B.STEP"
+			(offset
+				(xyz 0 0 -11.5)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 0 0)
+			)
 		)
 	)
 	(footprint "LOGO"
@@ -35247,6 +35280,17 @@
 			)
 			(rotate
 				(xyz 0 0 0)
+			)
+		)
+		(model "C:/Users/kamil/Documents/PROJECTS - repos/Robal-2.0/electronics/step/XT30PW-F.STEP"
+			(offset
+				(xyz 2.5 6 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 90)
 			)
 		)
 	)
