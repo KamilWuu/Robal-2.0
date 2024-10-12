@@ -5,3 +5,4 @@ cos cos cos
 123
 12
 3123
+cos pisze sobie i dziala
