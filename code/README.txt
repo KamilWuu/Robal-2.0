@@ -6,3 +6,5 @@ cos cos cos
 12
 3123
 cos pisze sobie i dziala
+cos tam cos z raspberki
+asfgdsfhdgfg
