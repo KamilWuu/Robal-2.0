@@ -1,3 +1,11 @@
+/*
+Przyklad pokazujace wyorzystanie przycisków do wlaczania i wylaczania diod
+
+kopilacja:
+gcc xbox_test.c -o x_box -lSDL2 -lwiringPi
+
+*/
+
 #include <SDL2/SDL.h>
 #include <wiringPi.h>
 #include <stdio.h>
