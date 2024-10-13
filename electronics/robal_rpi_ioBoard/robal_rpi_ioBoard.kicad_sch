@@ -16406,7 +16406,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "70dbcf81-ac25-462b-9c70-0032e64efb08")
-		(property "Reference" "PCA_1"
+		(property "Reference" "PCA_L"
 			(at 58.0741 113.03 0)
 			(effects
 				(font
@@ -16539,7 +16539,7 @@
 		(instances
 			(project "robal_rpi_ioBoard"
 				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
-					(reference "PCA_1")
+					(reference "PCA_L")
 					(unit 1)
 				)
 			)
@@ -17578,7 +17578,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "85eac4e7-e5ac-4c71-8ff6-d34cb0a2350f")
-		(property "Reference" "PCA_2"
+		(property "Reference" "PCA_R"
 			(at 169.8341 109.22 0)
 			(effects
 				(font
@@ -17711,7 +17711,7 @@
 		(instances
 			(project "robal_rpi_ioBoard"
 				(path "/2aaeec6a-17aa-4f92-b3e6-79c32ff89a4a"
-					(reference "PCA_2")
+					(reference "PCA_R")
 					(unit 1)
 				)
 			)

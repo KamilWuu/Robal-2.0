@@ -1,16 +1,19 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#include <stdio.h>
+#include <wiringPi.h>
+
 /* ============================= OUTPUTS ============================= */
-#define LED_RED 6
-#define LED_GREEN 4
-#define BUZZER 5
+#define LED_RED     6
+#define LED_GREEN   4
+#define BUZZER      5
 
-#define D_0 22
-#define D_1 17
+#define D_0         22
+#define D_1         17
 
-#define PCA_1_OE 27
-#define PCA_2_OE 18
+#define PCA_1_OE    27
+#define PCA_2_OE    18
 /* =========================== END OF OUTPUTS ========================= */
 
 /* ============================= INPUTS ============================== */
@@ -29,38 +32,68 @@
 #define TOUCH_SENSOR_RIGHT_MIDDLE   TOUCH_SENSOR_4
 #define TOUCH_SENSOR_RIGHT_BACK     TOUCH_SENSOR_6
 
-#define BUTTON_1 21
-#define BUTTON_2 26
+#define BUTTON_1    21
+#define BUTTON_2    26
 
-#define INTA_MPU 19
-#define DRDY 13
+#define INTA_MPU    19
+#define DRDY        13
 /* =========================== END OF INPUTS ========================== */
 
 /* ========================== COMMUNICATION ========================== */
-#define SPI_CEO0 8
-#define SPI_CEO1 7
-#define SPI_SCLK 11
-#define SPI_MOSI 10
-#define SPI_MISO 9
+#define SPI_CEO0    8
+#define SPI_CEO1    7
+#define SPI_SCLK    11
+#define SPI_MOSI    10
+#define SPI_MISO    9
 
-#define I2C_SDA 2
-#define I2C_SCL 3
+#define I2C_SDA     2
+#define I2C_SCL     3
 
-#define TX 14
-#define RX 15
+#define TX          14
+#define RX          15
 /* ======================= END OF COMMUNICATION ======================= */
 
 /* =========================== DEVICE ADDRESSES ======================= */
-#define PCA9685_MODE1 0x00
-#define PCA_ADDRESS_1 0x41
-#define PCA_ADDRESS_2 0x42
-#define MPU6050_ADDRESS 0x68
-#define QMC5883L_ADDRESS 0x70
-#define BMP180_ADDRESS 0x77
+#define PCA_ADDRESS_LEFT    0x41
+#define PCA_ADDRESS_RIGHT   0x42
+#define MPU6050_ADDRESS     0x68
+#define QMC5883L_ADDRESS    0x70
+#define BMP180_ADDRESS      0x77
 /* ===================== END OF DEVICE ADDRESSES ====================== */
 
-#include <stdio.h>
-#include <wiringPi.h>
+/* ========================= Q INDEX ================================== */
+
+#define LEFT_FRONT_Q1   2
+#define LEFT_FRONT_Q2   1
+#define LEFT_FRONT_Q3   0
+
+#define LEFT_MIDDLE_Q1  5
+#define LEFT_MIDDLE_Q2  4
+#define LEFT_MIDDLE_Q3  3
+
+#define LEFT_BACK_Q1    8
+#define LEFT_BACK_Q2    7
+#define LEFT_BACK_Q3    6    
+
+
+#define RIGHT_FRONT_Q1  6
+#define RIGHT_FRONT_Q2  7
+#define RIGHT_FrONT_Q3  8
+
+#define RIGHT_MIDDLE_Q1 3
+#define RIGHT_MIDDLE_Q2 4
+#define RIGHT_MIDDLE_Q3 5
+
+#define RIGHT_BACK_Q1   2      
+#define RIGHT_BACK_Q2   1 
+#define RIGHT_BACK_Q3   0
+/* ============================= END OF Q INDEX ====================== */
+
+
+
+
+
+
 
 void StartGPIO()
 {
