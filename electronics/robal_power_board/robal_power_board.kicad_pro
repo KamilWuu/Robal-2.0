@@ -497,7 +497,7 @@
       "plot": "../fabric_robal_power_board/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "../../mechanics/step/robal_power_board_7.step",
+      "step": "../../mechanics/step/robal_power_board_new.step",
       "svg": "",
       "vrml": ""
     },

@@ -1043,7 +1043,7 @@
 				(xyz 0 0 0)
 			)
 		)
-		(model "C:/Users/kamil/Documents/PROJECTS - repos/Robal-2.0/electronics/step/XT30PW-F.STEP"
+		(model "E:/PROJECTS_REPOS/Robal-2.0/electronics/step/XT30PW-F.STEP"
 			(offset
 				(xyz 2.5 6 0)
 			)
@@ -6166,7 +6166,7 @@
 				(xyz 0 0 0)
 			)
 		)
-		(model "C:/Users/kamil/Documents/PROJECTS - repos/Robal-2.0/electronics/step/XT30PW-F.STEP"
+		(model "E:/PROJECTS_REPOS/Robal-2.0/electronics/step/XT30PW-F.STEP"
 			(offset
 				(xyz 2.5 6 0)
 			)
@@ -7838,7 +7838,7 @@
 				(xyz 0 0 0)
 			)
 		)
-		(model "C:/Users/kamil/Documents/PROJECTS - repos/Robal-2.0/electronics/step/XT60PW MALE.STEP"
+		(model "E:/PROJECTS_REPOS/Robal-2.0/electronics/step/XT60PW MALE.STEP"
 			(offset
 				(xyz 3.6 15.2 4.5)
 			)
@@ -9203,7 +9203,7 @@
 				(xyz 0 0 0)
 			)
 		)
-		(model "C:/Users/kamil/Documents/PROJECTS - repos/Robal-2.0/electronics/step/XT30PW-F.STEP"
+		(model "E:/PROJECTS_REPOS/Robal-2.0/electronics/step/XT30PW-F.STEP"
 			(offset
 				(xyz 2.5 5.5 0)
 			)
@@ -12654,7 +12654,7 @@
 				(xyz 0 0 0)
 			)
 		)
-		(model "C:/Users/kamil/Documents/PROJECTS - repos/Robal-2.0/electronics/step/XT30PW-F.STEP"
+		(model "E:/PROJECTS_REPOS/Robal-2.0/electronics/step/XT30PW-F.STEP"
 			(offset
 				(xyz 2.54 5.715 0)
 			)
@@ -13134,7 +13134,7 @@
 				(xyz 0 0 0)
 			)
 		)
-		(model "C:/Users/kamil/Documents/PROJECTS - repos/Robal-2.0/electronics/step/MR30PW-FB v2.step"
+		(model "E:/PROJECTS_REPOS/Robal-2.0/electronics/step/MR30PW-FB v2.step"
 			(offset
 				(xyz -3.5 5.5 0)
 			)
