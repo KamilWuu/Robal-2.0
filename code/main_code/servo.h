@@ -10,8 +10,8 @@
 #define LED0_ON_L           0x06
 #define PWM_FREQ            50   // Standard PWM frequency for servos
 
-#define SERVO_MIN  150     // PWM value for 0° (0.5ms)
-#define SERVO_MAX  650     // PWM value for 270° (2.7ms)
+#define SERVO_MIN  102     // PWM value for 0° (0.5ms)
+#define SERVO_MAX  512     // PWM value for 270° (2.7ms)
 
 /**500 - 2500, 1500 neutral [usec] */
 

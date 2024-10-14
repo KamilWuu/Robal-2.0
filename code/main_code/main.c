@@ -14,7 +14,7 @@ int main(void)
     int running = 1;
     
     // Set servo angles on PCA1
-    for (int i = 0; i < 9; i++)
+    /*for (int i = 0; i < 9; i++)
     {
         SetServoAngle(pca_left, i, 135); // Set each servo to 135° (halfway) on PCA1
         delay(100);                      // Brief delay between setting each servo
@@ -25,16 +25,30 @@ int main(void)
     {
         SetServoAngle(pca_right, i, 135); // Set each servo to 135° (halfway) on PCA2
         delay(100);                       // Brief delay between setting each servo
-    }
+    }*/
+
+
 
     delay(1000);
 
     while (running)
     {
-        digitalWrite(LED_RED, HIGH);
-        delay(500);
-        digitalWrite(LED_RED, LOW);
-        delay(500);
+
+        SetServoAngle(pca_right, 9, 135);
+
+        delay(1000);
+
+        SetServoAngle(pca_right, 9, 60);
+
+        delay(1000);
+
+        SetServoAngle(pca_right, 9, 135);
+
+        delay(1000);
+
+        SetServoAngle(pca_right, 9, 195);
+
+        delay(1000);
     }
 
     return 0;
