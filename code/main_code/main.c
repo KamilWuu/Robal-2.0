@@ -4,9 +4,9 @@
 int main(void)
 {
     StartGPIO();
-    if (InitPCA9685(&pca_left, PCA_ADDRESS_1) == -1)
+    if (InitPCA9685(&pca_left, PCA_ADDRESS_LEFT) == -1)
         return -1;
-    if (InitPCA9685(&pca_right, PCA_ADDRESS_2) == -1)
+    if (InitPCA9685(&pca_right, PCA_ADDRESS_RIGHT) == -1)
         return -1;
 
     printf("Hello! I am Robal!\n");

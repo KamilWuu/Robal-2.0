@@ -13,6 +13,8 @@
 #define SERVO_MIN  150     // PWM value for 0° (0.5ms)
 #define SERVO_MAX  650     // PWM value for 270° (2.7ms)
 
+/**500 - 2500, 1500 neutral [usec] */
+
 int pca_left, pca_right;
 
 // Function to initialize a specific PCA9685 address
