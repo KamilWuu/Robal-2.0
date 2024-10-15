@@ -78,15 +78,15 @@
 
 #define RIGHT_FRONT_Q1  6
 #define RIGHT_FRONT_Q2  7
-#define RIGHT_FrONT_Q3  8
+#define RIGHT_FRONT_Q3  8
 
 #define RIGHT_MIDDLE_Q1 3
 #define RIGHT_MIDDLE_Q2 4
 #define RIGHT_MIDDLE_Q3 5
 
-#define RIGHT_BACK_Q1   2      
+#define RIGHT_BACK_Q1   0      
 #define RIGHT_BACK_Q2   1 
-#define RIGHT_BACK_Q3   0
+#define RIGHT_BACK_Q3   2
 /* ============================= END OF Q INDEX ====================== */
 
 
@@ -102,7 +102,7 @@ void StartGPIO()
 
     /* =========================== OUTPUTS =========================== */
     pinMode(LED_RED, OUTPUT);
-    pinMode(LED_GREEN, OUTPUT);
+    //pinMode(LED_GREEN, OUTPUT);
     pinMode(BUZZER, OUTPUT);
 
     pinMode(D_0, OUTPUT);
@@ -147,7 +147,7 @@ void StartGPIO()
 
     /* ==================== Initial States for Outputs =================== */
     digitalWrite(LED_RED, LOW);
-    digitalWrite(LED_GREEN, LOW);
+    //digitalWrite(LED_GREEN, LOW);
     digitalWrite(BUZZER, LOW);
     digitalWrite(D_0, LOW);
     digitalWrite(D_1, LOW);
