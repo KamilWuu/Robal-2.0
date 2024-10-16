@@ -33,7 +33,7 @@ int InitPCA9685(int *pca, int address) {
     delay(1);
     wiringPiI2CWriteReg8(*pca, PCA9685_MODE1, 0xA1);
 
-    printf("PCA9685 at address 0x%X initialized successfully.\n", address);
+    //printf("PCA9685 at address 0x%X initialized successfully.\n", address);
     return 0;
 }
 

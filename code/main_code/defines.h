@@ -68,7 +68,7 @@
 #define LEFT_FRONT_Q3   0
 
 #define LEFT_MIDDLE_Q1  5
-#define LEFT_MIDDLE_Q2  4
+#define LEFT_MIDDLE_Q2  15
 #define LEFT_MIDDLE_Q3  3
 
 #define LEFT_BACK_Q1    8
@@ -154,7 +154,7 @@ void StartGPIO()
     digitalWrite(PCA_1_OE, LOW);
     digitalWrite(PCA_2_OE, LOW);
 
-    printf("GPIO succesfully started!\n");
+   // printf("GPIO succesfully started!\n");
 }
 
 #endif // DEFINES_H
