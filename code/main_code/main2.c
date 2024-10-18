@@ -65,7 +65,7 @@ void setZeroPosition(int delay_time){
 void SetTransportPosition(int delay_time){
 
     int zero_angle = 135;
-    int Q2_angle_variable = 70;
+    int Q2_angle_variable = 75;
     int Q3_angle_variable = 120;
 
     SetServoAngle(pca_right, RIGHT_BACK_Q3,  zero_angle + Q3_angle_variable);
@@ -128,7 +128,7 @@ void SetTransportPosition(int delay_time){
 
     SetServoAngle(pca_left, LEFT_FRONT_Q1,  zero_angle);
     SetServoAngle(pca_right, RIGHT_FRONT_Q1,  zero_angle);
-    printf("Q1_FRONT\n");
+    printf("Q1_FRONT\n\n");
     delay(delay_time);
 
 
@@ -205,7 +205,7 @@ void SetWalkingPosition(int delay_time, int Q1_plus, int Q2_plus, int Q3_plus){
 
     SetServoAngle(pca_left, LEFT_FRONT_Q1,  zero_angle + Q1_plus);
     SetServoAngle(pca_right, RIGHT_FRONT_Q1,  zero_angle - Q1_plus);
-    printf("Q1_FRONT\n");
+    printf("Q1_FRONT\n\n");
     delay(delay_time);
 
 
@@ -213,13 +213,7 @@ void SetWalkingPosition(int delay_time, int Q1_plus, int Q2_plus, int Q3_plus){
 
 }
 
-int main(void) {
-    StartGPIO();
-    if (InitPCA9685(&pca_left, PCA_ADDRESS_LEFT) == -1) return -1;
-    if (InitPCA9685(&pca_right, PCA_ADDRESS_RIGHT) == -1) return -1;
-
-    printf("Hello! I am Robal!\n");
-
+void AlgorytmWstawaniaZPozycjaTransportową(){
     for(int i = 0; i < 4; i++){
         digitalWrite(LED_RED, HIGH);
         delay(500);
@@ -235,27 +229,6 @@ int main(void) {
         delay(500);
         printf("czeka\n");
     }
-    /*setZeroPosition(500);
-    for(int i = 0; i < 2; i++){
-        digitalWrite(LED_RED, HIGH);
-        delay(500);
-        digitalWrite(LED_RED, LOW);
-        delay(500);
-        printf("czeka\n");
-    }*/
-    /*SetWalkingPosition(500, 0,0,0);
-    
-
-
-
-
-    for(int i = 0; i < 1; i++){
-        digitalWrite(LED_RED, HIGH);
-        delay(500);
-        digitalWrite(LED_RED, LOW);
-        delay(500);
-        printf("czeka\n");
-    }*/
 
 
     SetWalkingPosition(500, 45, 0, 0);
@@ -318,22 +291,33 @@ int main(void) {
     }
 
     SetTransportPosition(800);
+}
 
-    /*while (1) {
-        
+
+int main(void) {
+    StartGPIO();
+    if (InitPCA9685(&pca_left, PCA_ADDRESS_LEFT) == -1) return -1;
+    if (InitPCA9685(&pca_right, PCA_ADDRESS_RIGHT) == -1) return -1;
+
+    printf("#ROBAL: Cześć, to ja Robal!\n\n");
+
+    
+
+    
+
+    printf("#ROBAL: Ustawiam pozycje chodu!\n\n") ;
+   //SetTransportPosition(500);
+   SetWalkingPosition(500, 45, 0, 0);
+   printf("#ROBAL: Jestem gotowy do ruchu!\n") ;
+    /*while(1){
         digitalWrite(LED_RED, HIGH);
-      //  SetServoAngle(pca_left, 4, 160);
-        delay(1000);
+        delay(500);
         digitalWrite(LED_RED, LOW);
-       // SetServoAngle(pca_left, 4, 130);
-        delay(1000);
-        
-
-
+        delay(500);
+        printf("czeka\n");
     }*/
 
-   printf("koniec programu\n");
-
+    
 
     return 0;
 }
