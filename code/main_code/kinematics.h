@@ -12,5 +12,27 @@
 #define d4      110
 
 
+#define Q1_initial_angle 135
+#define Q2_initial_angle 135
+#define Q3_initial_angle 135
+
+
+/*wartosci graniczne ustalone dla prawej strony, dla lewej nalezy zamienic max z min*/
+#define FRONT_Q1_MIN_ANGLE 0
+#define FRONT_Q1_MAX_ANGLE 270
+
+#define MIDDLE_Q1_MIN_ANGLE 0
+#define MIDDLE_Q1_MAX_ANGLE 270
+
+#define BACK_Q1_MIN_ANGLE 0
+#define BACK_Q1_MAX_ANGLE 270
+
+
+
+#define Q2_MIN_ANGLE 0
+#define Q2_MAX_ANGLE 270
+
+#define Q3_MIN_ANGLE 0
+#define Q3_MAX_ANGLE 270
 
 #endif // KINEMATICS_H
