@@ -1,6 +1,8 @@
 #ifndef KINEMATICS_H
 #define KINEMATICS_H
 
+#include <math.h>
+
 #define L1  73.5 
 #define L2  84.5
 #define L3  118.5
@@ -34,5 +36,9 @@
 
 #define Q3_MIN_ANGLE 0
 #define Q3_MAX_ANGLE 270
+
+
+
+
 
 #endif // KINEMATICS_H

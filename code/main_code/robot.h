@@ -249,7 +249,37 @@ void initRobot(Robot *robot) {
 }
 
 
+void calculateInvertedKinematics(Leg leg, RobotSide side){
 
+    int Q1;
+    int Q2;
+    int Q3;
+
+    int Q3_1;
+    int Q3_2;
+
+    int Xp = pos[0];
+    int Yp = pos[1];
+    int Zp = leg->
+
+    int Xpz;
+
+
+    if(side == RIGHT){
+        Xpz = sqrt((Xp)^2 + Yp^2);
+        Q1 = atan2(Yp, Xp);
+        Q3_1 = M_PI - acos(((L2*L2) + (L3*L3) - (Zp*Zp) - ((Xpz - L1)*(Xpz - L1))) / (2 * L2 * L3));
+        Q3_2 = acos(((Zp*Zp) + ((Xpz - L1)*(Xpz - L1)) - (L2*L2) - (L3*L3)) / (2 * L2 * L3));
+        Q3 = -Q3_1; //lub -Q3_2
+        Q2 = atan2(Zp, (Xpz - L1)) + atan2(L3 * sin(-Q3), (L2 + L3 * cos(-Q3)));
+    
+        leg->_q1_servo->curre
+    }
+
+    
+
+
+}
 
 
 #endif // ROBOT_H
