@@ -147,8 +147,10 @@ int getInitialAngle(int Q, RobotSide side){
         break;
     }
 
-    return 135 - (Q_variable * Q_side_multiplier);
+    //return 135 - (Q_variable * Q_side_multiplier);
 
+
+    return 135;
 }
 
 
@@ -271,37 +273,40 @@ void initLeg(Leg *leg, LegPosition leg_position){
     }
 
 
-
+    // Inicjalizacja serw Q1
     leg->_q1_servo._pca_channel = getPCAChannel(leg->_leg_position, 1); 
+    if(leg->_q1_servo._pca_channel > 15){printf("Cos poszlo nie tak dla pca channel q1\n");}
 
     leg->_q1_servo._min_angle = getMinAngle(leg->_leg_position, 1);
     leg->_q1_servo._max_angle = getMaxAngle(leg->_leg_position, 1);
 
-    leg->_q1_servo._current_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
-    leg->_q1_servo._target_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
-    leg->_q1_servo._last_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
+    leg->_q1_servo._current_angle = getInitialAngle(1, leg->_side); 
+    leg->_q1_servo._target_angle = getInitialAngle(1, leg->_side); 
+    leg->_q1_servo._last_angle = getInitialAngle(1, leg->_side); 
 
 
-    // Inicjalizacja serw Q2n, 2); 
+    // Inicjalizacja serw Q2
+    leg->_q3_servo._pca_channel = getPCAChannel(leg->_leg_position, 2); 
+    if(leg->_q1_servo._pca_channel > 15){printf("Cos poszlo nie tak dla pca channel q2\n");}
 
     leg->_q2_servo._min_angle = getMinAngle(leg->_leg_position, 2);
     leg->_q2_servo._max_angle = getMaxAngle(leg->_leg_position, 2);
 
-    leg->_q2_servo._current_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
-    leg->_q2_servo._target_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
-    leg->_q2_servo._last_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
+    leg->_q2_servo._current_angle = getInitialAngle(2, leg->_side); 
+    leg->_q2_servo._target_angle = getInitialAngle(2, leg->_side); 
+    leg->_q2_servo._last_angle = getInitialAngle(2, leg->_side); 
 
 
     // Inicjalizacja serw Q3
     leg->_q3_servo._pca_channel = getPCAChannel(leg->_leg_position, 3); 
+    if(leg->_q1_servo._pca_channel > 15){printf("Cos poszlo nie tak dla pca channel q3\n");}
 
     leg->_q3_servo._min_angle = getMinAngle(leg->_leg_position, 3);
-    leg->_q2_servo._pca_channel = getPCAChannel(leg->_leg_position);
     leg->_q3_servo._max_angle = getMaxAngle(leg->_leg_position, 3);
 
-    leg->_q3_servo._current_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
-    leg->_q3_servo._target_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
-    leg->_q3_servo._last_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
+    leg->_q3_servo._current_angle = getInitialAngle(3, leg->_side); 
+    leg->_q3_servo._target_angle = getInitialAngle(3, leg->_side); 
+    leg->_q3_servo._last_angle = getInitialAngle(3, leg->_side); 
     
 
     for(int i = 0; i < 3; i++){

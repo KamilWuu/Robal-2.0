@@ -30,18 +30,16 @@ int main(void) {
     initRobot(&Hexapod);
 
     delay(2000);
-/*
-    evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - 130, 30, 0 );
+
+    /*evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - 130, 30, 0 );
     delay(2000);
     evaluatePosition(&Hexapod, LEFT_MIDDLE, -L1 - 130, 0, 0 );
     delay(2000);
-    evaluatePosition(&Hexapod, LEFT_BACK, -L1 - 130, -30, 0 );*/
+    evaluatePosition(&Hexapod, LEFT_BACK, -L1 - 130, -30, 0 );
 
-    evaluatePosition(&Hexapod, RIGHT_FRONT, L1 + 130, 30, 0 );
+
+
     delay(2000);
-
-
-    /*delay(2000);
 
     evaluatePosition(&Hexapod, RIGHT_FRONT, L1 + 130, 30, 0 );
     delay(2000);
@@ -63,7 +61,11 @@ int main(void) {
     }*/
     
 
+    evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - 130, 0, 0 );
+    delay(2000);
 
+    evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - 130, 60, 0 );
+    delay(2000);
 
 
     
