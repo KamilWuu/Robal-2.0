@@ -66,7 +66,7 @@ void SetTransportPosition(int delay_time){
 
     int zero_angle = 135;
     int Q2_angle_variable = 75;
-    int Q3_angle_variable = 120;
+    int Q3_angle_variable = 110;
 
     SetServoAngle(pca_right, RIGHT_BACK_Q3,  zero_angle + Q3_angle_variable);
     SetServoAngle(pca_left, LEFT_BACK_Q3,  zero_angle - Q3_angle_variable);
@@ -305,12 +305,14 @@ int main(void) {
 
     
 
-    printf("#ROBAL: Ustawiam pozycje chodu!\n\n") ;
-   //SetTransportPosition(500);
+    printf("#ROBAL: Ustawiam pozycje transportowa!\n\n") ;
+   SetTransportPosition(500);
    //SetWalkingPosition(500, 45, 0, 0);
 
-   AlgorytmWstawaniaZPozycjaTransportową();
-   printf("#ROBAL: Jestem gotowy do ruchu!\n") ;
+   //AlgorytmWstawaniaZPozycjaTransportową();
+   printf("#ROBAL: Dobranoc :) !!!\n") ;
+   delay(100);
+   system("sudo shutdown now");
     /*while(1){
         digitalWrite(LED_RED, HIGH);
         delay(500);

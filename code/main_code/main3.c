@@ -8,13 +8,20 @@
 
 
 void evaluatePosition(Robot * rob, LegPosition pos, double xp, double yp, double zp){
-    printf("pozycja %d dla: %.2f, %.2f, %.2f: \n" , pos, xp, yp, zp);
-    setTargetPos(&rob->_legs[pos], xp, yp, zp);
-    
-    calculateInvertedKinematics(&rob->_legs[pos]);
-    
-    moveToTargetPosition(&rob->_legs[pos]);
-    printLeg(rob->_legs[pos]);
+
+    if(((rob->_legs[pos]._side == RIGHT) && (xp > L1)) || ((rob->_legs[pos]._side == LEFT) && (xp < L1)))
+    {
+        //printf("pozycja %d dla: %.2f, %.2f, %.2f: \n" , pos, xp, yp, zp);
+        setTargetPos(&rob->_legs[pos], xp, yp, zp);
+        calculateInvertedKinematics(&rob->_legs[pos]);
+        moveToTargetPosition(&rob->_legs[pos]);
+        //printLeg(rob->_legs[pos]);
+    }else{
+        printf("Nieprawidlowa dana Xp\n");
+    }
+
+
+
 }
 
 int main(void) {
@@ -26,46 +33,82 @@ int main(void) {
 
     Robot Hexapod;
 
+    int x_pos = 110; 
+    int y_pos = 100; 
+    int delay_time = 200;
     // Inicjalizacja robota
     initRobot(&Hexapod);
 
-    delay(2000);
+    delay(delay_time);
+    
+    evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - x_pos, y_pos, 0 );
+    delay(delay_time);
+    evaluatePosition(&Hexapod, LEFT_MIDDLE, -L1 - x_pos, 0, 0 );
+    delay(delay_time);
+    evaluatePosition(&Hexapod, LEFT_BACK, -L1 - x_pos, -y_pos, 0 );
 
-    /*evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - 130, 30, 0 );
-    delay(2000);
-    evaluatePosition(&Hexapod, LEFT_MIDDLE, -L1 - 130, 0, 0 );
-    delay(2000);
-    evaluatePosition(&Hexapod, LEFT_BACK, -L1 - 130, -30, 0 );
 
 
+    delay(delay_time);
 
-    delay(2000);
+    evaluatePosition(&Hexapod, RIGHT_FRONT, L1 + x_pos, y_pos, 0 );
+    delay(delay_time);
+    evaluatePosition(&Hexapod, RIGHT_MIDDLE, L1 + x_pos, 0, 0 );
+    delay(delay_time);
+    evaluatePosition(&Hexapod, RIGHT_BACK, L1 + x_pos, -y_pos, 0 );
+    delay(delay_time);
 
-    evaluatePosition(&Hexapod, RIGHT_FRONT, L1 + 130, 30, 0 );
-    delay(2000);
-    evaluatePosition(&Hexapod, RIGHT_MIDDLE, L1 + 130, 0, 0 );
-    delay(2000);
-    evaluatePosition(&Hexapod, RIGHT_BACK, L1 + 130, -30, 0 );
-    delay(2000);*/
+
 
 
     int z = 0;
 
-    /*for(int j = 0; j < 100; j++){
+    for(int j = 0; j < 80; j++){
         
-        evaluatePosition(&Hexapod, RIGHT_FRONT, L1 + 130, 0, z );
+        evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - x_pos, y_pos, z );
+        evaluatePosition(&Hexapod, LEFT_MIDDLE, -L1 - x_pos, 0, z );
+        evaluatePosition(&Hexapod, LEFT_BACK, -L1 - x_pos, -y_pos, z );
+
+        evaluatePosition(&Hexapod, RIGHT_FRONT, L1 + x_pos, y_pos, z );
+        evaluatePosition(&Hexapod, RIGHT_MIDDLE, L1 + x_pos, 0, z );
+        evaluatePosition(&Hexapod, RIGHT_BACK, L1 + x_pos, -y_pos, z );
         z = z - 1; 
         delay(5);
-        printf("wszedl\n");
+        
 
-    }*/
+    }
+
+    delay(5000);
+
+    int y = 0;
+
+    for(int j = 0; j < 80; j++){
+        
+        evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - x_pos, y_pos + y, z );
+        evaluatePosition(&Hexapod, LEFT_MIDDLE, -L1 - x_pos, y, z );
+        evaluatePosition(&Hexapod, LEFT_BACK, -L1 - x_pos, -y_pos + y, z );
+
+        evaluatePosition(&Hexapod, RIGHT_FRONT, L1 + x_pos, y_pos + y, z );
+        evaluatePosition(&Hexapod, RIGHT_MIDDLE, L1 + x_pos, y, z );
+        evaluatePosition(&Hexapod, RIGHT_BACK, L1 + x_pos, -y_pos + y, z );
+
+        z = z + 1; 
+        delay(5);
+        
+
+    }
+
+
+
     
 
-    evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - 130, 0, 0 );
-    delay(2000);
 
-    evaluatePosition(&Hexapod, LEFT_FRONT, -L1 - 130, 60, 0 );
-    delay(2000);
+
+
+    delay(1000);
+    
+
+
 
 
     

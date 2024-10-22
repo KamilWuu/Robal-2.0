@@ -373,9 +373,9 @@ void calculateInvertedKinematics(Leg * leg){
 
 
 
-    printf("Q1 = %.2f\n", leg->_q1_servo._target_angle );
+    /*printf("Q1 = %.2f\n", leg->_q1_servo._target_angle );
     printf("Q2 = %.2f\n", leg->_q2_servo._target_angle );
-    printf("Q3 = %.2f\n", leg->_q3_servo._target_angle );
+    printf("Q3 = %.2f\n", leg->_q3_servo._target_angle );*/
 
     
 
