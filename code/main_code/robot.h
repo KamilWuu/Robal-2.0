@@ -1,9 +1,10 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include <stdint.h>
-#include <stdio.h>
 
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
 
 #include "servo.h"
 #include "defines.h"
@@ -44,7 +45,7 @@ typedef struct {
 
     LegPosition _leg_position; // Pozycja: przód, środek, tył
     RobotSide _side;           // Lewa (LEFT) lub prawa (RIGHT) strona
-    uint8_t _pca_address; // Adres PCA dla danej nogi
+    int _pca; // które pca
 
     Servo _q1_servo;      // Serwo dla kąta Q1
     Servo _q2_servo;      // Serwo dla kąta Q2
@@ -109,7 +110,7 @@ int getPCAChannel(LegPosition pos, int Q) {
     return -1; // Zwracamy -1 dla błędnych danych
 }
 
-int getInitialAngle(int Q, enum RobotSide side){
+int getInitialAngle(int Q, RobotSide side){
     int Q_variable; 
     int Q_side_multiplier; 
 
@@ -161,10 +162,10 @@ void initLeg(Leg *leg, LegPosition leg_position){
     leg->_leg_position = leg_position;
     if(leg_position == LEFT_FRONT || leg_position == LEFT_MIDDLE || leg_position ==  LEFT_BACK){
         leg->_side = LEFT;
-        leg->_pca_address = pca_left;
+        leg->_pca = pca_left;
     }else if(leg_position == RIGHT_FRONT || leg_position == RIGHT_MIDDLE || leg_position ==  RIGHT_BACK){
         leg->_side = RIGHT;
-        leg->_pca_address = pca_right;
+        leg->_pca = pca_right;
     }
 
    
@@ -184,55 +185,62 @@ void initLeg(Leg *leg, LegPosition leg_position){
         q1_max = BACK_Q1_MAX_ANGLE;
     }
 
-    leg->_q1_servo.pca_channel = getPCAChannel(position, 1); 
+    leg->_q1_servo._pca_channel = getPCAChannel(leg->_leg_position, 1); 
 
-    leg->_q1_servo.min_angle = q1_min;
-    leg->_q1_servo.max_angle = q1_max; // Maksymalny kąt dla serwa
+    leg->_q1_servo._min_angle = q1_min;
+    leg->_q1_servo._max_angle = q1_max; // Maksymalny kąt dla serwa
 
-    leg->_q1_servo.current_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
-    leg->_q1_servo.target_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
-    leg->_q1_servo.last_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
+    leg->_q1_servo._current_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
+    leg->_q1_servo._target_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
+    leg->_q1_servo._last_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
 
 
     // Inicjalizacja serw Q2
-    leg->_q2_servo.pca_channel = getPCAChannel(position, 2); 
+    leg->_q2_servo._pca_channel = getPCAChannel(leg->_leg_position, 2); 
 
-    leg->_q2_servo.min_angle = Q2_MIN_ANGLE;
-    leg->_q2_servo.max_angle = Q2_MAX_ANGLE; // Maksymalny kąt dla serwa
+    leg->_q2_servo._min_angle = Q2_MIN_ANGLE;
+    leg->_q2_servo._max_angle = Q2_MAX_ANGLE; // Maksymalny kąt dla serwa
 
-    leg->_q2_servo.current_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
-    leg->_q2_servo.target_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
-    leg->_q2_servo.last_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
+    leg->_q2_servo._current_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
+    leg->_q2_servo._target_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
+    leg->_q2_servo._last_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
 
 
     // Inicjalizacja serw Q3
-    leg->_q3_servo.pca_channel = getPCAChannel(position, 3); 
+    leg->_q3_servo._pca_channel = getPCAChannel(leg->_leg_position, 3); 
 
-    leg->_q3_servo.min_angle = Q3_MIN_ANGLE;
-    leg->_q3_servo.max_angle = Q3_MAX_ANGLE; // Maksymalny kąt dla serwa
+    leg->_q3_servo._min_angle = Q3_MIN_ANGLE;
+    leg->_q3_servo._max_angle = Q3_MAX_ANGLE; // Maksymalny kąt dla serwa
 
-    leg->_q3_servo.current_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
-    leg->_q3_servo.target_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
-    leg->_q3_servo.last_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
+    leg->_q3_servo._current_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
+    leg->_q3_servo._target_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
+    leg->_q3_servo._last_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
     
 
     if(leg->_side == LEFT ){
 
         int temp1, temp2, temp3;
 
-        temp1 = leg->_q1_servo.min_angle;
-        leg->_q1_servo.min_angle = leg->_q1_servo.max_angle;
-        leg->_q1_servo.max_angle = temp1;
+        temp1 = leg->_q1_servo._min_angle;
+        leg->_q1_servo._min_angle = leg->_q1_servo._max_angle;
+        leg->_q1_servo._max_angle = temp1;
 
-        temp2 = leg->_q2_servo.min_angle;
-        leg->_q2_servo.min_angle = leg->_q2_servo.max_angle;
-        leg->_q2_servo.max_angle = temp2;
+        temp2 = leg->_q2_servo._min_angle;
+        leg->_q2_servo._min_angle = leg->_q2_servo._max_angle;
+        leg->_q2_servo._max_angle = temp2;
 
-        temp3 = leg->_q3_servo.min_angle;
-        leg->_q3_servo.min_angle = leg->_q3_servo.max_angle;
-        leg->_q3_servo.max_angle = temp3;
+        temp3 = leg->_q3_servo._min_angle;
+        leg->_q3_servo._min_angle = leg->_q3_servo._max_angle;
+        leg->_q3_servo._max_angle = temp3;
 
     }
+
+    for(int i = 0; i < 3; i++){
+        leg->_current_pos[i] = 0;
+        leg->_target_pos[i] = 0;
+        leg->_last_pos[i] = 0;
+    }
+    
 
 
 }
@@ -249,32 +257,51 @@ void initRobot(Robot *robot) {
 }
 
 
-void calculateInvertedKinematics(Leg leg, RobotSide side){
+void calculateInvertedKinematics(Leg * leg){
 
-    int Q1;
-    int Q2;
-    int Q3;
+    double Q1, Q2, Q3;
+    double Q3_1, Q3_2;
 
-    int Q3_1;
-    int Q3_2;
+    double Xp = leg ->_target_pos[0];
+    double Yp = leg ->_target_pos[1];
+    double Zp = leg ->_target_pos[2];
 
-    int Xp = pos[0];
-    int Yp = pos[1];
-    int Zp = leg->
-
-    int Xpz;
+    double Xpz;
 
 
-    if(side == RIGHT){
-        Xpz = sqrt((Xp)^2 + Yp^2);
-        Q1 = atan2(Yp, Xp);
-        Q3_1 = M_PI - acos(((L2*L2) + (L3*L3) - (Zp*Zp) - ((Xpz - L1)*(Xpz - L1))) / (2 * L2 * L3));
-        Q3_2 = acos(((Zp*Zp) + ((Xpz - L1)*(Xpz - L1)) - (L2*L2) - (L3*L3)) / (2 * L2 * L3));
-        Q3 = -Q3_1; //lub -Q3_2
-        Q2 = atan2(Zp, (Xpz - L1)) + atan2(L3 * sin(-Q3), (L2 + L3 * cos(-Q3)));
-    
-        leg->_q1_servo->curre
+
+    if(leg->_side == LEFT) {Xp = -Xp ;}
+
+    Xpz = sqrt((Xp*Xp) + (Yp*Yp));
+    Q1 = atan2(Yp, Xp);
+    Q3_1 = MY_PI - acos(((L2*L2) + (L3*L3) - (Zp*Zp) - ((Xpz - L1)*(Xpz - L1))) / (2 * L2 * L3));
+    Q3_2 = acos(((Zp*Zp) + ((Xpz - L1)*(Xpz - L1)) - (L2*L2) - (L3*L3)) / (2 * L2 * L3));
+    Q3 = -Q3_1; //lub -Q3_2
+    Q2 = atan2(Zp, (Xpz - L1)) + atan2(L3 * sin(-Q3), (L2 + L3 * cos(-Q3)));
+
+    if(leg->_side == RIGHT){
+
+        leg->_q1_servo._target_angle = 135 - (Q1*RAD2DEG);
+        leg->_q2_servo._target_angle = 135 + (Q2*RAD2DEG);
+        leg->_q3_servo._target_angle = 135 + (Q3*RAD2DEG);
     }
+
+
+    if(leg->_side == LEFT){
+        
+
+
+        leg->_q1_servo._target_angle = 135 + (Q1*RAD2DEG);
+        leg->_q2_servo._target_angle = 135 - (Q2*RAD2DEG);
+        leg->_q3_servo._target_angle = 135 - (Q3*RAD2DEG);
+
+    }
+
+
+
+    printf("Q1 = %.2f\n", leg->_q1_servo._target_angle );
+    printf("Q2 = %.2f\n", leg->_q2_servo._target_angle );
+    printf("Q3 = %.2f\n", leg->_q3_servo._target_angle );
 
     
 
@@ -282,4 +309,177 @@ void calculateInvertedKinematics(Leg leg, RobotSide side){
 }
 
 
+void setTargetPos(Leg * leg, double xp, double yp, double zp){
+    leg->_target_pos[0] = xp;
+    leg->_target_pos[1] = yp;
+    leg->_target_pos[2] = zp;
+
+}
+
+void moveToTargetPosition(Leg * leg){
+    /*
+
+    Na poczatku sprawdza czy dane Q_docelowe mieści sie w przedziale ograniczonym jako min max, jesli sie miesci ustawia ten kąt docelowy na danym serwie, i potem przypisuje docelowy kąt jako aktualny kąt
+
+    jesli nie miesci sie w przedziale granicznym sprawdza na poczatku czy dany kat docelowy jest mniejszy niz min_angle jesli jest ustawia min angle na serwie i nastepnie przypisuje min angle jako aktualny kąt, 
+    podobnie to dziala dla max angle.
+
+    */
+
+if(leg->_side == RIGHT){
+    if( (leg->_q1_servo._target_angle > leg->_q1_servo._min_angle)    && (leg->_q1_servo._target_angle < leg->_q1_servo._max_angle)){
+        SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._target_angle);
+        leg->_q1_servo._current_angle = leg->_q1_servo._target_angle;
+    }else{
+
+        if(leg->_q1_servo._target_angle < leg->_q1_servo._min_angle){
+            SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._min_angle);
+            leg->_q1_servo._current_angle = leg->_q1_servo._min_angle;
+            printf("Osiagnieto minimalna wartosc dla q1!\n");
+        }else 
+        if(leg->_q1_servo._target_angle > leg->_q1_servo._max_angle){
+            SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._max_angle);
+            leg->_q1_servo._current_angle = leg->_q1_servo._max_angle;
+            printf("Osiagnieto maksymalna wartosc dla q1!\n");
+        }
+
+    }
+
+    if( (leg->_q2_servo._target_angle > leg->_q2_servo._min_angle)    && (leg->_q2_servo._target_angle < leg->_q2_servo._max_angle)){
+        SetServoAngle(leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._target_angle);
+        leg->_q2_servo._current_angle = leg->_q2_servo._target_angle;
+    }else{
+
+        if(leg->_q2_servo._target_angle < leg->_q2_servo._min_angle){
+            SetServoAngle(leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._min_angle);
+            leg->_q2_servo._current_angle = leg->_q2_servo._min_angle;
+            printf("Osiagnieto minimalna wartosc dla q2!\n");
+        }else 
+        if(leg->_q2_servo._target_angle > leg->_q2_servo._max_angle){
+            SetServoAngle(leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._max_angle);
+            leg->_q2_servo._current_angle = leg->_q2_servo._max_angle;
+            printf("Osiagnieto maksymalna wartosc dla q2!\n");
+        }
+
+    }
+
+    if( (leg->_q3_servo._target_angle > leg->_q3_servo._min_angle)    && (leg->_q3_servo._target_angle < leg->_q3_servo._max_angle)){
+        SetServoAngle(leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._target_angle);
+        leg->_q3_servo._current_angle = leg->_q3_servo._target_angle;
+    }else{
+
+        if(leg->_q3_servo._target_angle < leg->_q3_servo._min_angle){
+            SetServoAngle(leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._min_angle);
+            leg->_q3_servo._current_angle = leg->_q3_servo._min_angle;
+            printf("Osiagnieto minimalna wartosc dla q3!\n");
+        }else 
+        if(leg->_q3_servo._target_angle > leg->_q3_servo._max_angle){
+            SetServoAngle(leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._max_angle);
+            leg->_q3_servo._current_angle = leg->_q3_servo._max_angle;
+            printf("Osiagnieto maksymalna wartosc dla q3!\n");
+        }
+
+    }
+}
+if(leg->_side == LEFT){
+    if( (leg->_q1_servo._target_angle < leg->_q1_servo._min_angle)    && (leg->_q1_servo._target_angle < leg->_q1_servo._max_angle)){
+        SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._target_angle);
+        leg->_q1_servo._current_angle = leg->_q1_servo._target_angle;
+    }else{
+
+        if(leg->_q1_servo._target_angle > leg->_q1_servo._min_angle){
+            SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._min_angle);
+            leg->_q1_servo._current_angle = leg->_q1_servo._min_angle;
+            printf("Osiagnieto minimalna wartosc dla q1!\n");
+        }else 
+        if(leg->_q1_servo._target_angle < leg->_q1_servo._max_angle){
+            SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._max_angle);
+            leg->_q1_servo._current_angle = leg->_q1_servo._max_angle;
+            printf("Osiagnieto maksymalna wartosc dla q1!\n");
+        }
+
+    }
+
+    if( (leg->_q2_servo._target_angle < leg->_q2_servo._min_angle)    && (leg->_q2_servo._target_angle < leg->_q2_servo._max_angle)){
+        SetServoAngle(leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._target_angle);
+        leg->_q2_servo._current_angle = leg->_q2_servo._target_angle;
+    }else{
+
+        if(leg->_q2_servo._target_angle > leg->_q2_servo._min_angle){
+            SetServoAngle(leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._min_angle);
+            leg->_q2_servo._current_angle = leg->_q2_servo._min_angle;
+            printf("Osiagnieto minimalna wartosc dla q2!\n");
+        }else 
+        if(leg->_q2_servo._target_angle < leg->_q2_servo._max_angle){
+            SetServoAngle(leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._max_angle);
+            leg->_q2_servo._current_angle = leg->_q2_servo._max_angle;
+            printf("Osiagnieto maksymalna wartosc dla q2!\n");
+        }
+
+    }
+
+    if( (leg->_q3_servo._target_angle < leg->_q3_servo._min_angle)    && (leg->_q3_servo._target_angle < leg->_q3_servo._max_angle)){
+        SetServoAngle(leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._target_angle);
+        leg->_q3_servo._current_angle = leg->_q3_servo._target_angle;
+    }else{
+
+        if(leg->_q3_servo._target_angle > leg->_q3_servo._min_angle){
+            SetServoAngle(leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._min_angle);
+            leg->_q3_servo._current_angle = leg->_q3_servo._min_angle;
+            printf("Osiagnieto minimalna wartosc dla q3!\n");
+        }else 
+        if(leg->_q3_servo._target_angle < leg->_q3_servo._max_angle){
+            SetServoAngle(leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._max_angle);
+            leg->_q3_servo._current_angle = leg->_q3_servo._max_angle;
+            printf("Osiagnieto maksymalna wartosc dla q3!\n");
+        }
+
+    }
+}
+
+
+
+}
+
+
+
+void printServo(Servo servo) {
+    printf("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS\n");
+    printf("PCA Channel: %d\n", servo._pca_channel);
+    printf("Min Angle: %.2f\n", servo._min_angle);
+    printf("Max Angle: %.2f\n", servo._max_angle);
+    printf("Current Angle: %.2f\n", servo._current_angle);
+    printf("Target Angle: %.2f\n", servo._target_angle);
+    printf("Last Angle: %.2f\n", servo._last_angle);
+    printf("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS\n");
+}   
+
+
+void printLeg(Leg leg) {
+    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+    // Wyświetlanie informacji o pozycji nogi i stronie robota
+    printf("Leg Position: %d\n", leg._leg_position);  // Zakładam, że LegPosition jest typu int lub enum
+    printf("Side: %d\n", leg._side);  // Zakładam, że RobotSide jest typu int lub enum
+    printf("PCA: %d\n", leg._pca);
+
+    // Wyświetlanie informacji o serwach
+    printf("\nQ1 Servo:\n");
+    printServo(leg._q1_servo);
+    
+    printf("\nQ2 Servo:\n");
+    printServo(leg._q2_servo);
+    
+    printf("\nQ3 Servo:\n");
+    printServo(leg._q3_servo);
+
+    // Wyświetlanie pozycji końcówki nogi
+    printf("\nLast Position: [%.2f, %.2f, %.2f]\n", leg._last_pos[0], leg._last_pos[1], leg._last_pos[2]);
+    printf("Current Position: [%.2f, %.2f, %.2f]\n", leg._current_pos[0], leg._current_pos[1], leg._current_pos[2]);
+    printf("Target Position: [%.2f, %.2f, %.2f]\n", leg._target_pos[0], leg._target_pos[1], leg._target_pos[2]);
+    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+}
+
+void setLegPCA(Leg * leg, int pca){
+    leg->_pca = pca;
+}
 #endif // ROBOT_H

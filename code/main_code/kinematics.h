@@ -1,7 +1,7 @@
 #ifndef KINEMATICS_H
 #define KINEMATICS_H
 
-#include <math.h>
+
 
 #define L1  73.5 
 #define L2  84.5
@@ -15,9 +15,10 @@
 
 
 #define Q1_initial_angle 135
-#define Q2_initial_angle 135
-#define Q3_initial_angle 135
+#define Q2_initial_angle 135 + 55
+#define Q3_initial_angle 135 - 100
 
+#define MY_PI 3.14159265358979323846
 
 /*wartosci graniczne ustalone dla prawej strony, dla lewej nalezy zamienic max z min*/
 #define FRONT_Q1_MIN_ANGLE 0
@@ -37,6 +38,8 @@
 #define Q3_MIN_ANGLE 0
 #define Q3_MAX_ANGLE 270
 
+#define DEG2RAD MY_PI/180
+#define RAD2DEG 180/MY_PI 
 
 
 

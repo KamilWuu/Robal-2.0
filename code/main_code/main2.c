@@ -307,7 +307,9 @@ int main(void) {
 
     printf("#ROBAL: Ustawiam pozycje chodu!\n\n") ;
    //SetTransportPosition(500);
-   SetWalkingPosition(500, 45, 0, 0);
+   //SetWalkingPosition(500, 45, 0, 0);
+
+   AlgorytmWstawaniaZPozycjaTransportową();
    printf("#ROBAL: Jestem gotowy do ruchu!\n") ;
     /*while(1){
         digitalWrite(LED_RED, HIGH);
