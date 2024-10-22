@@ -286,8 +286,8 @@ void initLeg(Leg *leg, LegPosition leg_position){
 
 
     // Inicjalizacja serw Q2
-    leg->_q3_servo._pca_channel = getPCAChannel(leg->_leg_position, 2); 
-    if(leg->_q1_servo._pca_channel > 15){printf("Cos poszlo nie tak dla pca channel q2\n");}
+    leg->_q2_servo._pca_channel = getPCAChannel(leg->_leg_position, 2); 
+    if(leg->_q2_servo._pca_channel > 15){printf("Cos poszlo nie tak dla pca channel q2\n");}
 
     leg->_q2_servo._min_angle = getMinAngle(leg->_leg_position, 2);
     leg->_q2_servo._max_angle = getMaxAngle(leg->_leg_position, 2);
@@ -299,7 +299,7 @@ void initLeg(Leg *leg, LegPosition leg_position){
 
     // Inicjalizacja serw Q3
     leg->_q3_servo._pca_channel = getPCAChannel(leg->_leg_position, 3); 
-    if(leg->_q1_servo._pca_channel > 15){printf("Cos poszlo nie tak dla pca channel q3\n");}
+    if(leg->_q3_servo._pca_channel > 15){printf("Cos poszlo nie tak dla pca channel q3\n");}
 
     leg->_q3_servo._min_angle = getMinAngle(leg->_leg_position, 3);
     leg->_q3_servo._max_angle = getMaxAngle(leg->_leg_position, 3);
