@@ -153,6 +153,108 @@ int getInitialAngle(int Q, RobotSide side){
 
 
 
+// Funkcja zwracająca minimalny kąt dla danego przegubu (Q) i pozycji nogi
+int getMinAngle(LegPosition pos, int Q) {
+    switch (Q) {
+        case 1: // Dla Q1, różne wartości w zależności od pozycji nogi
+            switch (pos) {
+                case LEFT_FRONT:
+                    return FRONT_LEFT_Q1_MIN_ANGLE; // Kąty dla lewej przedniej nogi
+                case RIGHT_FRONT:
+                    return FRONT_RIGHT_Q1_MIN_ANGLE; // Kąty dla prawej przedniej nogi
+                case LEFT_MIDDLE:
+                    return MIDDLE_LEFT_Q1_MIN_ANGLE; // Kąty dla lewej środkowej nogi
+                case RIGHT_MIDDLE:
+                    return MIDDLE_RIGHT_Q1_MIN_ANGLE; // Kąty dla prawej środkowej nogi
+                case LEFT_BACK:
+                    return BACK_LEFT_Q1_MIN_ANGLE; // Kąty dla lewej tylnej nogi
+                case RIGHT_BACK:
+                    return BACK_RIGHT_Q1_MIN_ANGLE; // Kąty dla prawej tylnej nogi
+                default:
+                    return -1; // Błąd, nieprawidłowa pozycja
+            }
+        case 2: // Dla Q2 tylko podział na lewą i prawą stronę
+            switch (pos) {
+                case LEFT_FRONT:
+                case LEFT_MIDDLE:
+                case LEFT_BACK:
+                    return LEFT_Q2_MIN_ANGLE;
+                case RIGHT_FRONT:
+                case RIGHT_MIDDLE:
+                case RIGHT_BACK:
+                    return RIGHT_Q2_MIN_ANGLE;
+                default:
+                    return -1;
+            }
+        case 3: // Dla Q3 tylko podział na lewą i prawą stronę
+            switch (pos) {
+                case LEFT_FRONT:
+                case LEFT_MIDDLE:
+                case LEFT_BACK:
+                    return LEFT_Q3_MIN_ANGLE;
+                case RIGHT_FRONT:
+                case RIGHT_MIDDLE:
+                case RIGHT_BACK:
+                    return RIGHT_Q3_MIN_ANGLE;
+                default:
+                    return -1;
+            }
+        default:
+            return -1; // Błąd, nieprawidłowy przegub
+    }
+}
+
+// Funkcja zwracająca maksymalny kąt dla danego przegubu (Q) i pozycji nogi
+int getMaxAngle(LegPosition pos, int Q) {
+    switch (Q) {
+        case 1: // Dla Q1, różne wartości w zależności od pozycji nogi
+            switch (pos) {
+                case LEFT_FRONT:
+                    return FRONT_LEFT_Q1_MAX_ANGLE; // Kąty dla lewej przedniej nogi
+                case RIGHT_FRONT:
+                    return FRONT_RIGHT_Q1_MAX_ANGLE; // Kąty dla prawej przedniej nogi
+                case LEFT_MIDDLE:
+                    return MIDDLE_LEFT_Q1_MAX_ANGLE; // Kąty dla lewej środkowej nogi
+                case RIGHT_MIDDLE:
+                    return MIDDLE_RIGHT_Q1_MAX_ANGLE; // Kąty dla prawej środkowej nogi
+                case LEFT_BACK:
+                    return BACK_LEFT_Q1_MAX_ANGLE; // Kąty dla lewej tylnej nogi
+                case RIGHT_BACK:
+                    return BACK_RIGHT_Q1_MAX_ANGLE; // Kąty dla prawej tylnej nogi
+                default:
+                    return -1; // Błąd, nieprawidłowa pozycja
+            }
+        case 2: // Dla Q2 tylko podział na lewą i prawą stronę
+            switch (pos) {
+                case LEFT_FRONT:
+                case LEFT_MIDDLE:
+                case LEFT_BACK:
+                    return LEFT_Q2_MAX_ANGLE;
+                case RIGHT_FRONT:
+                case RIGHT_MIDDLE:
+                case RIGHT_BACK:
+                    return RIGHT_Q2_MAX_ANGLE;
+                default:
+                    return -1;
+            }
+        case 3: // Dla Q3 tylko podział na lewą i prawą stronę
+            switch (pos) {
+                case LEFT_FRONT:
+                case LEFT_MIDDLE:
+                case LEFT_BACK:
+                    return LEFT_Q3_MAX_ANGLE;
+                case RIGHT_FRONT:
+                case RIGHT_MIDDLE:
+                case RIGHT_BACK:
+                    return RIGHT_Q3_MAX_ANGLE;
+                default:
+                    return -1;
+            }
+        default:
+            return -1; // Błąd, nieprawidłowy przegub
+    }
+}
+
 
 
 
@@ -168,38 +270,22 @@ void initLeg(Leg *leg, LegPosition leg_position){
         leg->_pca = pca_right;
     }
 
-   
 
-
-    // Inicjalizacja serw Q1
-    int q1_min, q1_max;
-
-    if(leg_position == LEFT_FRONT || leg_position == RIGHT_FRONT){
-        q1_min = FRONT_Q1_MIN_ANGLE;
-        q1_max = FRONT_Q1_MAX_ANGLE;
-    }else if(leg_position == LEFT_MIDDLE || leg_position == RIGHT_MIDDLE){
-        q1_min = MIDDLE_Q1_MIN_ANGLE;
-        q1_max = MIDDLE_Q1_MAX_ANGLE;
-    }else if(leg_position == LEFT_BACK || leg_position == RIGHT_BACK){
-        q1_min = BACK_Q1_MIN_ANGLE;
-        q1_max = BACK_Q1_MAX_ANGLE;
-    }
 
     leg->_q1_servo._pca_channel = getPCAChannel(leg->_leg_position, 1); 
 
-    leg->_q1_servo._min_angle = q1_min;
-    leg->_q1_servo._max_angle = q1_max; // Maksymalny kąt dla serwa
+    leg->_q1_servo._min_angle = getMinAngle(leg->_leg_position, 1);
+    leg->_q1_servo._max_angle = getMaxAngle(leg->_leg_position, 1);
 
     leg->_q1_servo._current_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
     leg->_q1_servo._target_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
     leg->_q1_servo._last_angle = getInitialAngle(1, leg->_side); // Początkowy kąt
 
 
-    // Inicjalizacja serw Q2
-    leg->_q2_servo._pca_channel = getPCAChannel(leg->_leg_position, 2); 
+    // Inicjalizacja serw Q2n, 2); 
 
-    leg->_q2_servo._min_angle = Q2_MIN_ANGLE;
-    leg->_q2_servo._max_angle = Q2_MAX_ANGLE; // Maksymalny kąt dla serwa
+    leg->_q2_servo._min_angle = getMinAngle(leg->_leg_position, 2);
+    leg->_q2_servo._max_angle = getMaxAngle(leg->_leg_position, 2);
 
     leg->_q2_servo._current_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
     leg->_q2_servo._target_angle = getInitialAngle(2, leg->_side); // Początkowy kąt
@@ -209,31 +295,14 @@ void initLeg(Leg *leg, LegPosition leg_position){
     // Inicjalizacja serw Q3
     leg->_q3_servo._pca_channel = getPCAChannel(leg->_leg_position, 3); 
 
-    leg->_q3_servo._min_angle = Q3_MIN_ANGLE;
-    leg->_q3_servo._max_angle = Q3_MAX_ANGLE; // Maksymalny kąt dla serwa
+    leg->_q3_servo._min_angle = getMinAngle(leg->_leg_position, 3);
+    leg->_q2_servo._pca_channel = getPCAChannel(leg->_leg_position);
+    leg->_q3_servo._max_angle = getMaxAngle(leg->_leg_position, 3);
 
     leg->_q3_servo._current_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
     leg->_q3_servo._target_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
     leg->_q3_servo._last_angle = getInitialAngle(3, leg->_side); // Początkowy kąt
     
-
-    if(leg->_side == LEFT ){
-
-        int temp1, temp2, temp3;
-
-        temp1 = leg->_q1_servo._min_angle;
-        leg->_q1_servo._min_angle = leg->_q1_servo._max_angle;
-        leg->_q1_servo._max_angle = temp1;
-
-        temp2 = leg->_q2_servo._min_angle;
-        leg->_q2_servo._min_angle = leg->_q2_servo._max_angle;
-        leg->_q2_servo._max_angle = temp2;
-
-        temp3 = leg->_q3_servo._min_angle;
-        leg->_q3_servo._min_angle = leg->_q3_servo._max_angle;
-        leg->_q3_servo._max_angle = temp3;
-
-    }
 
     for(int i = 0; i < 3; i++){
         leg->_current_pos[i] = 0;
@@ -326,7 +395,7 @@ void moveToTargetPosition(Leg * leg){
 
     */
 
-if(leg->_side == RIGHT){
+
     if( (leg->_q1_servo._target_angle > leg->_q1_servo._min_angle)    && (leg->_q1_servo._target_angle < leg->_q1_servo._max_angle)){
         SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._target_angle);
         leg->_q1_servo._current_angle = leg->_q1_servo._target_angle;
@@ -380,62 +449,7 @@ if(leg->_side == RIGHT){
         }
 
     }
-}
-if(leg->_side == LEFT){
-    if( (leg->_q1_servo._target_angle < leg->_q1_servo._min_angle)    && (leg->_q1_servo._target_angle < leg->_q1_servo._max_angle)){
-        SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._target_angle);
-        leg->_q1_servo._current_angle = leg->_q1_servo._target_angle;
-    }else{
 
-        if(leg->_q1_servo._target_angle > leg->_q1_servo._min_angle){
-            SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._min_angle);
-            leg->_q1_servo._current_angle = leg->_q1_servo._min_angle;
-            printf("Osiagnieto minimalna wartosc dla q1!\n");
-        }else 
-        if(leg->_q1_servo._target_angle < leg->_q1_servo._max_angle){
-            SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._max_angle);
-            leg->_q1_servo._current_angle = leg->_q1_servo._max_angle;
-            printf("Osiagnieto maksymalna wartosc dla q1!\n");
-        }
-
-    }
-
-    if( (leg->_q2_servo._target_angle < leg->_q2_servo._min_angle)    && (leg->_q2_servo._target_angle < leg->_q2_servo._max_angle)){
-        SetServoAngle(leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._target_angle);
-        leg->_q2_servo._current_angle = leg->_q2_servo._target_angle;
-    }else{
-
-        if(leg->_q2_servo._target_angle > leg->_q2_servo._min_angle){
-            SetServoAngle(leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._min_angle);
-            leg->_q2_servo._current_angle = leg->_q2_servo._min_angle;
-            printf("Osiagnieto minimalna wartosc dla q2!\n");
-        }else 
-        if(leg->_q2_servo._target_angle < leg->_q2_servo._max_angle){
-            SetServoAngle(leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._max_angle);
-            leg->_q2_servo._current_angle = leg->_q2_servo._max_angle;
-            printf("Osiagnieto maksymalna wartosc dla q2!\n");
-        }
-
-    }
-
-    if( (leg->_q3_servo._target_angle < leg->_q3_servo._min_angle)    && (leg->_q3_servo._target_angle < leg->_q3_servo._max_angle)){
-        SetServoAngle(leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._target_angle);
-        leg->_q3_servo._current_angle = leg->_q3_servo._target_angle;
-    }else{
-
-        if(leg->_q3_servo._target_angle > leg->_q3_servo._min_angle){
-            SetServoAngle(leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._min_angle);
-            leg->_q3_servo._current_angle = leg->_q3_servo._min_angle;
-            printf("Osiagnieto minimalna wartosc dla q3!\n");
-        }else 
-        if(leg->_q3_servo._target_angle < leg->_q3_servo._max_angle){
-            SetServoAngle(leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._max_angle);
-            leg->_q3_servo._current_angle = leg->_q3_servo._max_angle;
-            printf("Osiagnieto maksymalna wartosc dla q3!\n");
-        }
-
-    }
-}
 
 
 
@@ -479,7 +493,5 @@ void printLeg(Leg leg) {
     printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 }
 
-void setLegPCA(Leg * leg, int pca){
-    leg->_pca = pca;
-}
+
 #endif // ROBOT_H
