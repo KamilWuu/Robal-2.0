@@ -461,6 +461,57 @@ void moveToTargetPosition(Leg * leg){
 }
 
 
+void calculateKinematicsAboutRobotCenter(Leg * leg, double x, double y, double z){
+    double xp, yp, zp;
+    zp = z + z_0;
+    
+    double min_length;
+
+    switch (leg->_leg_position)
+    {
+    case LEFT_FRONT:
+        xp = x + d1;
+        yp = y - d3;
+        break;
+    
+    case LEFT_MIDDLE:
+        xp = x + d2;
+        yp = y;
+        break;
+    
+    case LEFT_BACK:
+        xp = x + d1;
+        yp = y + d3;
+        break;
+
+    case RIGHT_FRONT:
+        xp = x - d1;
+        yp = y - d3;
+        break;
+    
+    case RIGHT_MIDDLE:
+        xp = x - d2;
+        yp = y;
+        break;
+    
+    case RIGHT_BACK:
+        xp = x - d1;
+        yp = y + d3;
+        break;
+    
+    default:
+        printf("bledna pozycja nogi w liczeniu kinematyki nogi wzgledem srodka\n");
+        return;
+        break;
+    }
+
+    setTargetPos(leg, xp, yp, zp);
+    calculateInvertedKinematics(leg);
+    moveToTargetPosition(leg);
+
+}
+
+
 
 void printServo(Servo servo) {
     printf("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS\n");
