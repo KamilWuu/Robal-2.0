@@ -311,7 +311,7 @@ int main(void) {
 
    //AlgorytmWstawaniaZPozycjaTransportową();
    printf("#ROBAL: Dobranoc :) !!!\n") ;
-   delay(100);
+   delay(1000);
    system("sudo shutdown now");
     /*while(1){
         digitalWrite(LED_RED, HIGH);

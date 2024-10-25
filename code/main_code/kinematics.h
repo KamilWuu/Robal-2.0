@@ -6,14 +6,15 @@
 #define L1  73.5 
 #define L2  84.5
 #define L3  118.5
-
+#define L23 110
 
 
 #define d1 55
 #define d2 75
 #define d3 113.25
 
-#define z0 0
+
+#define z_0 0
 
 #define Q1_initial_angle 135
 #define Q2_initial_angle 135 + 55
