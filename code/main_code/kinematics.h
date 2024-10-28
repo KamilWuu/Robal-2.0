@@ -1,18 +1,14 @@
 #ifndef KINEMATICS_H
 #define KINEMATICS_H
 
-
-
-#define L1  73.5 
-#define L2  84.5
-#define L3  118.5
-#define L23 110
-
+#define L1 73.5
+#define L2 84.5
+#define L3 118.5
+#define L23 80
 
 #define d1 55
 #define d2 75
 #define d3 113.25
-
 
 #define z_0 0
 
@@ -21,6 +17,10 @@
 #define Q3_initial_angle 135 - 100
 
 #define MY_PI 3.14159265358979323846
+
+#define x_const 250
+#define y_const (d3 + 70) // d3
+#define z_const 0
 
 /*wartosci graniczne ustalone dla prawej strony, dla lewej nalezy zamienic max z min*/
 // Q1: Front
@@ -60,11 +60,7 @@
 #define RIGHT_Q3_MIN_ANGLE 0
 #define RIGHT_Q3_MAX_ANGLE 270
 
-
-#define DEG2RAD MY_PI/180
-#define RAD2DEG 180/MY_PI 
-
-
-
+#define DEG2RAD MY_PI / 180
+#define RAD2DEG 180 / MY_PI
 
 #endif // KINEMATICS_H
