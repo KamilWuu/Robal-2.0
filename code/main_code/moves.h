@@ -287,5 +287,18 @@ void setPoseFourPrim(Robot *Hexapod, int z_variable, float speed_factor)
     }
 }
 
-/* przykladowo actual pos y = 60, target pos = 90, wiec move = 30 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #endif // MOVES_H

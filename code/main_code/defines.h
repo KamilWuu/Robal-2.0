@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <wiringPi.h>
+#include <stdbool.h>
 
 /* ============================= OUTPUTS ============================= */
 #define LED_RED     6
