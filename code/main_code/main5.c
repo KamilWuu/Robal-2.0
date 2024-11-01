@@ -30,8 +30,8 @@ int main(void)
     double Z_step_time = 0.01;
 
     double Y_move = 80;
-    double Y_speed = 50;
-    double Y_step_time = 0.01;
+    double Y_speed = 80;
+    double Y_step_time = 0.02;
 
     StepFase start_fase = LM_RF_RB_PROT;
 
@@ -47,12 +47,12 @@ int main(void)
 
     delay(delay_time *10);
 
-    int it = 10;
+    int it = 3;
 
     if(start_fase == LM_RF_RB_PROT){
        
         for(int i = 0; i < it; i++){
-             Y_speed = Y_speed + 30;
+            //Y_speed = Y_speed + 20;
             doStepFase(&Hexapod, LF_LB_RM_PROT__LM_RF_RB_RETR, Y_move, Y_speed, Y_step_time);
             delay(delay_between_fases);
             doStepFase(&Hexapod, LF_LB_RM_RETR__LM_RF_RB_PROT, Y_move, Y_speed, Y_step_time);
@@ -60,6 +60,7 @@ int main(void)
         }
     }else if(start_fase == LF_LB_RM_PROT){
         for(int i = 0; i < it; i++){
+            //Y_speed = Y_speed + 20;
             doStepFase(&Hexapod, LF_LB_RM_RETR__LM_RF_RB_PROT, Y_move, Y_speed, Y_step_time);
             delay(delay_between_fases);
             doStepFase(&Hexapod, LF_LB_RM_PROT__LM_RF_RB_RETR, Y_move, Y_speed, Y_step_time);
@@ -69,11 +70,13 @@ int main(void)
 
     delay(delay_time *10);
 
+    delay(1000);
+
     moveLegsZ(&Hexapod, -z_const_stand_up, Z_speed,  Z_step_time);
 
-    delay(delay_time *10);
+    delay(3000);
 
-    setWalkingPosition(&Hexapod, 0);
+    setWalkingPosition(&Hexapod, 500);
 
     
 
