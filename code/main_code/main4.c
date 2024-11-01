@@ -21,7 +21,7 @@ int main(void)
 
     int Z = 0;
 
-    int delay_time = 200;
+    int delay_time = 000;
 
     int z_move = 80;
 
@@ -34,7 +34,7 @@ int main(void)
 
     delay(delay_time);
 
-    setWalkingPosition(&Hexapod, x_const, y_const, z_const);
+    setWalkingPosition(&Hexapod, x_const, y_const, z_const_zero);
 
     delay(delay_time * 10);
 
@@ -44,12 +44,12 @@ int main(void)
 
     int pose_delay = 10;
     float y_speed = 4;
-    float y_move_delta = 50;
+    float y_move_delta = -50;
 
     int z_var = 1;
     int z_speed = 4;
 
-    int it = 20;
+    int it = 10;
 
     for (int q = 0; q < it; q++)
     {

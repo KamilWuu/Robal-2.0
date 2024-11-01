@@ -4,7 +4,7 @@
 #define L1 73.5
 #define L2 84.5
 #define L3 118.5
-#define L23 80
+#define L23 70
 
 #define d1 55.0
 #define d2 75.0
@@ -13,17 +13,17 @@
 #define z_0 0.0
 
 #define Q1_initial_angle 135
-#define Q2_initial_angle 135 + 55
-#define Q3_initial_angle 135 - 100
+#define Q2_initial_angle (135 + 55)
+#define Q3_initial_angle (135 - 100)
 
 #define MY_PI 3.14159265358979323846
 
-#define x_const 250.0
+#define x_const 245.0
 #define y_const (d3 + 70.0) // d3
 #define z_const_zero 0.0
-#define z_const_stand_up -80.0
+#define z_const_stand_up (-80.0)
 
-#define h_const 40.0 //elipse h
+#define h_const 30 //elipse h
 
 /*wartosci graniczne ustalone dla prawej strony, dla lewej nalezy zamienic max z min*/
 // Q1: Front

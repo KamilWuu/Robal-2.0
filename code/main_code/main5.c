@@ -24,13 +24,13 @@ int main(void)
 
     int Z = 0;
 
-    int delay_time = 200;
-    int delay_between_fases = 100;
-    double Z_speed = 10.0; 
+    int delay_time = 100;
+    int delay_between_fases = 0;
+    double Z_speed = 60; 
     double Z_step_time = 0.01;
 
     double Y_move = 80;
-    double Y_speed = 10;
+    double Y_speed = 50;
     double Y_step_time = 0.01;
 
     StepFase start_fase = LM_RF_RB_PROT;
@@ -45,18 +45,24 @@ int main(void)
 
     prepareForStepFase(&Hexapod, start_fase, Y_move, Y_speed, Y_step_time);
 
+    delay(delay_time *10);
+
+    int it = 10;
+
     if(start_fase == LM_RF_RB_PROT){
-        for(int i = 0; i < 4; i++){
-            doStepFase(&Hexapod, LF_LB_RM_PROT__LM_RF_RB_RETR);
+       
+        for(int i = 0; i < it; i++){
+             Y_speed = Y_speed + 30;
+            doStepFase(&Hexapod, LF_LB_RM_PROT__LM_RF_RB_RETR, Y_move, Y_speed, Y_step_time);
             delay(delay_between_fases);
-            doStepFase(&Hexapod, LF_LB_RM_RETR__LM_RF_RB_PROT);
+            doStepFase(&Hexapod, LF_LB_RM_RETR__LM_RF_RB_PROT, Y_move, Y_speed, Y_step_time);
             delay(delay_between_fases);
         }
     }else if(start_fase == LF_LB_RM_PROT){
-        for(int i = 0; i < 4; i++){
-            doStepFase(&Hexapod, LF_LB_RM_RETR__LM_RF_RB_PROT);
+        for(int i = 0; i < it; i++){
+            doStepFase(&Hexapod, LF_LB_RM_RETR__LM_RF_RB_PROT, Y_move, Y_speed, Y_step_time);
             delay(delay_between_fases);
-            doStepFase(&Hexapod, LF_LB_RM_PROT__LM_RF_RB_RETR);
+            doStepFase(&Hexapod, LF_LB_RM_PROT__LM_RF_RB_RETR, Y_move, Y_speed, Y_step_time);
             delay(delay_between_fases);
         }
     }
@@ -67,7 +73,7 @@ int main(void)
 
     delay(delay_time *10);
 
-    setWalkingPosition(&Hexapod, delay_time);
+    setWalkingPosition(&Hexapod, 0);
 
     
 

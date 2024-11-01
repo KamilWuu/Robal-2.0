@@ -474,28 +474,91 @@ void initLeg(Leg *leg, LegPosition leg_position)
     }
 }
 
-void initRobot(Robot *robot)
+
+int checkPosition(LegPosition pos, double x, double y, double z)
 {
-    // Inicjalizuj nogi robota
-    initLeg(&robot->_legs[0], LEFT_FRONT);
-    initLeg(&robot->_legs[1], LEFT_MIDDLE);
-    initLeg(&robot->_legs[2], LEFT_BACK);
-    initLeg(&robot->_legs[3], RIGHT_FRONT);
-    initLeg(&robot->_legs[4], RIGHT_MIDDLE);
-    initLeg(&robot->_legs[5], RIGHT_BACK);
 
+    switch (pos)
+    {
+    case LEFT_FRONT:
+        if (x < -L1 - d1 - L23)
+        {
+            return 1;
+        }
+        else
+        {
+            printf("Nieprawidlowa pozycja X dla nogi LEFT FRONT, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
+            return 0;
+        }
+        break;
 
-    initLegPositionRobotCenter(&robot, LEFT_FRONT, -x_const, y_const, z_const);
-    initLegPositionRobotCenter(&robot, LEFT_MIDDLE, -x_const, 0, z_const);
-    initLegPositionRobotCenter(&robot, LEFT_FRONT, -x_const, -y_const, z_const);
+    case LEFT_MIDDLE:
+        if (x < -L1 - d2 - L23)
+        {
+            return 1;
+        }
+        else
+        {
+            printf("Nieprawidlowa pozycja X dla nogi LEFT MIDDLE, x = %2.f, warunek: X < %2.f\n", x, -L1 - d2 - L23);
+            return 0;
+        }
+        break;
 
-    initLegPositionRobotCenter(&robot, RIGHT_FRONT, x_const, y_const, z_const);
-    initLegPositionRobotCenter(&robot, RIGHT_MIDDLE, x_const, 0, z_const);
-    initLegPositionRobotCenter(&robot, RIGHT_BACK, x_const, -y_const, z_const);
+    case LEFT_BACK:
+        if (x < -L1 - d1 - L23)
+        {
+            return 1;
+        }
+        else
+        {
+            printf("Nieprawidlowa pozycja X dla nogi LEFT BACK, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
+            return 0;
+        }
+        break;
 
+    case RIGHT_FRONT:
+        if (x > L1 + d1 + L23)
+        {
+            return 1;
+        }
+        else
+        {
+            printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
+            return 0;
+        }
+        break;
 
-    robot->_robotStepFase == UNKNOWN;
+    case RIGHT_MIDDLE:
+        if (x > L1 + d2 + L23)
+        {
+            return 1;
+        }
+        else
+        {
+            printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d2 + L23);
+            return 0;
+        }
+        break;
+
+    case RIGHT_BACK:
+        if (x > L1 + d1 + L23)
+        {
+            return 1;
+        }
+        else
+        {
+            printf("Nieprawidlowa pozycja X dla nogi RIGHT BACK, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
+            return 0;
+        }
+        break;
+
+    default:
+        printf("Nieprawidlowa pozycja nogi\n");
+        break;
+    }
 }
+
+
 
 void calculateInvertedKinematics(Leg *leg)
 {
@@ -548,6 +611,89 @@ void setTargetPos(Leg *leg, double xp, double yp, double zp)
     leg->_target_pos[1] = yp;
     leg->_target_pos[2] = zp;
 }
+
+
+void initLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, double y, double z)
+{
+    double xp, yp, zp;
+    zp = z + z_0;
+
+    
+
+    if (checkPosition(pos, x, y, z))
+    {
+
+        robot->_LegsPositionRobotCenter[pos].Pr_x = x;
+        robot->_LegsPositionRobotCenter[pos].Pr_y = y;
+        robot->_LegsPositionRobotCenter[pos].Pr_z = z;
+
+        switch (pos)
+        {
+        case LEFT_FRONT:
+            xp = x + d1;
+            yp = y - d3;
+            break;
+
+        case LEFT_MIDDLE:
+            xp = x + d2;
+            yp = y;
+            break;
+
+        case LEFT_BACK:
+            xp = x + d1;
+            yp = y + d3;
+            break;
+
+        case RIGHT_FRONT:
+            xp = x - d1;
+            yp = y - d3;
+            break;
+
+        case RIGHT_MIDDLE:
+            xp = x - d2;
+            yp = y;
+            break;
+
+        case RIGHT_BACK:
+            xp = x - d1;
+            yp = y + d3;
+            break;
+
+        default:
+            printf("bledna pozycja nogi w liczeniu kinematyki nogi wzgledem srodka\n");
+            return;
+            break;
+        }
+
+        setTargetPos(&robot->_legs[pos], xp, yp, zp);
+        calculateInvertedKinematics(&robot->_legs[pos]);
+    }
+}
+
+void initRobot(Robot *robot)
+{
+    // Inicjalizuj nogi robota
+    initLeg(&robot->_legs[0], LEFT_FRONT);
+    initLeg(&robot->_legs[1], LEFT_MIDDLE);
+    initLeg(&robot->_legs[2], LEFT_BACK);
+    initLeg(&robot->_legs[3], RIGHT_FRONT);
+    initLeg(&robot->_legs[4], RIGHT_MIDDLE);
+    initLeg(&robot->_legs[5], RIGHT_BACK);
+
+
+    initLegPositionRobotCenter(robot, LEFT_FRONT, -x_const, y_const, z_const_zero);
+    initLegPositionRobotCenter(robot, LEFT_MIDDLE, -x_const, 0, z_const_zero);
+    initLegPositionRobotCenter(robot, LEFT_FRONT, -x_const, -y_const, z_const_zero);
+
+    initLegPositionRobotCenter(robot, RIGHT_FRONT, x_const, y_const, z_const_zero);
+    initLegPositionRobotCenter(robot, RIGHT_MIDDLE, x_const, 0, z_const_zero);
+    initLegPositionRobotCenter(robot, RIGHT_BACK, x_const, -y_const, z_const_zero);
+
+
+    robot->_robotStepFase == UNKNOWN;
+}
+
+
 
 void moveToTargetPosition(Leg *leg)
 {
@@ -676,145 +822,8 @@ void printLeg(Leg leg)
     printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 }
 
-int checkPosition(LegPosition pos, double x, double y, double z)
-{
 
-    switch (pos)
-    {
-    case LEFT_FRONT:
-        if (x < -L1 - d1 - L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi LEFT FRONT, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
-            return 0;
-        }
-        break;
 
-    case LEFT_MIDDLE:
-        if (x < -L1 - d2 - L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi LEFT MIDDLE, x = %2.f, warunek: X < %2.f\n", x, -L1 - d2 - L23);
-            return 0;
-        }
-        break;
-
-    case LEFT_BACK:
-        if (x < -L1 - d1 - L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi LEFT BACK, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
-            return 0;
-        }
-        break;
-
-    case RIGHT_FRONT:
-        if (x > L1 + d1 + L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
-            return 0;
-        }
-        break;
-
-    case RIGHT_MIDDLE:
-        if (x > L1 + d2 + L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d2 + L23);
-            return 0;
-        }
-        break;
-
-    case RIGHT_BACK:
-        if (x > L1 + d1 + L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi RIGHT BACK, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
-            return 0;
-        }
-        break;
-
-    default:
-        printf("Nieprawidlowa pozycja nogi\n");
-        break;
-    }
-}
-
-void initLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, double y, double z)
-{
-    double xp, yp, zp;
-    zp = z + z_0;
-
-    
-
-    if (checkPosition(pos, x, y, z))
-    {
-
-        robot->_LegsPositionRobotCenter[pos]->Pr_x = x;
-        robot->_LegsPositionRobotCenter[pos]->Pr_y = y;
-        robot->_LegsPositionRobotCenter[pos]->Pr_z = z;
-
-        switch (pos)
-        {
-        case LEFT_FRONT:
-            xp = x + d1;
-            yp = y - d3;
-            break;
-
-        case LEFT_MIDDLE:
-            xp = x + d2;
-            yp = y;
-            break;
-
-        case LEFT_BACK:
-            xp = x + d1;
-            yp = y + d3;
-            break;
-
-        case RIGHT_FRONT:
-            xp = x - d1;
-            yp = y - d3;
-            break;
-
-        case RIGHT_MIDDLE:
-            xp = x - d2;
-            yp = y;
-            break;
-
-        case RIGHT_BACK:
-            xp = x - d1;
-            yp = y + d3;
-            break;
-
-        default:
-            printf("bledna pozycja nogi w liczeniu kinematyki nogi wzgledem srodka\n");
-            return;
-            break;
-        }
-
-        setTargetPos(&robot->_legs[pos], xp, yp, zp);
-        calculateInvertedKinematics(&robot->_legs[pos]);
-    }
-}
 
 
 
@@ -829,9 +838,9 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, dou
     if (checkPosition(pos, x, y, z))
     {
 
-        robot->_LegsPositionRobotCenter[pos]->Pr_x = x;
-        robot->_LegsPositionRobotCenter[pos]->Pr_y = y;
-        robot->_LegsPositionRobotCenter[pos]->Pr_z = z;
+        robot->_LegsPositionRobotCenter[pos].Pr_x = x;
+        robot->_LegsPositionRobotCenter[pos].Pr_y = y;
+        robot->_LegsPositionRobotCenter[pos].Pr_z = z;
 
         switch (pos)
         {

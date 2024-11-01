@@ -1,6 +1,10 @@
 #ifndef TRAJECTORY_H
 #define TRAJECTORY_H
 
+#include <time.h>
+#include <stdio.h>
+
+
 #include "robot.h"
 
 
@@ -28,17 +32,17 @@ double calculateElipseZ(StepFase fase, LegPosition leg_pos, double y, double Y_0
     return z;
 }
 
-
+int y_front_fix = 20;
 
 void setWalkingPosition(Robot *Hexapod, int delay_time){
 
-    evaluateLegPositionRobotCenter(Hexapod, LEFT_FRONT, -x_const, +y_const, z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, LEFT_FRONT, -x_const, +y_const-y_front_fix, z_const_zero);
     delay(delay_time);
     evaluateLegPositionRobotCenter(Hexapod, LEFT_MIDDLE, -x_const, 0, z_const_zero);
     delay(delay_time);
     evaluateLegPositionRobotCenter(Hexapod, LEFT_BACK, -x_const, -y_const, z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT, x_const, +y_const, z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT, x_const, +y_const-y_front_fix, z_const_zero);
     delay(delay_time);
     evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE, x_const, 0, z_const_zero);
     delay(delay_time);
@@ -68,14 +72,18 @@ bool isRobotStanding(Robot *Hexapod){
 
 }
 
-void moveLegsZ(Robot *Hexapod, double Z_move_distance, double Z_speed, double step_time){ // [mm],  [mm/s], [s]
+void moveLegsZ(Robot *Hexapod, double Z_distance, double Z_speed, double step_time){ // [mm],  [mm/s], [s]
 
-    if(((Z_move_distance < 0)&&(Hexapod->_robotStepFase == STAND_UP) && isRobotStanding()) || ((Z_move_distance > 0)&&(Hexapod->_robotStepFase == SIT_DOWN) && (isRobotStanding() == false))){
+    // Zainicjalizowanie struktury czasowej na start
+        struct timespec start_time, end_time;
+        clock_gettime(CLOCK_MONOTONIC, &start_time);
+    
+    if(((Z_distance < 0)&&(Hexapod->_robotStepFase == STAND_UP) && isRobotStanding(Hexapod)) || ((Z_distance > 0)&&(Hexapod->_robotStepFase == SIT_DOWN) && (isRobotStanding(Hexapod) == false))){
             
         if(Hexapod->_robotStepFase == STAND_UP){
             printf("Robot juz stoi -> blad w robotMoveZ\n");
         }else if(Hexapod->_robotStepFase == SIT_DOWN){
-            printf("Robot juz siedzi -> blad w robotMoveZ\n")    
+            printf("Robot juz siedzi -> blad w robotMoveZ\n");   
         } 
 
     }else{
@@ -91,8 +99,11 @@ void moveLegsZ(Robot *Hexapod, double Z_move_distance, double Z_speed, double st
         }
 
         // Oblicz całkowity czas ruchu oraz kierunek
-        double moving_time = fabs(Z_move_distance) / Y_speed;
-        int direction = (Z_move_distance < 0) ? -1 : 1;
+        double moving_time = Z_distance / Z_speed;
+
+        if(Z_distance < 0){
+            moving_time = moving_time * (-1);
+        }
 
         // Oblicz liczbę kroków
         int num_steps = (int)(moving_time / step_time);
@@ -102,13 +113,16 @@ void moveLegsZ(Robot *Hexapod, double Z_move_distance, double Z_speed, double st
         }
 
         // Oblicz wartość przesunięcia y dla każdego kroku
-        double delta_z = Z_move_distance / num_steps 
+        double delta_z = Z_distance / num_steps ;
 
+        printf("num steps= %d, delta_z = %f, moving_time = %f\n", num_steps, delta_z, moving_time );
+
+        
 
 
         for(int j = 0; j < num_steps; j++){
             for(int i = 0; i < 6; i++){
-                evaluateLegPositionRobotCenter(Hexapod, i, Hexapod->_LegsPositionRobotCenter[0], Hexapod->_LegsPositionRobotCenter[1], Hexapod->_LegsPositionRobotCenter[2]+ delta_z);
+                evaluateLegPositionRobotCenter(Hexapod, i, Hexapod->_LegsPositionRobotCenter[i].Pr_x, Hexapod->_LegsPositionRobotCenter[i].Pr_y, Hexapod->_LegsPositionRobotCenter[i].Pr_z + delta_z);
             }
             delay(step_time);
         }
@@ -121,11 +135,21 @@ void moveLegsZ(Robot *Hexapod, double Z_move_distance, double Z_speed, double st
         Hexapod->_robotStepFase = UNKNOWN; 
         }
     }
+
+    // Koniec pomiaru czasu
+    clock_gettime(CLOCK_MONOTONIC, &end_time);
+
+    // Oblicz różnicę między czasami
+    double execution_time = (end_time.tv_sec - start_time.tv_sec) + 
+                            (end_time.tv_nsec - start_time.tv_nsec) / 1e9;
+    printf("Dla dystansu %f, z prędkością %f, oraz step time %f, Czas wykonania funkcji moveLegsZ: %f sekund\n", Z_distance, Z_speed, step_time, execution_time);
 }
 
 
 void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_speed, double step_time){ // [mm],  [mm/s], [s]
     
+    
+
     double z_elipse[6];
     double Y_0_tab[6];
     double Z_s_tab[6];
@@ -144,7 +168,6 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
 
     // Oblicz całkowity czas ruchu oraz kierunek
     double moving_time = fabs(Y_move_distance) / Y_speed;
-    int direction = (Y_move_distance < 0) ? -1 : 1;
 
     // Oblicz liczbę kroków
     int num_steps = (int)(moving_time / step_time);
@@ -161,6 +184,12 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
         Y_0_tab[i] =    Hexapod->_LegsPositionRobotCenter[i].Pr_y;
         Z_s_tab[i] =    Hexapod->_LegsPositionRobotCenter[i].Pr_z;
     }
+
+    printf("num steps= %d, delta_y = %f, moving_time = %f\n", num_steps, delta_y, moving_time );
+
+    // Zainicjalizowanie struktury czasowej na start
+    struct timespec start_time, end_time;
+    clock_gettime(CLOCK_MONOTONIC, &start_time);
 
     if (Hexapod->_robotStepFase == STAND_UP) {
 
@@ -182,7 +211,7 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
                 evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE,    x_tab[RIGHT_MIDDLE],    y_tab_with_delta[RIGHT_MIDDLE], z_elipse[RIGHT_MIDDLE]);
                 /*=============================================*/
 
-                delay(step_time * 1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
+                delay(step_time); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
             }
 
             Hexapod->_robotStepFase = LF_LB_RM_PROT;
@@ -205,7 +234,7 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
                 evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK,     x_tab[RIGHT_BACK],  y_tab_with_delta[RIGHT_BACK],   z_elipse[RIGHT_BACK]);
                 /*=============================================*/
 
-                delay(step_time * 1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
+                delay(step_time); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
             }
 
             Hexapod->_robotStepFase = LM_RF_RB_PROT;
@@ -217,6 +246,17 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
     } else {
         printf("Aby ustawić pozycję przygotowania do ruchu, robot musi znajdować się w fazie STAND_UP -> błąd w prepareForStepFase\n");
     }
+
+
+    // Koniec pomiaru czasu
+    clock_gettime(CLOCK_MONOTONIC, &end_time);
+
+    // Oblicz różnicę między czasami
+    double execution_time = (end_time.tv_sec - start_time.tv_sec) + 
+                            (end_time.tv_nsec - start_time.tv_nsec) / 1e9;
+    printf("Dla dystansu %f, z prędkością %f, oraz step time %f, Czas wykonania funkcji moveLegsZ: %f sekund\n", Y_move_distance, Y_speed, step_time, execution_time);
+
+
 }
 
 
@@ -226,6 +266,8 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
 
 
 void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_speed, double step_time){ // [mm],  [mm/s], [s]
+
+
 
     double z_elipse[6];
     double Y_0_tab[6];
@@ -264,6 +306,12 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
         
     }
 
+    printf("num steps= %d, delta_y = %f, moving_time = %f\n", num_steps, delta_y, moving_time );
+
+    // Zainicjalizowanie struktury czasowej na start
+    struct timespec start_time, end_time;
+    clock_gettime(CLOCK_MONOTONIC, &start_time);
+
     if (fase == LF_LB_RM_PROT__LM_RF_RB_RETR  && ((Hexapod->_robotStepFase == LM_RF_RB_PROT) || (Hexapod->_robotStepFase == LF_LB_RM_RETR__LM_RF_RB_PROT))) {
 
         for (int i = 0; i < num_steps; i++) {
@@ -300,7 +348,7 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
             evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK,     x_tab[RIGHT_BACK],  y_tab_with_delta[RIGHT_BACK],   z_elipse[RIGHT_BACK]);
             /*=============================================*/
             
-            delay(step_time * 1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
+            delay(step_time); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
         }
 
         Hexapod->_robotStepFase = LF_LB_RM_PROT__LM_RF_RB_RETR;
@@ -337,7 +385,7 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
             evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE,   x_tab[RIGHT_MIDDLE],    y_tab_with_delta[RIGHT_MIDDLE], z_elipse[RIGHT_MIDDLE]);
             /*=============================================*/
 
-            delay(step_time * 1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
+            delay(step_time); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
         }
 
         Hexapod->_robotStepFase = LF_LB_RM_RETR__LM_RF_RB_PROT;
@@ -351,6 +399,15 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
             printf("Błędnie zadeklarowana faza ruchu w doStepFase\n");
         }
     }
+
+    // Koniec pomiaru czasu
+    clock_gettime(CLOCK_MONOTONIC, &end_time);
+
+    // Oblicz różnicę między czasami
+    double execution_time = (end_time.tv_sec - start_time.tv_sec) + 
+                            (end_time.tv_nsec - start_time.tv_nsec) / 1e9;
+    printf("Dla dystansu %f, z prędkością %f, oraz step time %f, Czas wykonania funkcji moveLegsZ: %f sekund\n", Y_move_distance, Y_speed, step_time, execution_time);
+
 }
 
 
