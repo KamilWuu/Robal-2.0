@@ -14,31 +14,51 @@
 
 
 double calculateElipseZ(StepFase fase, LegPosition leg_pos, double y, double Y_0, double Z_s, double Y_move_distance, double h) {
-    double z;
+    if (Y_move_distance == 0) {
+        printf("Y_move_distance wynosi 0, zwrocono Z_s = %lf aby uniknąć dzielenia przez 0\n", Z_s);
+        return Z_s;
+    }
+
     double r = Y_move_distance / 2;
-    double Y_00;
-    if(leg_pos == RIGHT_BACK  || leg_pos == RIGHT_BACK){
-        Y_00 = (-1)*Y_0;
-    }else{
-        Y_00 = Y_0;
-    }
-
-
     double Y_s = Y_0 + r;
-    
-    // Funkcja pomocnicza do obliczeń dla fazy protrakcji
-    bool isProtraction = ((fase == LF_LB_RM_PROT__LM_RF_RB_RETR || fase == LF_LB_RM_PROT ) && (leg_pos == LEFT_FRONT || leg_pos == LEFT_BACK || leg_pos == RIGHT_MIDDLE)) 
-                         || 
-                         ((fase == LF_LB_RM_RETR__LM_RF_RB_PROT || fase ==LM_RF_RB_PROT ) && (leg_pos == LEFT_MIDDLE || leg_pos == RIGHT_FRONT || leg_pos == RIGHT_BACK));
+    double var_1, var_2;
 
-    if (isProtraction) {
-        z = Z_s + h * sqrt(1 - pow((y - Y_s) / r, 2));
-    } else {
-        z = Z_s;  // W fazie retrakcji noga pozostaje na poziomie Z_s
+    if(Y_move_distance => 0){
+        var_1 = Y_0;
+        var_2 = Y_0 + Y_move_distance;
+    }else{
+        var_1 = Y_0 - Y_move_distance;
+        var_2 = Y_0;
+    }
+    
+    // Warunek określający, czy noga znajduje się w fazie protrakcji
+    bool isProtraction = 
+        ((fase == LF_LB_RM_PROT__LM_RF_RB_RETR || fase == LF_LB_RM_PROT) && 
+         (leg_pos == LEFT_FRONT || leg_pos == LEFT_BACK || leg_pos == RIGHT_MIDDLE)) ||
+        ((fase == LF_LB_RM_RETR__LM_RF_RB_PROT || fase == LM_RF_RB_PROT) && 
+         (leg_pos == LEFT_MIDDLE || leg_pos == RIGHT_FRONT || leg_pos == RIGHT_BACK));
+
+    if (!isProtraction) {
+        return Z_s;  // W fazie retrakcji noga pozostaje na poziomie Z_s
     }
 
-    return z;
+   
+    double sqrt_in = 1 - pow((y - Y_s) / r, 2);
+    if (sqrt_in < 0) {
+        printf("Wartość podawana do pierwiastka < 0: sqrt_in = %lf, dla y = %lf, Y_s = %lf, r = %lf, Y_0 = %lf\n", sqrt_in, y, Y_s, r, Y_0);
+        return Z_s;
+    }
+
+    if((y >= var_1) || (y <= var_2)){ 
+        printf("Podany Y = %lf wychodzi poza zakres (%lf, %lf), zwrócono z = %lf\n", y, var_1, var_2, Z_s);
+        return Z_s;
+    }
+
+    
+    return Z_s + (h * sqrt(sqrt_in));
 }
+
+
 
 int y_front_fix = 20;
 
@@ -212,6 +232,7 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
                 evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE,    x_tab[RIGHT_MIDDLE],    y_tab_with_delta[RIGHT_MIDDLE], z_elipse[RIGHT_MIDDLE]);
                 /*=============================================*/
 
+                printLegsPositions(Hexapod);
                 delay(step_time*1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
             }
 
@@ -234,7 +255,7 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
                 evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT,    x_tab[RIGHT_FRONT], y_tab_with_delta[RIGHT_FRONT],  z_elipse[RIGHT_FRONT]);
                 evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK,     x_tab[RIGHT_BACK],  y_tab_with_delta[RIGHT_BACK],   z_elipse[RIGHT_BACK]);
                 /*=============================================*/
-                printf("Dla RIGHT BACK: y = %f,  z = %f\n", y_tab_with_delta[RIGHT_BACK], z_elipse[RIGHT_BACK] );
+                printLegsPositions(Hexapod);
                 delay(step_time*1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
             }
 
@@ -260,8 +281,6 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
 
 void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_speed, double step_time){ // [mm],  [mm/s], [s]
 
-
-
     double z_elipse[6];
     double Y_0_tab[6];
     double Z_s_tab[6];
@@ -281,9 +300,9 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
     // Oblicz całkowity czas ruchu
     double moving_time = Y_move_distance / Y_speed;
 
-        if(Y_move_distance < 0){
-            moving_time = moving_time * (-1);
-        }
+    if(Y_move_distance < 0){
+        moving_time = moving_time * (-1);
+    }
 
 
     // Oblicz liczbę kroków
@@ -311,9 +330,6 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
 
         for (int i = 0; i < num_steps; i++) {
             
-            
-            
-
 
             /*================ PROTRAKCJA =================*/
             y_tab_with_delta[LEFT_FRONT] =      Hexapod->_LegsPositionRobotCenter[LEFT_FRONT].Pr_y      + delta_y;
@@ -342,7 +358,8 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
             evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT,    x_tab[RIGHT_FRONT], y_tab_with_delta[RIGHT_FRONT],  z_elipse[RIGHT_FRONT]);
             evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK,     x_tab[RIGHT_BACK],  y_tab_with_delta[RIGHT_BACK],   z_elipse[RIGHT_BACK]);
             /*=============================================*/
-            printf("Dla RIGHT FRONT: y = %f, y_0 = %f, z = %f\n", y_tab_with_delta[RIGHT_FRONT], Y_0_tab[RIGHT_FRONT], z_elipse[RIGHT_FRONT] );
+
+            printLegsPositions(Hexapod);
             delay(step_time*1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
         }
 
@@ -380,7 +397,7 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
             evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE,   x_tab[RIGHT_MIDDLE],    y_tab_with_delta[RIGHT_MIDDLE], z_elipse[RIGHT_MIDDLE]);
             /*=============================================*/
             
-            printf("Dla RIGHT FRONT: y = %f, y_0 = %f, z = %f\n", y_tab_with_delta[RIGHT_FRONT], Y_0_tab[RIGHT_FRONT], z_elipse[RIGHT_FRONT] );
+            printLegsPositions(Hexapod);
             delay(step_time*1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
         }
 
@@ -395,8 +412,6 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
             printf("Błędnie zadeklarowana faza ruchu w doStepFase\n");
         }
     }
-
-
 
 }
 

@@ -98,6 +98,41 @@ typedef struct
 
 } Robot;
 
+
+void printLegsPositions(Robot *robot) {
+
+    // Wyczyść terminal
+    #ifdef _WIN32
+        system("cls"); // Windows
+    #else
+        system("clear"); // Unix/Linux/MacOS
+    #endif
+
+    printf("LEFT_FRONT\t->\t[%lf; %lf; %lf]\t\t\t[%lf; %lf; %lf] <- RIGHT_FRONT\n",
+           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_x,
+           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_y,
+           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_z,
+           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_x,
+           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_y,
+           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_z);
+
+    printf("LEFT_MIDDLE\t->\t[%lf; %lf; %lf]\t\t\t[%lf; %lf; %lf] <- RIGHT_MIDDLE\n",
+           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_x,
+           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_y,
+           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_z,
+           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_x,
+           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_y,
+           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_z);
+
+    printf("LEFT_BACK\t->\t[%lf; %lf; %lf]\t\t\t[%lf; %lf; %lf] <- RIGHT_BACK\n",
+           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_x,
+           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_y,
+           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_z,
+           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_x,
+           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_y,
+           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_z);
+}
+
 void printRobotStepFase(Robot *robot) {
     switch (robot->_robotStepFase) {
         case UNKNOWN:
