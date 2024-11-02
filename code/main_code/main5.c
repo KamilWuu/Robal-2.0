@@ -30,8 +30,12 @@ int main(void)
     double Z_step_time = 0.01;
 
     double Y_move = 80;
-    double Y_speed = 80;
+    double Y_speed = 200;
     double Y_step_time = 0.02;
+
+    printZMoveParams(z_const_stand_up, Z_speed, Z_step_time);
+    printYMoveParams(Y_move, Y_speed, Y_step_time);
+    
 
     StepFase start_fase = LM_RF_RB_PROT;
 
@@ -47,7 +51,7 @@ int main(void)
 
     delay(delay_time *10);
 
-    int it = 3;
+    int it = 10;
 
     if(start_fase == LM_RF_RB_PROT){
        
@@ -78,9 +82,14 @@ int main(void)
 
     setWalkingPosition(&Hexapod, 500);
 
-    
+    printZMoveParams(z_const_stand_up, Z_speed, Z_step_time);
+    printYMoveParams(Y_move, Y_speed, Y_step_time);
 
-
+    if(global_error == 0){
+        printf("Nie wykryto żadnego bledu w trakcie wykonywania kodu : ) \n");
+    }else{
+        printf("Wykryto %d bledow w trakcie wykonywania programu : ( \n", global_error);
+    }
 
     return 0;
 }

@@ -99,39 +99,7 @@ typedef struct
 } Robot;
 
 
-void printLegsPositions(Robot *robot) {
 
-    // Wyczyść terminal
-    #ifdef _WIN32
-        system("cls"); // Windows
-    #else
-        system("clear"); // Unix/Linux/MacOS
-    #endif
-
-    printf("LEFT_FRONT\t->\t[%lf; %lf; %lf]\t\t\t[%lf; %lf; %lf] <- RIGHT_FRONT\n",
-           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_x,
-           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_y,
-           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_z,
-           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_x,
-           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_y,
-           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_z);
-
-    printf("LEFT_MIDDLE\t->\t[%lf; %lf; %lf]\t\t\t[%lf; %lf; %lf] <- RIGHT_MIDDLE\n",
-           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_x,
-           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_y,
-           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_z,
-           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_x,
-           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_y,
-           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_z);
-
-    printf("LEFT_BACK\t->\t[%lf; %lf; %lf]\t\t\t[%lf; %lf; %lf] <- RIGHT_BACK\n",
-           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_x,
-           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_y,
-           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_z,
-           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_x,
-           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_y,
-           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_z);
-}
 
 void printRobotStepFase(Robot *robot) {
     switch (robot->_robotStepFase) {
@@ -176,6 +144,69 @@ void printRobotStepFase(Robot *robot) {
             break;
     }
 }
+
+
+
+void printLegsPositions(Robot *robot) {
+    
+    
+    // Wyczyść terminal
+    #ifdef _WIN32
+        system("cls"); // Windows
+    #else
+        system("clear"); // Unix/Linux/MacOS
+    #endif
+    
+
+    // Definicje kolorów
+    const char* RED = "\033[1;31m";
+    const char* BLUE = "\033[1;34m";
+    const char* RESET = "\033[0m";
+
+    // Wyświetlenie pozycji nóg
+    printf("====================");
+    printRobotStepFase(robot);
+    printf("===========================================================================\n");
+    printf("%sLEFT_FRONT\t->\t[%lf; %lf; %lf]%s\t\t\t%s[%lf; %lf; %lf] <- RIGHT_FRONT%s\n",
+           RED,
+           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_x,
+           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_y,
+           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_z,
+           RESET,
+           BLUE,
+           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_x,
+           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_y,
+           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_z,
+           RESET);
+
+    printf("%sLEFT_MIDDLE\t->\t[%lf; %lf; %lf]%s\t\t\t%s[%lf; %lf; %lf] <- RIGHT_MIDDLE%s\n",
+           BLUE,
+           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_x,
+           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_y,
+           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_z,
+           RESET,
+           RED,
+           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_x,
+           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_y,
+           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_z,
+           RESET);
+
+    printf("%sLEFT_BACK\t->\t[%lf; %lf; %lf]%s\t\t\t%s[%lf; %lf; %lf] <- RIGHT_BACK%s\n",
+           RED,
+           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_x,
+           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_y,
+           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_z,
+           RESET,
+           BLUE,
+           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_x,
+           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_y,
+           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_z,
+           RESET);
+    printf("=================================================================================================================\n\n\n\n");
+}
+
+
+
 
 
 // Funkcja do pobierania kanału PCA na podstawie pozycji i kąta
@@ -276,6 +307,7 @@ int getPCAChannel(LegPosition pos, int Q)
     default:
         // Obsługa błędnych danych wejściowych
         printf("Invalid LegPosition or Q value.\n");
+        global_error++;
         return -1; // Zwracamy -1 dla błędnych danych
     }
     return -1; // Zwracamy -1 dla błędnych danych
@@ -464,6 +496,7 @@ void initLeg(Leg *leg, LegPosition leg_position)
     if (leg->_q1_servo._pca_channel > 15)
     {
         printf("Cos poszlo nie tak dla pca channel q1\n");
+        global_error++;
     }
 
     leg->_q1_servo._min_angle = getMinAngle(leg->_leg_position, 1);
@@ -478,6 +511,7 @@ void initLeg(Leg *leg, LegPosition leg_position)
     if (leg->_q2_servo._pca_channel > 15)
     {
         printf("Cos poszlo nie tak dla pca channel q2\n");
+        global_error++;
     }
 
     leg->_q2_servo._min_angle = getMinAngle(leg->_leg_position, 2);
@@ -492,6 +526,7 @@ void initLeg(Leg *leg, LegPosition leg_position)
     if (leg->_q3_servo._pca_channel > 15)
     {
         printf("Cos poszlo nie tak dla pca channel q3\n");
+        global_error++;
     }
 
     leg->_q3_servo._min_angle = getMinAngle(leg->_leg_position, 3);
@@ -523,6 +558,7 @@ int checkPosition(LegPosition pos, double x, double y, double z)
         else
         {
             printf("Nieprawidlowa pozycja X dla nogi LEFT FRONT, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
+            global_error++;
             return 0;
         }
         break;
@@ -535,6 +571,7 @@ int checkPosition(LegPosition pos, double x, double y, double z)
         else
         {
             printf("Nieprawidlowa pozycja X dla nogi LEFT MIDDLE, x = %2.f, warunek: X < %2.f\n", x, -L1 - d2 - L23);
+            global_error++;
             return 0;
         }
         break;
@@ -547,6 +584,7 @@ int checkPosition(LegPosition pos, double x, double y, double z)
         else
         {
             printf("Nieprawidlowa pozycja X dla nogi LEFT BACK, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
+            global_error++;
             return 0;
         }
         break;
@@ -559,6 +597,7 @@ int checkPosition(LegPosition pos, double x, double y, double z)
         else
         {
             printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
+            global_error++;
             return 0;
         }
         break;
@@ -571,6 +610,7 @@ int checkPosition(LegPosition pos, double x, double y, double z)
         else
         {
             printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d2 + L23);
+            global_error++;
             return 0;
         }
         break;
@@ -583,12 +623,14 @@ int checkPosition(LegPosition pos, double x, double y, double z)
         else
         {
             printf("Nieprawidlowa pozycja X dla nogi RIGHT BACK, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
+            global_error++;
             return 0;
         }
         break;
 
     default:
         printf("Nieprawidlowa pozycja nogi\n");
+        global_error++;
         break;
     }
 }
@@ -696,6 +738,7 @@ void initLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, double 
 
         default:
             printf("bledna pozycja nogi w liczeniu kinematyki nogi wzgledem srodka\n");
+            global_error++;
             return;
             break;
         }
@@ -911,6 +954,7 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, dou
 
         default:
             printf("bledna pozycja nogi w liczeniu kinematyki nogi wzgledem srodka\n");
+            global_error++;
             return;
             break;
         }

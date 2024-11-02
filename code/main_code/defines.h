@@ -5,6 +5,8 @@
 #include <wiringPi.h>
 #include <stdbool.h>
 
+int global_error = 0;
+
 /* ============================= OUTPUTS ============================= */
 #define LED_RED     6
 #define LED_GREEN   4
