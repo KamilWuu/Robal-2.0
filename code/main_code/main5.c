@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <wiringPi.h>
+#include <SDL2/SDL.h>
 #include "defines.h"
 #include "servo.h"
 #include "kinematics.h"
 #include "robot.h"
 #include "trajectory.h"
+
+
+
 
 int main(void)
 {
@@ -26,12 +30,12 @@ int main(void)
 
     int delay_time = 100;
     int delay_between_fases = 0;
-    double Z_speed = 60; 
+    double Z_speed = 100; 
     double Z_step_time = 0.01;
 
-    double Y_move = 80;
-    double Y_speed = 200;
-    double Y_step_time = 0.02;
+    double Y_move = 100;
+    double Y_speed = 1000;
+    double Y_step_time = 0.01;
 
     printZMoveParams(z_const_stand_up, Z_speed, Z_step_time);
     printYMoveParams(Y_move, Y_speed, Y_step_time);
@@ -43,15 +47,19 @@ int main(void)
 
     delay(delay_time *10);
 
+    /**tutaj robot wstaje */
     moveLegsZ(&Hexapod, z_const_stand_up, Z_speed,  Z_step_time);
-
+    /********************** */
     delay(delay_time *10);
 
+    /*tu jest przygotowanie nog przed chodzeniem*/
     prepareForStepFase(&Hexapod, start_fase, Y_move, Y_speed, Y_step_time);
-
+    /************* */
     delay(delay_time *10);
 
-    int it = 10;
+
+/***Petle sluzaca do naprzemiennego stawiania nog***************************** */
+    int it = 8;
 
     if(start_fase == LM_RF_RB_PROT){
        
@@ -71,16 +79,23 @@ int main(void)
             delay(delay_between_fases);
         }
     }
+/*********************************************************** */
+
 
     delay(delay_time *10);
 
     delay(1000);
 
+    /*************tutaj robot siada */
     moveLegsZ(&Hexapod, -z_const_stand_up, Z_speed,  Z_step_time);
-
+    /******************************** */
     delay(3000);
 
+    //to nie jest konieczne
     setWalkingPosition(&Hexapod, 500);
+    /********* */
+
+
 
     printZMoveParams(z_const_stand_up, Z_speed, Z_step_time);
     printYMoveParams(Y_move, Y_speed, Y_step_time);

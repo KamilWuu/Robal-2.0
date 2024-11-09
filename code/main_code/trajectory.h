@@ -307,7 +307,7 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
                 evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE,    x_tab[RIGHT_MIDDLE],    y_tab_with_delta[RIGHT_MIDDLE], z_elipse[RIGHT_MIDDLE]);
                 /*=============================================*/
 
-                printLegsPositions(Hexapod);
+                //printLegsPositions(Hexapod);
                 delay(step_time*1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
             }
 
@@ -330,7 +330,7 @@ void prepareForStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, d
                 evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT,    x_tab[RIGHT_FRONT], y_tab_with_delta[RIGHT_FRONT],  z_elipse[RIGHT_FRONT]);
                 evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK,     x_tab[RIGHT_BACK],  y_tab_with_delta[RIGHT_BACK],   z_elipse[RIGHT_BACK]);
                 /*=============================================*/
-                printLegsPositions(Hexapod);
+                //printLegsPositions(Hexapod);
                 delay(step_time*1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
             }
 
@@ -439,7 +439,7 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
             evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK,     x_tab[RIGHT_BACK],  y_tab_with_delta[RIGHT_BACK],   z_elipse[RIGHT_BACK]);
             /*=============================================*/
 
-            printLegsPositions(Hexapod);
+            //printLegsPositions(Hexapod);
             delay(step_time*1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
         }
 
@@ -477,7 +477,7 @@ void doStepFase(Robot *Hexapod, StepFase fase, double Y_move_distance, double Y_
             evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE,   x_tab[RIGHT_MIDDLE],    y_tab_with_delta[RIGHT_MIDDLE], z_elipse[RIGHT_MIDDLE]);
             /*=============================================*/
             
-            printLegsPositions(Hexapod);
+            //printLegsPositions(Hexapod);
             delay(step_time*1000); // `delay` przyjmuje wartość w milisekundach, więc konwersja na ms
         }
 
