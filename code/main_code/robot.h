@@ -8,6 +8,8 @@
 #include "servo.h"
 #include "defines.h"
 #include "kinematics.h"
+#include "transformMatrix.hh"
+
 
 // Definicja typu dla stron robota (lewa, prawa)
 typedef enum
@@ -56,13 +58,6 @@ typedef struct
     float _target_pos[3];  // Docelowa pozycja końcówki nogi [x, y, z]
 } Leg;
 
-typedef struct 
-{
-    double Pr_x;
-    double Pr_y;
-    double Pr_z;
-
-}PositionRobotCenter;
 
 
 /*
@@ -93,9 +88,8 @@ typedef enum {
 typedef struct
 {
     Leg _legs[6]; // Tablica sześciu nóg (po trzy na każdą stronę)
-    PositionRobotCenter _LegsPositionRobotCenter[6];
-    StepFase _robotStepFase; 
-
+    PositionVector _LegsPositionRobotCenter[6];
+    StepFase _robotStepFase;
 } Robot;
 
 
@@ -169,38 +163,38 @@ void printLegsPositions(Robot *robot) {
     printf("===========================================================================\n");
     printf("%sLEFT_FRONT\t->\t[%lf; %lf; %lf]%s\t\t\t%s[%lf; %lf; %lf] <- RIGHT_FRONT%s\n",
            RED,
-           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_x,
-           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_y,
-           robot->_LegsPositionRobotCenter[LEFT_FRONT].Pr_z,
+           robot->_LegsPositionRobotCenter[LEFT_FRONT].P_x,
+           robot->_LegsPositionRobotCenter[LEFT_FRONT].P_y,
+           robot->_LegsPositionRobotCenter[LEFT_FRONT].P_z,
            RESET,
            BLUE,
-           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_x,
-           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_y,
-           robot->_LegsPositionRobotCenter[RIGHT_FRONT].Pr_z,
+           robot->_LegsPositionRobotCenter[RIGHT_FRONT].P_x,
+           robot->_LegsPositionRobotCenter[RIGHT_FRONT].P_y,
+           robot->_LegsPositionRobotCenter[RIGHT_FRONT].P_z,
            RESET);
 
     printf("%sLEFT_MIDDLE\t->\t[%lf; %lf; %lf]%s\t\t\t%s[%lf; %lf; %lf] <- RIGHT_MIDDLE%s\n",
            BLUE,
-           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_x,
-           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_y,
-           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].Pr_z,
+           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].P_x,
+           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].P_y,
+           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].P_z,
            RESET,
            RED,
-           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_x,
-           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_y,
-           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].Pr_z,
+           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].P_x,
+           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].P_y,
+           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].P_z,
            RESET);
 
     printf("%sLEFT_BACK\t->\t[%lf; %lf; %lf]%s\t\t\t%s[%lf; %lf; %lf] <- RIGHT_BACK%s\n",
            RED,
-           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_x,
-           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_y,
-           robot->_LegsPositionRobotCenter[LEFT_BACK].Pr_z,
+           robot->_LegsPositionRobotCenter[LEFT_BACK].P_x,
+           robot->_LegsPositionRobotCenter[LEFT_BACK].P_y,
+           robot->_LegsPositionRobotCenter[LEFT_BACK].P_z,
            RESET,
            BLUE,
-           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_x,
-           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_y,
-           robot->_LegsPositionRobotCenter[RIGHT_BACK].Pr_z,
+           robot->_LegsPositionRobotCenter[RIGHT_BACK].P_x,
+           robot->_LegsPositionRobotCenter[RIGHT_BACK].P_y,
+           robot->_LegsPositionRobotCenter[RIGHT_BACK].P_z,
            RESET);
     printf("=================================================================================================================\n\n\n\n");
 }
@@ -700,9 +694,9 @@ void initLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, double 
     if (checkPosition(pos, x, y, z))
     {
 
-        robot->_LegsPositionRobotCenter[pos].Pr_x = x;
-        robot->_LegsPositionRobotCenter[pos].Pr_y = y;
-        robot->_LegsPositionRobotCenter[pos].Pr_z = z;
+        robot->_LegsPositionRobotCenter[pos].P_x = x;
+        robot->_LegsPositionRobotCenter[pos].P_y = y;
+        robot->_LegsPositionRobotCenter[pos].P_z = z;
 
         switch (pos)
         {
@@ -916,9 +910,9 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, dou
     if (checkPosition(pos, x, y, z))
     {
 
-        robot->_LegsPositionRobotCenter[pos].Pr_x = x;
-        robot->_LegsPositionRobotCenter[pos].Pr_y = y;
-        robot->_LegsPositionRobotCenter[pos].Pr_z = z;
+        robot->_LegsPositionRobotCenter[pos].P_x = x;
+        robot->_LegsPositionRobotCenter[pos].P_y = y;
+        robot->_LegsPositionRobotCenter[pos].P_z = z;
 
         switch (pos)
         {
