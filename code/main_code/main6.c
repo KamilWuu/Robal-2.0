@@ -51,12 +51,12 @@ int main() {
     int Z = 0;
 
     int delay_time = 100;
-    int delay_between_fases = 0;
+    int delay_between_fases = 10;
     double Z_speed = 100; 
     double Z_step_time = 0.01;
 
     double Y_move = 100;
-    double Y_speed = 1000;
+    double Y_speed = 500;
     double Y_step_time = 0.01;
 
     double max_Y_speed = 3000;
@@ -127,7 +127,7 @@ int main() {
             }
 
             // Sprawdzanie przycisków
-            if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_Y)) {
+            if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_X)) {
                 //tutaj robot wstaje 
                 moveLegsZ(&Hexapod, z_const_stand_up, Z_speed,  Z_step_time);
                 printZMoveParams(z_const_stand_up, Z_speed, Z_step_time);
@@ -159,11 +159,11 @@ int main() {
                 printf("Robal usiadl \n");
                 delay(500);
             } 
-            if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_X)) {
+            if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_Y)) {
                 czyMaChodzic = true;
 
                 printf("kstart petli \n");
-                delay(500);
+                //delay(500);
             }
             if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_A)) {
                 czyMaChodzic = false;
@@ -179,6 +179,9 @@ int main() {
                     Y_speed = max_Y_speed;
                 }
                 printf("Zmieniono predkosc Y na: %lf \n", Y_speed);
+                if(!czyMaChodzic){
+                    delay(500);
+                }
                 
             } 
             if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_DPAD_DOWN)) {
@@ -188,6 +191,9 @@ int main() {
                     Y_speed = min_Y_speed;
                 }
                 printf("Zmieniono predkosc Y na: %lf \n", Y_speed);
+                if(!czyMaChodzic){
+                    delay(500);
+                }
                 
             }
             if(SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_BACK)) {

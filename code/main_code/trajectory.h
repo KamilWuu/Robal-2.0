@@ -81,7 +81,7 @@ double calculateElipseZ(StepFase fase, LegPosition leg_pos, double y, double Y_0
 
 
 
-int y_front_fix = 20;
+double y_front_fix = 20.0;
 
 void setWalkingPosition(Robot *Hexapod, int delay_time){
 
@@ -103,7 +103,6 @@ void setWalkingPosition(Robot *Hexapod, int delay_time){
 
 
 bool isRobotStanding(Robot *Hexapod){
-
     double z_tab[6];
 
     for(int i = 0; i < 6; i++){

@@ -19,11 +19,11 @@
 #define MY_PI 3.14159265358979323846
 
 #define x_const 245.0
-#define y_const (d3 + 70.0) // d3
+#define y_const (d3 + 50.0) // d3
 #define z_const_zero 0.0
-#define z_const_stand_up (-65.0)
+#define z_const_stand_up (-60.0)
 
-#define h_const 50 //elipse h
+#define h_const 35 //elipse h
 
 
 /*wartosci graniczne ustalone dla prawej strony, dla lewej nalezy zamienic max z min*/
