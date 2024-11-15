@@ -58,6 +58,7 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "robot.h": "c",
-    "kinematics.h": "c"
+    "kinematics.h": "c",
+    "cmath": "cpp"
   }
 }

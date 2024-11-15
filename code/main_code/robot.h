@@ -8,7 +8,7 @@
 #include "servo.h"
 #include "defines.h"
 #include "kinematics.h"
-#include "transformMatrix.hh"
+#include "transformMatrix.h"
 
 
 // Definicja typu dla stron robota (lewa, prawa)
@@ -895,6 +895,8 @@ void printLeg(Leg leg)
 }
 
 
+
+void evaluateLegPositionArcCenter()
 
 
 
