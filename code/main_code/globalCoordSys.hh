@@ -3,13 +3,12 @@
 
 #include "robot.h"
 
-
 typedef struct RobotRotationsAngles
 {
     double _rot_X;
     double _rot_Y;
     double _rot_Z;
-};  
+};
 
 typedef struct ArcCenterCoordSys
 {
@@ -20,7 +19,6 @@ typedef struct ArcCenterCoordSys
     double _arc_radius;
     double _arc_angle;
 };
-
 
 typedef struct GlobalCoordSys
 {

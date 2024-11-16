@@ -4,7 +4,6 @@
 #include <math.h>
 #include "kinematics.h"
 
-
 typedef struct PositionVector
 {
     double P_x;
@@ -41,7 +40,6 @@ Matrix3 createRotMatrix(double rot_X, double rot_Y, double rot_Z){
     double sin_b = sin(beta);   double cos_b = cos(beta);
     double sin_g = sin(gamma);  double cos_g = cos(gamma);
 
-
     rot_matrix.data[0][0] = cos_g * cos_b;  
     rot_matrix.data[0][1] = (cos_g * sin_b * sin_a) - (sin_g * cos_a);
     rot_matrix.data[0][2] = (cos_g * sin_b * cos_a) + (sin_g * sin_a);
@@ -53,7 +51,6 @@ Matrix3 createRotMatrix(double rot_X, double rot_Y, double rot_Z){
     rot_matrix.data[2][0] = -sin_b;  
     rot_matrix.data[2][1] = cos_b*sin_a;
     rot_matrix.data[2][2] = cos_b*cos_a;
-
 
     return rot_matrix;
 }
@@ -69,7 +66,6 @@ TransformMatrix createTransformMatrix(double rot_X, double rot_Y, double rot_Z, 
     return out_transform_matrix;
 }
 
-//wspolrzednie wzgledem srodka robota na wspolrzedne w ukladzie globalnym 
 PositionVector TransformVector(PositionVector input_vector, TransformMatrix transform_matrix) { 
     PositionVector output_vector, temp_vector;
     Matrix3 rot_matrix = transform_matrix._rotationMatrix;
@@ -88,7 +84,6 @@ PositionVector TransformVector(PositionVector input_vector, TransformMatrix tran
     return output_vector;
 }
 
-//wspolrzedne globalne na wspolrzedne wzgledem srodka robota
 PositionVector inverseTransformVector(PositionVector input_vector, TransformMatrix transform_matrix) {
     PositionVector output_vector, temp_vector;
     Matrix3 rot_matrix = transform_matrix._rotationMatrix;
