@@ -12,12 +12,36 @@ typedef struct PositionVector
 
 };
 
-typedef struct RotXYZVector
+PositionVector setPositionVector(double x, double y, double z){
+    PositionVector temp_pos_vector;
+
+    temp_pos_vector.P_x = x;
+    temp_pos_vector.P_x = y;
+    temp_pos_vector.P_x = z;
+
+    return temp_pos_vector;
+}
+
+typedef struct RobotRotationsAngles
 {
-    double _Rot_x;
-    double _Rot_y;
-    dobule _Rot_z;
-};
+    double _rot_X;
+    double _rot_Y;
+    double _rot_Z;
+};  
+
+RobotRotationsAngles setRotationsAngles(double rot_x, double rot_y, double rot_z){
+    RobotRotationsAngles temp_angles;
+
+    temp_angles._rot_X = rot_x;
+    temp_angles._rot_Y = rot_y;
+    temp_angles._rot_Z = rot_z;
+
+    return temp_angles;
+}
+
+void printPositionVector(PositionVector  vector){
+    printf("| %f | %f | %f |\n", vector.P_x, vector.P_y, vector.P_z);
+}
 
 typedef struct Matrix3{
     double data[3][3];
@@ -28,13 +52,13 @@ typedef struct TransformMatrix{
     PositionVector _translationVector;
 };
 
-Matrix3 createRotMatrix(double rot_X, double rot_Y, double rot_Z){
+Matrix3 createRotMatrix(RobotRotationsAngles angles){
 
     Matrix3 rot_matrix;
 
-    double alfa = rot_X * DEG2RAD;
-    double beta = rot_Y * DEG2RAD;
-    double gamma = rot_Z * DEG2RAD;
+    double alfa = angles._rot_X * DEG2RAD;
+    double beta = angles._rot_Y  * DEG2RAD;
+    double gamma = angles._rot_Z  * DEG2RAD;
 
     double sin_a = sin(alfa);   double cos_a = cos(alfa);
     double sin_b = sin(beta);   double cos_b = cos(beta);
@@ -55,17 +79,20 @@ Matrix3 createRotMatrix(double rot_X, double rot_Y, double rot_Z){
     return rot_matrix;
 }
 
-TransformMatrix createTransformMatrix(double rot_X, double rot_Y, double rot_Z, double t_x, double t_y, double t_z){
+TransformMatrix createTransformMatrix(RobotRotationsAngles angles, PositionVector pos_vector){
     TransformMatrix out_transform_matrix;
     
-    out_transform_matrix._rotationMatrix = createRotMatrix(rot_X, rot_Y, rot_Z);
-    out_transform_matrix._translationVector.P_x = t_x;
-    out_transform_matrix._translationVector.P_y = t_y; 
-    out_transform_matrix._translationVector.P_z = t_z;
+    out_transform_matrix._rotationMatrix = createRotMatrix(angles._rot_X, angles._rot_Y, angles._rot_Z);
+    out_transform_matrix._translationVector = pos_vector;
+
 
     return out_transform_matrix;
 }
 
+<<<<<<< HEAD:code/main_code/transformMatrix.hh
+=======
+//wspolrzednie wzgledem srodka robota na wspolrzedne w ukladzie globalnym. Na wejsciu wspolrzedne wzgledem robota na wyjsciu wspolrzedne w ukladzie globalnym
+>>>>>>> 0e77bf4b5f31cd51f0dd8fe8cc5b7f01f5edf212:code/main_code/transformMatrix.h
 PositionVector TransformVector(PositionVector input_vector, TransformMatrix transform_matrix) { 
     PositionVector output_vector, temp_vector;
     Matrix3 rot_matrix = transform_matrix._rotationMatrix;
@@ -84,6 +111,10 @@ PositionVector TransformVector(PositionVector input_vector, TransformMatrix tran
     return output_vector;
 }
 
+<<<<<<< HEAD:code/main_code/transformMatrix.hh
+=======
+//wspolrzedne globalne na wspolrzedne wzgledem srodka robota. Na wejsciu wspolrzedne globalne na wyjsciu wspolrzedne w ukladzie robota
+>>>>>>> 0e77bf4b5f31cd51f0dd8fe8cc5b7f01f5edf212:code/main_code/transformMatrix.h
 PositionVector inverseTransformVector(PositionVector input_vector, TransformMatrix transform_matrix) {
     PositionVector output_vector, temp_vector;
     Matrix3 rot_matrix = transform_matrix._rotationMatrix;
