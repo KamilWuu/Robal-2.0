@@ -4,7 +4,6 @@
 #include "robot.h"
 #include "transformMatrix.h"
 
-<<<<<<< HEAD
 typedef struct RobotRotationsAngles
 {
     double _rot_X;
@@ -22,19 +21,6 @@ typedef struct ArcCenterCoordSys
     double _arc_angle;
 };
 
-=======
-#define START_X 0
-#define START_Y 0
-#define START_Z 60
-
-#define START_ROT_X 0
-#define START_ROT_Y 0
-#define START_ROT_Z 0
-
-#define START_RADIUS 1000000000000
-#define START_SPEED 100
-
->>>>>>> 0e77bf4b5f31cd51f0dd8fe8cc5b7f01f5edf212
 typedef struct GlobalCoordSys
 {
     Robot _robot;
@@ -51,7 +37,7 @@ typedef struct GlobalCoordSys
     
 };
 
-void setLegPositionsGlobal(GlobalCoordSys *global_cord_sys, LegPosition leg, PositionVector position ){
+void setLegPositionsGlobal(GlobalCoordSys *global_cord_sys, int leg, PositionVector position ){
     global_cord_sys->_robot_legs_positions_global[leg] = position;
 }
 
@@ -84,7 +70,7 @@ void calculateLegsPositionsFromGlobalToRobotCenter(GlobalCoordSys *global_cord_s
     }        
 
     TransformMatrix transform_matrix; 
-    transform_natrix = createTransformMatrix(global_cord_sys->_robot_angles, _robot_center_global);
+    transform_matrix = createTransformMatrix(global_cord_sys._robot_angles, _robot_center_global);
     for(int i = 0; i < 6, i++ ){
        global_cord_sys->_robot._LegsPositionRobotCenter[i] = inverseTransformVector(legs_positions_global[i], transform_matrix); 
        //ustawienie pozycji globalnych na pozycje wzgledem srodka robota 
