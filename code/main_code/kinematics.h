@@ -64,7 +64,7 @@
 #define RIGHT_Q3_MIN_ANGLE 0
 #define RIGHT_Q3_MAX_ANGLE 270
 
-#define DEG2RAD MY_PI / 180
-#define RAD2DEG 180 / MY_PI
+#define DEG2RAD (MY_PI / 180)
+#define RAD2DEG (180 / MY_PI)
 
 #endif // KINEMATICS_H
