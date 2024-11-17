@@ -77,21 +77,14 @@ Matrix3 createJakobian(double q1, double q2, double q3, double l1, double l2, do
 
     Matrix3 jacobian;
 
-
-
     double s1 = sin(q1);    
     double c1 = cos(q1);
-
-
 
     double s2 = sin(q2);
     double c2 = cos(q2);
 
-
     double s3 = sin(q3);
     double c3 = cos(q3);
-
-
 
     double s23 = sin(q2+q3);
     double c23 = cos(q2+q3);
