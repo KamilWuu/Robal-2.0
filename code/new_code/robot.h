@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "servo.h"
+#include "servo_hardware.h"
 #include "defines.h"
 #include "kinematics.h"
 #include "enums.h"
@@ -21,7 +21,7 @@ typedef struct Servo
     double _max_angle;     // Maksymalny kąt serwa
     double _current_angle; // Aktualny kąt serwa
     double _last_angle;    // Ostatni zapisany kąt serwa
-    double _target_angle;
+    double _target_angle;   
     
 } Servo;
 
@@ -41,6 +41,12 @@ typedef struct Leg
     Vector3 _last_pos;
     Vector3 _target_pos;
 
+    Vector3 _calculated_leg_pos;
+
+    Vector3 _pos_error; 
+
+
+    Vector3 _leg_speed;
     
 
 } Leg;
@@ -56,6 +62,7 @@ typedef struct Robot
     Leg _legs[6]; // Tablica sześciu nóg (po trzy na każdą stronę)
     Vector3 _LegsPositionRobotCenter[6];
     StepFase _robotStepFase;
+    Vector3 _robot_speed; //mm/s
 
 } Robot;
 
@@ -273,7 +280,7 @@ int getPCAChannel(LegType leg_type, int Q)
 
 int getInitialAngle(int Q, RobotSide side)
 {
-    int Q_variable;
+    /*int Q_variable;
     int Q_side_multiplier;
 
     if (side == LEFT)
@@ -317,9 +324,9 @@ int getInitialAngle(int Q, RobotSide side)
         break;
     }
 
-    // return 135 - (Q_variable * Q_side_multiplier);
+    // return 135 - (Q_variable * Q_side_multiplier);*/
 
-    return 135;
+    return 0;
 }
 
 
@@ -459,7 +466,7 @@ void initLeg(Leg *leg, LegType leg_type)
         global_error++;
     }
 
-    leg->_q1_servo._min_angle = getMinAngle(leg->_leg_type 1);
+    leg->_q1_servo._min_angle = getMinAngle(leg->_leg_type, 1);
     leg->_q1_servo._max_angle = getMaxAngle(leg->_leg_type, 1);
 
     leg->_q1_servo._current_angle = getInitialAngle(1, leg->_side);
@@ -498,9 +505,9 @@ void initLeg(Leg *leg, LegType leg_type)
 
     for (int i = 0; i < 3; i++)
     {
-        leg->_current_pos[i] = 0;
-        leg->_target_pos[i] = 0;
-        leg->_last_pos[i] = 0;
+        leg->_current_pos.data[i] = 0;
+        leg->_target_pos.data[i] = 0;
+        leg->_last_pos.data[i] = 0;
     }
 }
 
@@ -605,9 +612,9 @@ void calculateInvertedKinematics(Leg *leg)
     double Q1, Q2, Q3;
     double Q3_1, Q3_2;
 
-    double Xp = leg->_target_pos[0];
-    double Yp = leg->_target_pos[1];
-    double Zp = leg->_target_pos[2];
+    double Xp = leg->_target_pos.data[X];
+    double Yp = leg->_target_pos.data[Y];
+    double Zp = leg->_target_pos.data[Z];
 
     double Xpz;
 
@@ -637,6 +644,67 @@ void calculateInvertedKinematics(Leg *leg)
 }
 
 
+void calculateForwardKinematics(Leg *leg) {
+    // Pobranie kątów przegubów
+    double Q1 = leg->_q1_servo._target_angle;
+    double Q2 = leg->_q2_servo._target_angle;
+    double Q3 = leg->_q3_servo._target_angle;
+
+    double Xp, Yp, Zp, Xpz;
+
+    // Obliczenie pośrednich wartości dla pozycji końcówki nogi
+    Xpz = L1 + L2 * cos(Q2) + L3 * cos(Q2 + Q3);  // Współrzędna w płaszczyźnie XY
+    Xp = Xpz * cos(Q1);  // Współrzędna X
+    Yp = Xpz * sin(Q1);  // Współrzędna Y
+    Zp = L2 * sin(Q2) + L3 * sin(Q2 + Q3);  // Współrzędna Z
+
+    // Dopasowanie osi X dla strony robota
+    if (leg->_side == LEFT) {
+        Xp = -Xp;
+    }
+
+    // Przekształcenie lokalnych współrzędnych na globalne
+    switch (leg->_leg_type) {
+        case LEFT_FRONT:
+            leg->_calculated_leg_pos.data[X] = Xp - d1;
+            leg->_calculated_leg_pos.data[Y] = Yp + d3;
+            break;
+        case LEFT_MIDDLE:
+            leg->_calculated_leg_pos.data[X] = Xp - d2;
+            leg->_calculated_leg_pos.data[Y] = Yp;
+            break;
+        case LEFT_BACK:
+            leg->_calculated_leg_pos.data[X] = Xp - d1;
+            leg->_calculated_leg_pos.data[Y] = Yp - d3;
+            break;
+        case RIGHT_FRONT:
+            leg->_calculated_leg_pos.data[X] = Xp + d1;
+            leg->_calculated_leg_pos.data[Y] = Yp + d3;
+            break;
+        case RIGHT_MIDDLE:
+            leg->_calculated_leg_pos.data[X] = Xp + d2;
+            leg->_calculated_leg_pos.data[Y] = Yp;
+            break;
+        case RIGHT_BACK:
+            leg->_calculated_leg_pos.data[X] = Xp + d1;
+            leg->_calculated_leg_pos.data[Y] = Yp - d3;
+            break;
+        default:
+            printf("Nieprawidłowa pozycja nogi\n");
+            global_error++;
+            return;
+    }
+    
+    // Zapis współrzędnej Z, która jest taka sama dla wszystkich nóg
+    leg->_calculated_leg_pos.data[Z] = Zp;
+    
+    /* Debug: Wypisz pozycję końcówki nogi
+    printf("Pozycja końcówki nogi: X=%.2f, Y=%.2f, Z=%.2f\n", 
+           leg->_target_pos.data[X], leg->_target_pos.data[Y], leg->_target_pos.data[Z]);
+    */
+}
+
+
 void setTargetPos(Leg *leg, Vector3 pos)
 {
     leg->_target_pos.data[X] = pos.data[X];
@@ -645,20 +713,20 @@ void setTargetPos(Leg *leg, Vector3 pos)
 }
 
 
-void initLegPositionRobotCenter(Robot *robot, LegType leg_type, Vector3 pos)
+void initLegPositionRobotCenter(Robot *robot, LegType leg_type, double x, double y, double z)
 {
     double xp, yp, zp;
 
     Vector3 calc_pos;
+    Vector3 pos; 
 
-    double x, y, z;
+    pos.data[X] = x;
+    pos.data[Y] = y;
+    pos.data[Z] = z;
+
     zp = z + z_0;
 
-    x = pos.data[X];
-    y = pos.data[Y];
-    z = pos.data[Z];
-
-    if (checkPosition(leg_type, x, y, z))
+    if (checkPosition(leg_type, pos))
     {
 
         robot->_LegsPositionRobotCenter[leg_type].data[X] = x;
@@ -846,7 +914,7 @@ void printLeg(Leg leg)
 {
     printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
     // Wyświetlanie informacji o pozycji nogi i stronie robota
-    printf("Leg Position: %d\n", leg._leg_position); // Zakładam, że LegType jest typu int lub enum
+    printf("Leg Position: %d\n", leg._leg_type); // Zakładam, że LegType jest typu int lub enum
     printf("Side: %d\n", leg._side);                 // Zakładam, że RobotSide jest typu int lub enum
     printf("PCA: %d\n", leg._pca);
 
@@ -861,9 +929,9 @@ void printLeg(Leg leg)
     printServo(leg._q3_servo);
 
     // Wyświetlanie pozycji końcówki nogi
-    printf("\nLast Position: [%.2f, %.2f, %.2f]\n", leg._last_pos[0], leg._last_pos[1], leg._last_pos[2]);
-    printf("Current Position: [%.2f, %.2f, %.2f]\n", leg._current_pos[0], leg._current_pos[1], leg._current_pos[2]);
-    printf("Target Position: [%.2f, %.2f, %.2f]\n", leg._target_pos[0], leg._target_pos[1], leg._target_pos[2]);
+    printf("\nLast Position: [%.2f, %.2f, %.2f]\n", leg._last_pos.data[0], leg._last_pos.data[1], leg._last_pos.data[2]);
+    printf("Current Position: [%.2f, %.2f, %.2f]\n", leg._current_pos.data[0], leg._current_pos.data[1], leg._current_pos.data[2]);
+    printf("Target Position: [%.2f, %.2f, %.2f]\n", leg._target_pos.data[0], leg._target_pos.data[1], leg._target_pos.data[2]);
     printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 }
 
@@ -879,12 +947,11 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, Vector3 pos)
     y = pos.data[Y];
     z = pos.data[Z];
 
-    if (checkPosition(leg_type, x, y, z))
+    if (checkPosition(leg_type, pos))
     {
 
-        robot->_LegsPositionRobotCenter[leg_type].data[X] = x;
-        robot->_LegsPositionRobotCenter[leg_type].data[Y] = y;
-        robot->_LegsPositionRobotCenter[leg_type].data[Z] = z;
+        robot->_LegsPositionRobotCenter[leg_type] = pos;
+
 
         switch (leg_type)
         {
@@ -938,6 +1005,35 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, Vector3 pos)
 }
 
 
+void calculatePosFromAngles(Leg * leg){
 
+}
+
+
+void calculatePosError(Leg * leg){
+
+    for(int i = 0; i < 3; i++){
+        leg->_pos_error.data[i] = leg->_target_pos.data[i] - leg->_calculated_leg_pos.data[i]; 
+    }
+
+}
+
+
+
+
+void positionCorrection(Leg * leg){
+
+    if(fabs(leg->_pos_error.data[X]) > X_POS_MAX_ERROR){
+
+    }
+    if(fabs(leg->_pos_error.data[Y]) > Y_POS_MAX_ERROR){
+        
+    }
+    if(fabs(leg->_pos_error.data[Z]) > Z_POS_MAX_ERROR){
+        
+    }
+
+
+}
 
 #endif // ROBOT_H

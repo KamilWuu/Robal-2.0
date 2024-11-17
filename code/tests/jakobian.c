@@ -534,10 +534,10 @@ int main() {
 
     Vector3 move;
     move.data[0] = 0;
-    move.data[1] = 0;
-    move.data[2] = 10;
+    move.data[1] = -10;
+    move.data[2] = 0;
 
-    double delta_time = 0.01; // Czas w sekundach na aktualizację kątów
+    double delta_time = 0.001; // Czas w sekundach na aktualizację kątów
     double total_time = 5; // Całkowity czas ruchu w sekundach
 
     d_positions.data[0] = move.data[0] / total_time;
