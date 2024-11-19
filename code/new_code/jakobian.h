@@ -4,12 +4,18 @@
 #include "data_structures.h"
 #include "enums.h"
 #include "math.h"
+#include "kinematics.h"
 
-Matrix3 createJacobian(double q1, double q2, double q3, double l1, double l2, double l3, double k){ //kąty w radianach
+Matrix3 createJacobian(double q1, double q2, double q3, double k)
+{ // kąty w radianach
 
     Matrix3 jacobian;
 
-    double s1 = sin(q1);    
+    double l1 = L1;
+    double l2 = L2;
+    double l3 = L3;
+
+    double s1 = sin(q1);
     double c1 = cos(q1);
 
     double s2 = sin(q2);
@@ -18,25 +24,84 @@ Matrix3 createJacobian(double q1, double q2, double q3, double l1, double l2, do
     double s3 = sin(q3);
     double c3 = cos(q3);
 
-    double s23 = sin(q2+q3);
-    double c23 = cos(q2+q3);
+    double s23 = sin(q2 + q3);
+    double c23 = cos(q2 + q3);
 
+    double a = c23 * l3 + c2 * l2 + l1;
+    double b = s23 * l3 + s2 * l2;
 
-    double a = c23*l3 + c2*l2 + l1;
-    double b = s23*l3 + s2*l2;
-
-    jacobian.data[0][0] = -k*s1*a;      jacobian.data[0][1] = -k*c1*b;          jacobian.data[0][2] = -k*c1*s23*l3; 
-    jacobian.data[1][0] = k*c1*a;       jacobian.data[1][1] = -k*s1*b;          jacobian.data[1][2] = -k*s1*s23*l3;  
-    jacobian.data[2][0] = 0;            jacobian.data[2][1] = -c23*l3 -c2*l2;   jacobian.data[2][2] = -c23*l3;
+    jacobian.data[0][0] = -k * s1 * a;
+    jacobian.data[0][1] = -k * c1 * b;
+    jacobian.data[0][2] = -k * c1 * s23 * l3;
+    jacobian.data[1][0] = k * c1 * a;
+    jacobian.data[1][1] = -k * s1 * b;
+    jacobian.data[1][2] = -k * s1 * s23 * l3;
+    jacobian.data[2][0] = 0;
+    jacobian.data[2][1] = -c23 * l3 - c2 * l2;
+    jacobian.data[2][2] = -c23 * l3;
 
     return jacobian;
 }
 
-Vector3 calculateLegVelocity(Vector3 leg_start_pos, double robot_center_velocity, double robot_arc_radius){
-    double omega = robot_center_velocity/robot_arc_radius;
-    Vector3 leg_radius;                     //r_s1 ^R
-    Vector3 leg_velocity_arc_center;        //v_s1^R
-    Vector3 leg_velocity_robot_center;       //v_sq1R^R
+Matrix3 createInversedJacobian(Vector3 initial_angles)
+{
+
+    double zero_aprox = 1e-10;
+
+    Matrix3 inversed_jacobian;
+
+    double l1 = L1;
+    double l2 = L2;
+    double l3 = L3;
+
+    double q1 = initial_angles.data[ROT_X];
+    double q2 = initial_angles.data[ROT_Y];
+    double q3 = initial_angles.data[ROT_Z];
+
+    double s1 = sin(q1);
+    double c1 = cos(q1);
+
+    double s2 = sin(q2);
+    double c2 = cos(q2);
+
+    double s3 = sin(q3);
+    double c3 = cos(q3);
+
+    double s23 = sin(q2 + q3);
+    double c23 = cos(q2 + q3);
+
+    double csc3;
+
+    if (s1 != 0)
+    {
+        csc3 = 1 / s3;
+    }
+    else
+    {
+        csc3 = 1 / zero_aprox;
+    }
+
+    double a = l2 * c2 + l3 * c23;
+
+    inversed_jacobian.data[0][0] = (-s1) / (l1 + a);
+    inversed_jacobian.data[0][1] = (c1) / (l1 + a);
+    inversed_jacobian.data[0][2] = 0;
+    inversed_jacobian.data[1][0] = (c1 * c23 * csc3) / (l2);
+    inversed_jacobian.data[1][1] = (s1 * c23 * csc3) / (l2);
+    inversed_jacobian.data[1][2] = (-s23 * csc3) / (l2);
+    inversed_jacobian.data[2][0] = (-c1 * csc3 * a) / (l2 * l3);
+    inversed_jacobian.data[2][1] = (-s1 * csc3 * a) / (l2 * l3);
+    inversed_jacobian.data[2][2] = csc3 * ((s2 / l3) + (s23 / l2));
+
+    return inversed_jacobian;
+}
+
+Vector3 calculateLegVelocity(Vector3 leg_start_pos, double robot_center_velocity, double robot_arc_radius)
+{
+    double omega = robot_center_velocity/ robot_arc_radius;
+    Vector3 leg_radius;                // r_s1 ^R
+    Vector3 leg_velocity_arc_center;   // v_s1^R
+    Vector3 leg_velocity_robot_center; // v_sq1R^R
     Vector3 omega_vector;
 
     leg_radius.data[X] = leg_start_pos.data[X] - robot_arc_radius;
@@ -58,8 +123,6 @@ Vector3 calculateLegVelocity(Vector3 leg_start_pos, double robot_center_velocity
     leg_velocity_robot_center.data[Z] = 0;
 
     return leg_velocity_robot_center;
-
 }
 
-
-#endif //JACOBIAN.H
+#endif // JACOBIAN.H

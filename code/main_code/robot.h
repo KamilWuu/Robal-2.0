@@ -56,6 +56,9 @@ typedef struct
     float _last_pos[3];
     float _current_pos[3]; // Aktualna pozycja końcówki nogi [x, y, z]
     float _target_pos[3];  // Docelowa pozycja końcówki nogi [x, y, z]
+
+
+
 } Leg;
 
 
@@ -659,16 +662,26 @@ void calculateInvertedKinematics(Leg *leg)
     {
 
         leg->_q1_servo._target_angle = 135 - (Q1 * RAD2DEG);
+        leg->_joint_angles.data[0] = Q1;
+
         leg->_q2_servo._target_angle = 135 + (Q2 * RAD2DEG);
+        leg->_joint_angles.data[1] = Q2;
+
         leg->_q3_servo._target_angle = 135 + (Q3 * RAD2DEG);
+        leg->_joint_angles.data[2] = Q3;
     }
 
     if (leg->_side == LEFT)
     {
 
         leg->_q1_servo._target_angle = 135 + (Q1 * RAD2DEG);
+        leg->_joint_angles.data[0] = Q1;
+
         leg->_q2_servo._target_angle = 135 - (Q2 * RAD2DEG);
+        leg->_joint_angles.data[1] = Q2;
+
         leg->_q3_servo._target_angle = 135 - (Q3 * RAD2DEG);
+        leg->_joint_angles.data[2] = Q3
     }
 
     /*printf("Q1 = %.2f\n", leg->_q1_servo._target_angle );
