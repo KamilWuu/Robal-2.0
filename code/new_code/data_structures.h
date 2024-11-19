@@ -2,6 +2,7 @@
 #define DATA_STRUCTURES_H
 
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct Vector3
 {
@@ -95,6 +96,18 @@ bool inverseMatrix(Matrix3 input_matrix, Matrix3 *inversed_matrix) {
     }
     
     return true;
+}
+
+
+Vector3 crossProduct(Vector3 v1, Vector3 v2)
+{
+    Vector3 result;
+
+    result.data[0] = v1.data[1] * v2.data[2] - v1.data[2] * v2.data[1];
+    result.data[1] = v1.data[2] * v2.data[0] - v1.data[0] * v2.data[2];
+    result.data[2] = v1.data[0] * v2.data[1] - v1.data[1] * v2.data[0];
+
+    return result;
 }
 
 

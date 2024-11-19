@@ -10,6 +10,7 @@
 #include "kinematics.h"
 #include "enums.h"
 #include "data_structures.h"
+#include "jakobian.h"
 
 
 
@@ -1034,6 +1035,14 @@ void positionCorrection(Leg * leg){
     }
 
 
+}
+
+
+Vector3 calculateLegsVelocities(Robot * robot, double arc_radius){
+    
+    for(int i = 0; i < 6; i++){
+        calculateLegVelocity(robot->_legs->_target_pos, robot->_robot_speed,  arc_radius);
+    }
 }
 
 #endif // ROBOT_H

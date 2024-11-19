@@ -6,6 +6,8 @@
 #include <time.h>
 
 
+
+
 #define L1 73.5
 #define L2 84.5
 #define L3 118.5
@@ -480,14 +482,8 @@ Vector3 getPositionFromAngles(LegPosition pos, RobotSide side, double q1, double
     return position;
 }
 
-// Funkcja pomocnicza do obliczania różnicy czasu w sekundach
-double get_time_diff_in_seconds(struct timespec start, struct timespec end) {
-    return (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-}
 
-#include <stdio.h>
-#include <time.h>
-#include <unistd.h>
+
 
 int main() {
     Matrix3 jacobian, inversed_jacobian;

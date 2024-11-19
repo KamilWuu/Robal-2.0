@@ -1,5 +1,9 @@
 {
     "files.associations": {
-        "limits": "cpp"
+        "limits": "cpp",
+        "robot.h": "c",
+        "kinematics.h": "c",
+        "defines.h": "c",
+        "trajectory.h": "c"
     }
 }
