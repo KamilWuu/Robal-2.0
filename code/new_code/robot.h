@@ -779,7 +779,7 @@ void initRobot(Robot *robot)
 
     initLegPositionRobotCenter(robot, LEFT_FRONT, -x_const, y_const, z_const_zero);
     initLegPositionRobotCenter(robot, LEFT_MIDDLE, -x_const, 0.1, z_const_zero);
-    initLegPositionRobotCenter(robot, LEFT_FRONT, -x_const, -y_const, z_const_zero);
+    initLegPositionRobotCenter(robot, LEFT_BACK, -x_const, -y_const, z_const_zero);
 
     initLegPositionRobotCenter(robot, RIGHT_FRONT, x_const, y_const, z_const_zero);
     initLegPositionRobotCenter(robot, RIGHT_MIDDLE, x_const, 0.1, z_const_zero);
