@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <wiringPi.h>
 
 #include "kinematics.h"
 #include "defines.h"
@@ -7,86 +8,223 @@
 #include "jakobian.h"
 #include "data_structures.h"
 
-int main()
+Vector3 getPositionFromAngles(LegType leg_side, RobotSide side, Vector3 vec)
 {
-    Robot hexapod;
-    initRobot(&hexapod);
-    /*
-        Vector3 start_pos;
-        start_pos.data[X] = x_const;
-        start_pos.data[Y] = 0;
-        start_pos.data[Z] = z_const_stand_up;
-        evaluateLegPositionRobotCenter(&hexapod, RIGHT_MIDDLE, start_pos);*/
+    double Q1 = vec.data[0];
+    double Q2 = vec.data[1];
+    double Q3 = vec.data[2];
 
-    Vector3 start_leg_pos;
-    Vector3 start_leg_angles;
-    Matrix3 inversed_jacobian;
+    Vector3 position;
 
-    Vector3 q;
+    // Oblicz współrzędne końcówki nogi w układzie odniesienia nogi
+    double Xpz = L1 + L2 * cos(Q2) + L3 * cos(Q2 + Q3);
+    double Xp = Xpz * cos(Q1);
+    double Yp = Xpz * sin(Q1);
+    double Zp = L2 * sin(Q2) + L3 * sin(Q2 + Q3);
 
-    Vector3 d_p, d_q;
+    // // Dopasuj znak osi X zależnie od strony robota
+    // if (side == LEFT)
+    // {
+    //     Xp = -Xp;
+    // }
 
-    d_p.data[0]= 0; //mm/s
-    d_p.data[1]= 0;
-    d_p.data[2]= 0;
-
-    double delta_time = 1; //s
-    double time = 10;      //s
-
-    int num_steps = (int)time/delta_time;
-
-
-
-
-
-    start_leg_pos = hexapod._LegsPositionRobotCenter[LEFT_MIDDLE];
-    start_leg_angles = hexapod._legs[LEFT_MIDDLE]._leg_joint_angles;
-
-    for(int i = 0; i < 3; i ++){
-        q.data[i] = start_leg_angles.data[i];
+    // Przekształcenie współrzędnych nogi na globalne współrzędne robota
+    switch (leg_side)
+    {
+    case LEFT_FRONT:
+        position.data[0] = Xp - d1;
+        position.data[1] = Yp + d3;
+        position.data[2] = Zp - z_0;
+        break;
+    case LEFT_MIDDLE:
+        position.data[0] = Xp - d2;
+        position.data[1] = Yp;
+        position.data[2] = Zp - z_0;
+        break;
+    case LEFT_BACK:
+        position.data[0] = Xp - d1;
+        position.data[1] = Yp - d3;
+        position.data[2] = Zp - z_0;
+        break;
+    case RIGHT_FRONT:
+        position.data[0] = Xp + d1;
+        position.data[1] = Yp + d3;
+        position.data[2] = Zp - z_0;
+        break;
+    case RIGHT_MIDDLE:
+        position.data[0] = Xp + d2;
+        position.data[1] = Yp;
+        position.data[2] = Zp - z_0;
+        break;
+    case RIGHT_BACK:
+        position.data[0] = Xp + d1;
+        position.data[1] = Yp - d3;
+        position.data[2] = Zp - z_0;
+        break;
+    default:
+        printf("Błędna pozycja nogi\n");
+        global_error++;
+        break;
     }
 
+    return position;
+}
 
+#include <stdio.h>
+
+// Zakładam, że struktury i funkcje typu Vector3, Matrix3, printVector, itp. są już zadeklarowane
+
+int main()
+{
+    LegType leg_type = RIGHT_MIDDLE;
+    RobotSide leg_side = RIGHT;
+    Robot hexapod;
+    initRobot(&hexapod);
+
+    Vector3 start_leg_pos, start_leg_angles, q, d_p, d_q, delta_dp, delta_dq, delta_dq_deg, start_leg_angles_deg, d_q_deg;
+    Matrix3 inversed_jacobian;
+    Vector3 measured_distance = {0, 0, 0};
+
+    double delta_time = 0.01; // s
+    double total_time = 20;   // s
+
+    // Konfiguracja początkowych prędkości liniowych dla nóg
+    d_p.data[0] = 0; // mm/s
+    d_p.data[1] = -4;
+    d_p.data[2] = 0;
+
+    printf("=========== PARAMETRY POCZĄTKOWE ===========\n");
+    printf("delta_time = %.4f s, total_time = %.2f s\n", delta_time, total_time);
+    printf("Prędkości liniowe (d_p): ");
+    printVector(d_p);
+    printf("\n\n");
+
+    initLegPositionRobotCenter(&hexapod, leg_type, 250, 40, -50);
+
+    start_leg_pos = hexapod._LegsPositionRobotCenter[leg_type];
+    start_leg_angles = hexapod._legs[leg_type]._leg_joint_angles;
+    Vector3 calculated_position_1 = getPositionFromAngles(leg_type, leg_side, start_leg_angles);
+    // Ustawienie wartości startowych dla pozycji i kątów
+    for (int i = 0; i < 3; i++)
+    {
+        q.data[i] = start_leg_angles.data[i];
+        delta_dp.data[i] = d_p.data[i] * delta_time;
+        start_leg_angles_deg.data[i] = start_leg_angles.data[i] * RAD2DEG;
+    }
 
     inversed_jacobian = createInversedJacobian(start_leg_angles);
 
-    printf("pozycja startowa nogi:\n");
+    printf("=========== POZYCJE STARTOWE ===========\n");
+    printf("Pozycja startowa nogi: ");
     printVector(start_leg_pos);
+    printf("Pozycja startowa nogi wyliczona: ");
+    printVector(calculated_position_1);
+    printf("\nKąty początkowe (w stopniach): ");
+    printVector(start_leg_angles_deg);
+    printf("\n\n");
 
-    printf("katy poczatkowe:\n");
-    printVector(start_leg_angles);
-
-    printf("jakobian odwrotny:\n");
-    printMatrix(inversed_jacobian);
-
-
-
-    printf("linear velocities:\n");
-    printVector(d_p);
-
+    printf("=========== OBLICZENIA PRĘDKOŚCI ===========\n");
+    printf("Delta prędkości liniowe (delta_dp): ");
+    printVector(delta_dp);
+    printf("\n");
 
     d_q = multiplyMatrixByVector(inversed_jacobian, d_p);
-    
-    printf("joint velocities:\n");
-    printVector(d_q);
+    delta_dq = multiplyMatrixByVector(inversed_jacobian, delta_dp);
 
-
-    
-    for(int i = 0; i < num_steps; i++){
-
-        if(/*sprawdzaj czy minal odpowiedni czas*/){ 
-            for(int j = 0; j < 3; j++){
-                q.data[j] += d_q.data[j];  
-                //aktualizowanie kątów na serwach[j]
-            } 
-            
-        }
+    for (int i = 0; i < 3; i++)
+    {
+        delta_dq_deg.data[i] = delta_dq.data[i] * RAD2DEG;
+        d_q_deg.data[i] = d_q.data[i] * RAD2DEG;
     }
 
+    printf("Prędkości stawów (d_q) w stopniach: ");
+    printVector(d_q_deg);
+    printf("\nDelta prędkości stawów (delta_dq) w stopniach: ");
+    printVector(delta_dq_deg);
+    printf("\n\n");
 
-    printf("katy po wykonaniu ruchu:\n");
-    printVector(q);
+    // Pętla czasowa - symulacja ruchu
+    unsigned long interval_ms = (unsigned long)(delta_time * 1000);
+    unsigned long start_time = millis();
+    unsigned long previous_time = start_time;
+    unsigned long target_duration_ms = (unsigned long)(total_time * 1000);
+    int iteration_count = 0;
 
+    printf("=========== ROZPOCZĘCIE SYMULACJI RUCHU ===========\n");
+
+    do
+    {
+        unsigned long current_time = millis();
+
+        if (current_time - previous_time >= interval_ms)
+        {
+            previous_time = current_time;
+
+            for (int j = 0; j < 3; j++)
+            {
+                q.data[j] += delta_dq.data[j];
+
+                measured_distance.data[j] += delta_dp.data[j];
+            }
+            iteration_count++;
+        }
+
+    } while (millis() - start_time < target_duration_ms);
+
+    // Obliczanie kąty końcowe
+    Vector3 q_deg;
+    for (int i = 0; i < 3; i++)
+    {
+        q_deg.data[i] = q.data[i] * RAD2DEG;
+    }
+
+    printf("=========== WYNIKI KOŃCOWE ===========\n");
+    printf("Kąty po wykonaniu ruchu (w stopniach): ");
+    printVector(q_deg);
+    printf("\nPrzebyty dystans: ");
+    printVector(measured_distance);
+    printf("\n");
+
+    // Obliczenia końcowe i błędy
+    Vector3 calculated_position = getPositionFromAngles(leg_type, leg_side, q);
+    Vector3 end_position, pos_error;
+
+    for (int i = 0; i < 3; i++)
+    {
+        end_position.data[i] = measured_distance.data[i] + start_leg_pos.data[i];
+
+        pos_error.data[i] = end_position.data[i] - calculated_position.data[i];
+    }
+
+    printf("Pozycja obliczona z kątów końcowych: ");
+    printVector(calculated_position);
+    printf("\nPozycja żądana (end_position): ");
+    printVector(end_position);
+    printf("\nBłąd pozycji: ");
+    printVector(pos_error);
+    printf("\n\n");
+
+    initLegPositionRobotCenter(&hexapod, leg_type, end_position.data[0], end_position.data[1], end_position.data[2]);
+
+    Vector3 end_leg_angles = hexapod._legs[leg_type]._leg_joint_angles;
+    Vector3 angles_error;
+
+    for (int i = 0; i < 3; i++)
+    {
+        end_leg_angles.data[i] *= RAD2DEG;
+        angles_error.data[i] = end_leg_angles.data[i] - q_deg.data[i];
+    }
+
+    printf("Obliczone kąty z żądanej pozycji: ");
+    printVector(end_leg_angles);
+    printf("\nKąty końcowe (po ruchu): ");
+    printVector(q_deg);
+    printf("\nBłąd kątów: ");
+    printVector(angles_error);
+    printf("\n");
+
+    printf("=========== PODSUMOWANIE ===========\n");
+    printf("Liczba iteracji: %d\n", iteration_count);
 
     return 0;
 }

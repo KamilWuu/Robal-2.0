@@ -604,10 +604,10 @@ void calculateInvertedKinematics(Leg *leg)
 
     double Xpz;
 
-    if (leg->_side == LEFT)
+    /**if (leg->_side == LEFT)
     {
         Xp = -Xp;
-    }
+    }*/
 
     Xpz = sqrt((Xp * Xp) + (Yp * Yp));
     Q1 = atan2(Yp, Xp);
@@ -615,6 +615,11 @@ void calculateInvertedKinematics(Leg *leg)
     Q3_2 = acos(((Zp * Zp) + ((Xpz - L1) * (Xpz - L1)) - (L2 * L2) - (L3 * L3)) / (2 * L2 * L3));
     Q3 = -Q3_1; // lub -Q3_2
     Q2 = atan2(Zp, (Xpz - L1)) + atan2(L3 * sin(-Q3), (L2 + L3 * cos(-Q3)));
+
+    /*if (leg->_side == LEFT)
+    {
+        Q1 += 180 * DEG2RAD;
+    }*/
 
     leg->_q1_servo._target_angle = Q1;
     leg->_leg_joint_angles.data[0] = Q1;
@@ -624,9 +629,9 @@ void calculateInvertedKinematics(Leg *leg)
 
     leg->_q3_servo._target_angle = Q3;
     leg->_leg_joint_angles.data[2] = Q3;
-    printf("Q1 = %.2f\n", leg->_q1_servo._target_angle);
-    printf("Q2 = %.2f\n", leg->_q2_servo._target_angle);
-    printf("Q3 = %.2f\n", leg->_q3_servo._target_angle);
+    // printf("Q1 = %.2f\n", leg->_q1_servo._target_angle);
+    // printf("Q2 = %.2f\n", leg->_q2_servo._target_angle);
+    // printf("Q3 = %.2f\n", leg->_q3_servo._target_angle);
 }
 
 void calculateForwardKinematics(Leg *leg)

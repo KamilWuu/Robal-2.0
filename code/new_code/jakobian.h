@@ -46,17 +46,15 @@ Matrix3 createJacobian(double q1, double q2, double q3, double k)
 Matrix3 createInversedJacobian(Vector3 initial_angles)
 {
 
-    double zero_aprox = 1e-10;
-
-    Matrix3 inversed_jacobian;
+     Matrix3 inversed_jacobian;
 
     double l1 = L1;
     double l2 = L2;
     double l3 = L3;
 
-    double q1 = initial_angles.data[ROT_X];
-    double q2 = initial_angles.data[ROT_Y];
-    double q3 = initial_angles.data[ROT_Z];
+    double q1 = initial_angles.data[0];
+    double q2 = initial_angles.data[1];
+    double q3 = initial_angles.data[2];
 
     double s1 = sin(q1);
     double c1 = cos(q1);
@@ -72,16 +70,17 @@ Matrix3 createInversedJacobian(Vector3 initial_angles)
 
     double csc3;
 
-    if (s1 != 0)
+    if (s3 != 0)
     {
         csc3 = 1 / s3;
     }
     else
     {
-        csc3 = 1 / zero_aprox;
+        printf("nie wiem co zrobic, pojawilo sie dzielenie przez 0\n");
+        exit(0);
     }
 
-    double a = l2 * c2 + l3 * c23;
+    double a = (l2 * c2) + (l3 * c23);
 
     inversed_jacobian.data[0][0] = (-s1) / (l1 + a);
     inversed_jacobian.data[0][1] = (c1) / (l1 + a);
@@ -98,7 +97,7 @@ Matrix3 createInversedJacobian(Vector3 initial_angles)
 
 Vector3 calculateLegVelocity(Vector3 leg_start_pos, double robot_center_velocity, double robot_arc_radius)
 {
-    double omega = robot_center_velocity/ robot_arc_radius;
+    double omega = robot_center_velocity / robot_arc_radius;
     Vector3 leg_radius;                // r_s1 ^R
     Vector3 leg_velocity_arc_center;   // v_s1^R
     Vector3 leg_velocity_robot_center; // v_sq1R^R
