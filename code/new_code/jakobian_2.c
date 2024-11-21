@@ -85,12 +85,12 @@ int main()
     Matrix3 inversed_jacobian;
     Vector3 measured_distance = {0, 0, 0};
 
-    double delta_time = 0.01; // s
-    double total_time = 20;   // s
+    double delta_time = 0.001; // s
+    double total_time = 0.5;   // s
 
     // Konfiguracja początkowych prędkości liniowych dla nóg
     d_p.data[0] = 0; // mm/s
-    d_p.data[1] = -4;
+    d_p.data[1] = -160;
     d_p.data[2] = 0;
 
     printf("=========== PARAMETRY POCZĄTKOWE ===========\n");
@@ -129,12 +129,14 @@ int main()
     printf("\n");
 
     d_q = multiplyMatrixByVector(inversed_jacobian, d_p);
-    delta_dq = multiplyMatrixByVector(inversed_jacobian, delta_dp);
+    // delta_dq = multiplyMatrixByVector(inversed_jacobian, delta_dp);
 
     for (int i = 0; i < 3; i++)
     {
-        delta_dq_deg.data[i] = delta_dq.data[i] * RAD2DEG;
+
         d_q_deg.data[i] = d_q.data[i] * RAD2DEG;
+        delta_dq.data[i] = d_q.data[i] * delta_time; //
+        delta_dq_deg.data[i] = delta_dq.data[i] * RAD2DEG;
     }
 
     printf("Prędkości stawów (d_q) w stopniach: ");
