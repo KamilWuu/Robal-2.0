@@ -10,8 +10,9 @@
 // Zakładam, że struktury i funkcje typu Vector3, Matrix3, printVector, itp. są już zadeklarowane
 
 // Funkcja zapisująca wektor do pliku CSV
-void writeVectorToCSV(FILE *file, const char *phase, double t, Vector3 q_delta, Vector3 actual_q, Vector3 actual_pos) {
-    fprintf(file, "%s,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f\n",
+void writeVectorToCSV(FILE *file, const char *phase, double t, Vector3 q_delta, Vector3 actual_q, Vector3 actual_pos)
+{
+    fprintf(file, "%s,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,\n",
             phase, t,
             q_delta.data[0], q_delta.data[1], q_delta.data[2],
             actual_q.data[0], actual_q.data[1], actual_q.data[2],
@@ -22,7 +23,8 @@ int main()
 {
     // Plik CSV do zapisu
     FILE *file = fopen("robot_motion.csv", "w");
-    if (!file) {
+    if (!file)
+    {
         perror("Nie udało się otworzyć pliku do zapisu");
         return 1;
     }
@@ -41,9 +43,12 @@ int main()
     LegType leg_type = RIGHT_MIDDLE;
     RobotSide robot_side;
 
-    if (leg_type < 3) {
+    if (leg_type < 3)
+    {
         robot_side = LEFT;
-    } else {
+    }
+    else
+    {
         robot_side = RIGHT;
     }
 
@@ -84,21 +89,27 @@ int main()
 
     int x = 1;
     printf("FAZA RETRAKCJI: \n");
-    do {
+    do
+    {
         unsigned long current_time = millis();
 
-        if (current_time - previous_time >= interval_ms) {
+        if (current_time - previous_time >= interval_ms)
+        {
             previous_time = current_time;
             iteration_count++;
 
             /* Pętla wykonująca się co delta_time */
             const char *phase = (t < move_time) ? "RETRAKCJA" : "PROTRAKCJA";
 
-            if (t < move_time) {
+            if (t < move_time)
+            {
                 curve_t = vectorMultiplyByConst(d_p, t);
                 curve_t_delta_t = vectorMultiplyByConst(d_p, t + delta_time);
-            } else {
-                if (x) {
+            }
+            else
+            {
+                if (x)
+                {
                     printf("FAZA PROTRAKCJI: \n");
                     x = 0;
                 }
@@ -108,9 +119,9 @@ int main()
             q_delta = calculateDeltaQ(leg_type, robot_side, actual_q, t, delta_time, curve_t, curve_t_delta_t);
             actual_q = vectorAdd(actual_q, q_delta);
             actual_pos = getPositionFromAngles(leg_type, robot_side, actual_q);
-            
+
             // Zapis danych do pliku CSV
-            writeVectorToCSV(file, phase, t, q_delta, actual_q, actual_pos);
+            writeVectorToCSV(file, phase, t, vectorMultiplyByConst(q_delta, RAD2DEG), vectorMultiplyByConst(actual_q, RAD2DEG), actual_pos);
 
             printTwoVectors("actual_angles_deg", vectorMultiplyByConst(actual_q, RAD2DEG), "actual_pos", actual_pos);
             t += delta_time;
