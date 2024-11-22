@@ -12,7 +12,7 @@
 // Funkcja zapisująca wektor do pliku CSV
 void writeVectorToCSV(FILE *file, const char *phase, double t, Vector3 q_delta, Vector3 actual_q, Vector3 actual_pos)
 {
-    fprintf(file, "%s,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,space\n",
+    fprintf(file, "%s,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f \n",
             phase, t,
             q_delta.data[0], q_delta.data[1], q_delta.data[2],
             actual_q.data[0], actual_q.data[1], actual_q.data[2],
