@@ -12,8 +12,8 @@
 // Funkcja zapisująca wektor do pliku CSV
 void writeVectorToCSV(FILE *file, const char *phase, double t, Vector3 q_delta, Vector3 actual_q, Vector3 actual_pos)
 {
-    fprintf(file, "%s,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f \n",
-            phase, t,
+    fprintf(file, "%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f \n",
+             t,
             q_delta.data[0], q_delta.data[1], q_delta.data[2],
             actual_q.data[0], actual_q.data[1], actual_q.data[2],
             actual_pos.data[0], actual_pos.data[1], actual_pos.data[2]);
@@ -30,12 +30,12 @@ int main()
     }
 
     // Nagłówki w pliku CSV
-    fprintf(file, "Phase,t,q_delta_x,q_delta_y,q_delta_z,actual_q_x,actual_q_y,actual_q_z,actual_pos_x,actual_pos_y,actual_pos_z\n");
+    //fprintf(file, "Phase,t,q_delta_x,q_delta_y,q_delta_z,actual_q_x,actual_q_y,actual_q_z,actual_pos_x,actual_pos_y,actual_pos_z\n");
 
     Vector3 q_delta = {0, 0, 0};
     Vector3 start_pos, start_angles_rad, start_angles_deg;
     Vector3 actual_q;
-    double delta_time = 0.02; // s
+    double delta_time = 0.001; // s
     double move_time = 1;     // s
     double t = 0;
     double period = 2 * move_time;
@@ -67,11 +67,11 @@ int main()
     start_angles_rad = hexapod._legs[leg_type]._leg_joint_angles;
     start_angles_deg = vectorMultiplyByConst(start_angles_rad, RAD2DEG);
 
-    // Zapis warunków początkowych
-    fprintf(file, "# delta_time: %.4f, move_time: %.4f, period: %.4f\n", delta_time, move_time, period);
-    fprintf(file, "# start_angles_rad: %.4f, %.4f, %.4f\n", start_angles_rad.data[0], start_angles_rad.data[1], start_angles_rad.data[2]);
-    fprintf(file, "# start_pos: %.4f, %.4f, %.4f\n", start_pos.data[0], start_pos.data[1], start_pos.data[2]);
-    fprintf(file, "# d_p: %.4f, %.4f, %.4f\n", d_p.data[0], d_p.data[1], d_p.data[2]);
+    // // Zapis warunków początkowych
+    // fprintf(file, "# delta_time: %.4f, move_time: %.4f, period: %.4f\n", delta_time, move_time, period);
+    // fprintf(file, "# start_angles_rad: %.4f, %.4f, %.4f\n", start_angles_rad.data[0], start_angles_rad.data[1], start_angles_rad.data[2]);
+    // fprintf(file, "# start_pos: %.4f, %.4f, %.4f\n", start_pos.data[0], start_pos.data[1], start_pos.data[2]);
+    // fprintf(file, "# d_p: %.4f, %.4f, %.4f\n", d_p.data[0], d_p.data[1], d_p.data[2]);
 
     /* Pętla czasowa - symulacja ruchu */
     unsigned long interval_ms = (unsigned long)(delta_time * 1000);
