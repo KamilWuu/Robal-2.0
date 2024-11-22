@@ -9,15 +9,82 @@ typedef struct Vector3
     double data[3];
 } Vector3;
 
-void printVector(Vector3 vector)
-{
-    printf(" = [");
 
+
+void printVector(const char *message, Vector3 vector) {
+    printf("%s = [", message);
     printf(" %8.3f, ", vector.data[0]);
     printf(" %8.3f, ", vector.data[1]);
     printf(" %8.3f ", vector.data[2]);
-
     printf("]\n");
+}
+
+
+void printTwoVectors(const char *message, Vector3 vector, const char *message_2, Vector3 vector_2) {
+    printf("%s = [", message);
+    printf(" %8.3f, ", vector.data[0]);
+    printf(" %8.3f, ", vector.data[1]);
+    printf(" %8.3f ", vector.data[2]);
+    printf("]\t\t");
+    printf("%s = [", message_2);
+    printf(" %8.3f, ", vector_2.data[0]);
+    printf(" %8.3f, ", vector_2.data[1]);
+    printf(" %8.3f ", vector_2.data[2]);
+    printf("]\n");
+}
+
+
+Vector3 vectorAdd(Vector3 v1, Vector3 v2)
+{
+    Vector3 result;
+
+    for (int i = 0; i < 3; i++)
+    {
+        result.data[i] = v1.data[i] + v2.data[i];
+    }
+
+    return result;
+}
+
+Vector3 vectorSub(Vector3 v1, Vector3 v2)
+{
+    Vector3 result;
+
+    for (int i = 0; i < 3; i++)
+    {
+        result.data[i] = v1.data[i] - v2.data[i];
+    }
+
+    return result;
+}
+
+double vectorDotProduct(Vector3 v1, Vector3 v2)
+{ // Iloczyn skalarny
+    return v1.data[0] * v2.data[0] +
+           v1.data[1] * v2.data[1] +
+           v1.data[2] * v2.data[2];
+}
+
+Vector3 vectorCrossProduct(Vector3 v1, Vector3 v2)
+{ // iloczyn wektorowy
+    Vector3 result;
+    result.data[0] = v1.data[1] * v2.data[2] - v1.data[2] * v2.data[1];
+    result.data[1] = v1.data[2] * v2.data[0] - v1.data[0] * v2.data[2];
+    result.data[2] = v1.data[0] * v2.data[1] - v1.data[1] * v2.data[0];
+    return result;
+}
+
+Vector3 vectorMultiplyByConst(Vector3 vec, double constant)
+{
+
+    Vector3 result;
+
+    for (int i = 0; i < 3; i++)
+    {
+        result.data[i] = vec.data[i] * constant;
+    }
+
+    return result;
 }
 
 typedef struct Matrix3

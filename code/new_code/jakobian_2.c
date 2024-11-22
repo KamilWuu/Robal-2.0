@@ -8,68 +8,6 @@
 #include "jakobian.h"
 #include "data_structures.h"
 
-Vector3 getPositionFromAngles(LegType leg_side, RobotSide side, Vector3 vec)
-{
-    double Q1 = vec.data[0];
-    double Q2 = vec.data[1];
-    double Q3 = vec.data[2];
-
-    Vector3 position;
-
-    // Oblicz współrzędne końcówki nogi w układzie odniesienia nogi
-    double Xpz = L1 + L2 * cos(Q2) + L3 * cos(Q2 + Q3);
-    double Xp = Xpz * cos(Q1);
-    double Yp = Xpz * sin(Q1);
-    double Zp = L2 * sin(Q2) + L3 * sin(Q2 + Q3);
-
-    // // Dopasuj znak osi X zależnie od strony robota
-    // if (side == LEFT)
-    // {
-    //     Xp = -Xp;
-    // }
-
-    // Przekształcenie współrzędnych nogi na globalne współrzędne robota
-    switch (leg_side)
-    {
-    case LEFT_FRONT:
-        position.data[0] = Xp - d1;
-        position.data[1] = Yp + d3;
-        position.data[2] = Zp - z_0;
-        break;
-    case LEFT_MIDDLE:
-        position.data[0] = Xp - d2;
-        position.data[1] = Yp;
-        position.data[2] = Zp - z_0;
-        break;
-    case LEFT_BACK:
-        position.data[0] = Xp - d1;
-        position.data[1] = Yp - d3;
-        position.data[2] = Zp - z_0;
-        break;
-    case RIGHT_FRONT:
-        position.data[0] = Xp + d1;
-        position.data[1] = Yp + d3;
-        position.data[2] = Zp - z_0;
-        break;
-    case RIGHT_MIDDLE:
-        position.data[0] = Xp + d2;
-        position.data[1] = Yp;
-        position.data[2] = Zp - z_0;
-        break;
-    case RIGHT_BACK:
-        position.data[0] = Xp + d1;
-        position.data[1] = Yp - d3;
-        position.data[2] = Zp - z_0;
-        break;
-    default:
-        printf("Błędna pozycja nogi\n");
-        global_error++;
-        break;
-    }
-
-    return position;
-}
-
 #include <stdio.h>
 
 // Zakładam, że struktury i funkcje typu Vector3, Matrix3, printVector, itp. są już zadeklarowane
@@ -99,7 +37,7 @@ int main()
     printVector(d_p);
     printf("\n\n");
 
-    initLegPositionRobotCenter(&hexapod, leg_type, 250, 40, -50);
+    initLegPositionRobotCenter(&hexapod, leg_type, 220, 0, 0);
 
     start_leg_pos = hexapod._LegsPositionRobotCenter[leg_type];
     start_leg_angles = hexapod._legs[leg_type]._leg_joint_angles;

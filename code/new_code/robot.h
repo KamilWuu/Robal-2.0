@@ -11,7 +11,7 @@
 #include "enums.h"
 #include "data_structures.h"
 #include "jakobian.h"
-
+#include "velocity.h"
 // Struktura dla jednego serwa
 typedef struct Servo
 {
@@ -783,11 +783,11 @@ void initRobot(Robot *robot)
     initLeg(&robot->_legs[5], RIGHT_BACK);
 
     initLegPositionRobotCenter(robot, LEFT_FRONT, -x_const, y_const, z_const_zero);
-    initLegPositionRobotCenter(robot, LEFT_MIDDLE, -x_const, 0.1, z_const_zero);
+    initLegPositionRobotCenter(robot, LEFT_MIDDLE, -x_const, 0, z_const_zero);
     initLegPositionRobotCenter(robot, LEFT_BACK, -x_const, -y_const, z_const_zero);
 
     initLegPositionRobotCenter(robot, RIGHT_FRONT, x_const, y_const, z_const_zero);
-    initLegPositionRobotCenter(robot, RIGHT_MIDDLE, x_const, 0.1, z_const_zero);
+    initLegPositionRobotCenter(robot, RIGHT_MIDDLE, x_const, 0, z_const_zero);
     initLegPositionRobotCenter(robot, RIGHT_BACK, x_const, -y_const, z_const_zero);
 
     robot->_robotStepFase == UNKNOWN;

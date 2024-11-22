@@ -6,6 +6,68 @@
 #include "math.h"
 #include "kinematics.h"
 
+Vector3 getPositionFromAngles(LegType leg_type, RobotSide side, Vector3 angles)
+{
+    double Q1 = angles.data[0];
+    double Q2 = angles.data[1];
+    double Q3 = angles.data[2];
+
+    Vector3 position;
+
+    // Oblicz współrzędne końcówki nogi w układzie odniesienia nogi
+    double Xpz = L1 + L2 * cos(Q2) + L3 * cos(Q2 + Q3);
+    double Xp = Xpz * cos(Q1);
+    double Yp = Xpz * sin(Q1);
+    double Zp = L2 * sin(Q2) + L3 * sin(Q2 + Q3);
+
+    // // Dopasuj znak osi X zależnie od strony robota
+    // if (side == LEFT)
+    // {
+    //     Xp = -Xp;
+    // }
+
+    // Przekształcenie współrzędnych nogi na globalne współrzędne robota
+    switch (leg_type)
+    {
+    case LEFT_FRONT:
+        position.data[0] = Xp - d1;
+        position.data[1] = Yp + d3;
+        position.data[2] = Zp - z_0;
+        break;
+    case LEFT_MIDDLE:
+        position.data[0] = Xp - d2;
+        position.data[1] = Yp;
+        position.data[2] = Zp - z_0;
+        break;
+    case LEFT_BACK:
+        position.data[0] = Xp - d1;
+        position.data[1] = Yp - d3;
+        position.data[2] = Zp - z_0;
+        break;
+    case RIGHT_FRONT:
+        position.data[0] = Xp + d1;
+        position.data[1] = Yp + d3;
+        position.data[2] = Zp - z_0;
+        break;
+    case RIGHT_MIDDLE:
+        position.data[0] = Xp + d2;
+        position.data[1] = Yp;
+        position.data[2] = Zp - z_0;
+        break;
+    case RIGHT_BACK:
+        position.data[0] = Xp + d1;
+        position.data[1] = Yp - d3;
+        position.data[2] = Zp - z_0;
+        break;
+    default:
+        printf("Błędna pozycja nogi\n");
+        global_error++;
+        break;
+    }
+
+    return position;
+}
+
 Matrix3 createJacobian(double q1, double q2, double q3, double k)
 { // kąty w radianach
 
@@ -46,7 +108,7 @@ Matrix3 createJacobian(double q1, double q2, double q3, double k)
 Matrix3 createInversedJacobian(Vector3 initial_angles)
 {
 
-     Matrix3 inversed_jacobian;
+    Matrix3 inversed_jacobian;
 
     double l1 = L1;
     double l2 = L2;
@@ -95,33 +157,38 @@ Matrix3 createInversedJacobian(Vector3 initial_angles)
     return inversed_jacobian;
 }
 
-Vector3 calculateLegVelocity(Vector3 leg_start_pos, double robot_center_velocity, double robot_arc_radius)
+Vector3 makeProtractionCurve(Vector3 dp, double t, double period)
 {
-    double omega = robot_center_velocity / robot_arc_radius;
-    Vector3 leg_radius;                // r_s1 ^R
-    Vector3 leg_velocity_arc_center;   // v_s1^R
-    Vector3 leg_velocity_robot_center; // v_sq1R^R
-    Vector3 omega_vector;
 
-    leg_radius.data[X] = leg_start_pos.data[X] - robot_arc_radius;
-    leg_radius.data[Y] = leg_start_pos.data[Y];
-    leg_radius.data[Z] = 0;
+    Vector3 result;
 
-    omega_vector.data[X] = 0;
-    omega_vector.data[Y] = 0;
-    omega_vector.data[Z] = omega;
+    result = vectorMultiplyByConst(dp, t);
+    result.data[Y] = result.data[Y] * -1;
 
-    leg_velocity_arc_center = crossProduct(omega_vector, leg_radius);
+    result.data[Z] = -sin((MY_PI * (t - (period / 2))) / (period / 2)) * h_const;
 
-    /*leg_velocity_arc_center.data[X] = -omega * leg_radius.data[Y];
-    leg_velocity_arc_center.data[Y] = omega * leg_radius.data[X];
-    leg_velocity_arc_center.data[Z] = 0;*/
+    return result;
+}
 
-    leg_velocity_robot_center.data[X] = -leg_velocity_arc_center.data[X] - 0;
-    leg_velocity_robot_center.data[Y] = -leg_velocity_arc_center.data[Y] - robot_center_velocity;
-    leg_velocity_robot_center.data[Z] = 0;
+Vector3 calculateDeltaQ(LegType leg_type, RobotSide robot_side, Vector3 q_actual, double t, double delta_t, Vector3 curve_t, Vector3 curve_t_delta_t)
+{
+    // Oblicz aktualną pozycję końcówki nogi na podstawie kątów przegubów
+    Vector3 p_actual = getPositionFromAngles(leg_type, robot_side, q_actual);
 
-    return leg_velocity_robot_center;
+    // Oblicz przewidywane pozycje trajektorii w chwili t i t + delta_t
+    Vector3 y_tray_t = vectorAdd(p_actual, curve_t);
+    Vector3 y_tray_t_delta_t = vectorAdd(p_actual, curve_t_delta_t);
+
+    // Oblicz różnicę pozycji trajektorii
+    Vector3 delta_p = vectorSub(y_tray_t_delta_t, y_tray_t);
+
+    // Utwórz odwróconą macierz Jacobiego na podstawie aktualnych kątów przegubów
+    Matrix3 inversed_jacobian = createInversedJacobian(q_actual);
+
+    // Oblicz różnicę kątów przegubów
+    Vector3 delta_q = multiplyMatrixByVector(inversed_jacobian, delta_p);
+
+    return delta_q;
 }
 
 #endif // JACOBIAN.H
