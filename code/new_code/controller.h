@@ -4,32 +4,111 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
-SDL_GameController* initXboxController() {
-    // Inicjalizacja SDL
-    if (SDL_Init(SDL_INIT_GAMECONTROLLER) < 0) {
-        printf("Nie udało się zainicjować SDL: %s\n", SDL_GetError());
+#define CONTROLLER_A 0
+#define CONTROLLER_B 1
+#define CONTROLLER_Y 4
+#define CONTROLLER_X 3
+// #define CONTROLLER_UP 11
+// #define CONTROLLER_DOWN 12
+// #define CONTROLLER_LEFT 13
+// #define CONTROLLER_RIGHT 14
+#define CONTROLLER_START 11
+#define CONTROLLER_BACK 10
+#define CONTROLLER_SETUP 13 // kulka
+#define CONTROLLER_R_AXIS_BUTTON 14
+#define CONTROLLER_LB 6
+#define CONTROLLER_RB 7
+#define CONTROLLER_LT 8
+#define CONTROLLER_RT 9
+
+#define LEFT_AXIS_X 0
+#define LEFT_AXIS_Y 1
+#define RIGHT_AXIS_X 2
+#define RIGHT_AXIS_Y 3
+#define LEFT_TRIGGER_AXIS 5
+#define RIGHT_TRIGGER_AXIS 6
+
+#define MAX_BUTTONS 15 // Maksymalna liczba przycisków
+#define MAX_AXES 6     // Maksymalna liczba osi
+
+// Struktura do przechowywania stanu przycisków i osi
+typedef struct
+{
+    bool buttons[MAX_BUTTONS]; // Stan przycisków
+    int axes[MAX_AXES];        // Wartości osi
+} ControllerStates;
+
+// Funkcja do inicjalizacji joysticka
+SDL_Joystick *initialize_joystick()
+{
+    if (SDL_Init(SDL_INIT_JOYSTICK) < 0)
+    {
+        printf("Nie można zainicjalizować SDL: %s\n", SDL_GetError());
         return NULL;
     }
 
-    // Sprawdzenie, czy jest dostępny kontroler
-    if (SDL_NumJoysticks() < 1) {
-        printf("Nie podłączono żadnego kontrolera.\n");
+    // Sprawdzenie liczby podłączonych kontrolerów
+    if (SDL_NumJoysticks() < 1)
+    {
+        printf("Nie znaleziono żadnego kontrolera.\n");
         SDL_Quit();
         return NULL;
-    } else {
-        printf("Kontroler jest gotowy!\n");
     }
 
-    // Otwarcie kontrolera Xbox
-    SDL_GameController *controller = SDL_GameControllerOpen(0);
-    if (!controller) {
-        printf("Nie udało się otworzyć kontrolera: %s\n", SDL_GetError());
+    // Otwórz pierwszy joystick
+    SDL_Joystick *joystick = SDL_JoystickOpen(0);
+    if (!joystick)
+    {
+        printf("Nie można otworzyć joysticka: %s\n", SDL_GetError());
         SDL_Quit();
         return NULL;
     }
 
-    return controller;  // Zwracamy wskaźnik do kontrolera
+    printf("Joystick podłączony: %s\n", SDL_JoystickName(joystick));
+    return joystick;
 }
 
+// Funkcja do odczytu stanu przycisków i osi
+void read_controller_input(SDL_Joystick *joystick, ControllerStates *input_state)
+{
+    // Sprawdzenie stanu przycisków
+    int num_buttons = SDL_JoystickNumButtons(joystick);
+    for (int i = 0; i < num_buttons; i++)
+    {
+        input_state->buttons[i] = SDL_JoystickGetButton(joystick, i);
+    }
 
-#endif //CONTROLLER.H
+    // Sprawdzanie osi
+    int num_axes = SDL_JoystickNumAxes(joystick);
+    for (int i = 0; i < num_axes; i++)
+    {
+        input_state->axes[i] = SDL_JoystickGetAxis(joystick, i);
+    }
+}
+
+// Funkcja do obsługi stanu przycisków
+void handle_buttons(const ControllerStates *input_state)
+{
+    for (int i = 0; i < MAX_BUTTONS; i++)
+    {
+        if (input_state->buttons[i])
+        {
+            printf("Przycisk %d wciśnięty\n", i);
+        }
+        else
+        {
+            printf("Przycisk %d puszczony\n", i);
+        }
+    }
+}
+
+// Funkcja do obsługi osi
+void handle_axes(const ControllerStates *input_state)
+{
+    for (int i = 0; i < MAX_AXES; i++)
+    {
+        printf("Oś %d: %d\n", i, input_state->axes[i]);
+    }
+}
+
+#endif // CONTROLLER.H

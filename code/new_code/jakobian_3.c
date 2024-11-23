@@ -18,7 +18,7 @@ int main()
     Vector3 start_pos, start_angles_rad, start_angles_deg;
     Vector3 actual_q;
     double delta_time = 0.001; // s
-    double move_time = 1;     // s
+    double move_time = 1;      // s
     double t = 0;
     double period = 2 * move_time;
 
@@ -49,7 +49,7 @@ int main()
     start_pos = hexapod._LegsPositionRobotCenter[leg_type];
 
     double arc = 500;
-    double robot_speed = 80;
+    double robot_speed = 0;
 
     d_p = calculateLegVelocity(start_pos, robot_speed, arc);
 
@@ -73,7 +73,7 @@ int main()
 
     Vector3 curve_t, curve_t_delta_t;
     int iteration_count = 0;
-    for (int j = 0; j < 20; j++)
+    for (int j = 0; j < 5; j++)
     {
         // Pętla czasowa - symulacja ruchu
         unsigned long interval_ms = (unsigned long)(delta_time * 1000);
@@ -119,10 +119,10 @@ int main()
             }
 
         } while (millis() - start_time < target_duration_ms);
-        // actual_q = start_angles_rad;
-        // actual_pos = getPositionFromAngles(leg_type, robot_side, actual_q);
+        actual_q = start_angles_rad;
+        actual_pos = getPositionFromAngles(leg_type, robot_side, actual_q);
 
-        // printTwoVectors("ustawiam pozycjcje pocz angles", vectorMultiplyByConst(actual_q, RAD2DEG), "ustawiam pozycje pocz", actual_pos);
+        printTwoVectors("ustawiam pozycjcje pocz angles", vectorMultiplyByConst(actual_q, RAD2DEG), "ustawiam pozycje pocz", actual_pos);
     }
     printf("liczba iteracji:%d\n", iteration_count);
 

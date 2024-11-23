@@ -774,6 +774,7 @@ void initLegPositionRobotCenter(Robot *robot, LegType leg_type, double x, double
 
 void initRobot(Robot *robot)
 {
+    printf("#ROBAL: Cześć, to ja Robal!\n\n");
     // Inicjalizuj nogi robota
     initLeg(&robot->_legs[0], LEFT_FRONT);
     initLeg(&robot->_legs[1], LEFT_MIDDLE);
