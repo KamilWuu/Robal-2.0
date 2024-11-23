@@ -9,18 +9,17 @@ typedef struct Vector3
     double data[3];
 } Vector3;
 
-
-
-void printVector(const char *message, Vector3 vector) {
+void printVector(const char *message, Vector3 vector)
+{
     printf("%s = [", message);
-    printf(" %8.3f, ", vector.data[0]);
-    printf(" %8.3f, ", vector.data[1]);
-    printf(" %8.3f ", vector.data[2]);
+    printf(" %.3f, ", vector.data[0]);
+    printf(" %.3f, ", vector.data[1]);
+    printf(" %.3f ", vector.data[2]);
     printf("]\n");
 }
 
-
-void printTwoVectors(const char *message, Vector3 vector, const char *message_2, Vector3 vector_2) {
+void printTwoVectors(const char *message, Vector3 vector, const char *message_2, Vector3 vector_2)
+{
     printf("%s = [", message);
     printf(" %8.3f, ", vector.data[0]);
     printf(" %8.3f, ", vector.data[1]);
@@ -32,7 +31,6 @@ void printTwoVectors(const char *message, Vector3 vector, const char *message_2,
     printf(" %8.3f ", vector_2.data[2]);
     printf("]\n");
 }
-
 
 Vector3 vectorAdd(Vector3 v1, Vector3 v2)
 {

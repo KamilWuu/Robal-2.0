@@ -163,6 +163,7 @@ Vector3 makeProtractionCurve(Vector3 dp, double t, double period)
     Vector3 result;
 
     result = vectorMultiplyByConst(dp, t);
+    result.data[X] = result.data[X] * -1;
     result.data[Y] = result.data[Y] * -1;
 
     result.data[Z] = -sin((MY_PI * (t - (period / 2))) / (period / 2)) * h_const;

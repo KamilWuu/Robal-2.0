@@ -35,9 +35,9 @@ void printVector(Vector3 vector)
 {
     printf(" = [");
 
-    printf(" %8.3f, ", vector.data[0]);
-    printf(" %8.3f, ", vector.data[1]);
-    printf(" %8.3f ", vector.data[2]);
+    printf(" %.5f, ", vector.data[0]);
+    printf(" %8.8f, ", vector.data[1]);
+    printf(" %8.8f ", vector.data[2]);
 
     printf("]\n");
 }
