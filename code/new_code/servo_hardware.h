@@ -90,6 +90,7 @@ void SetServoAngle(RobotSide side, int q, int pca, int channel, double calculate
     if (angle > 270)
         angle = 270;
 
+    if(!BLOCK_SERVOS){
     int pulse_length = SERVO_MIN + (angle * (SERVO_MAX - SERVO_MIN) / 270);
     int on_time = 0;
     int off_time = pulse_length;
@@ -99,6 +100,7 @@ void SetServoAngle(RobotSide side, int q, int pca, int channel, double calculate
 
     wiringPiI2CWriteReg16(pca, led_on_l, on_time);
     wiringPiI2CWriteReg16(pca, led_off_l, off_time);
+    }
 }
 
 #endif // SERVO_HARDWARE.H

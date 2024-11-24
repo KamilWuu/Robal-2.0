@@ -9,6 +9,7 @@
 #include "data_structures.h"
 #include "velocity.h"
 #include "controller.h"
+#include "moves.h"
 #include <stdio.h>
 
 // Funkcja mapująca
@@ -39,6 +40,63 @@ int calculateArc(int x_axis_v)
     return arc_;
 }
 
+// Funkcja do obsługi stanu przycisków
+void handle_buttons(const ControllerStates *input_state, Robot *robot)
+{
+    for (int i = 0; i < MAX_BUTTONS; i++)
+    {
+
+        if ((input_state->buttons[CONTROLLER_SETUP]) & ((robot->_robotStepFase == SIT_DOWN) || (robot->_robotStepFase == WALKING_POSITION)))
+        {
+            double Z_speed = 100;
+            double Z_step_time = 0.01;
+            moveLegsZ(robot, z_const_stand_up, Z_speed, Z_step_time);
+            robot->_robotStepFase = STAND_UP;
+            printf("Stan robota: STAND_UP\n");
+        }
+        if ((input_state->buttons[CONTROLLER_BACK]) & ((robot->_robotStepFase == STAND_UP) || (robot->_robotStepFase == STOP_WALK) || (robot->_robotStepFase == PREPARE_FOR_WALK)))
+        {
+            double Z_speed = 100;
+            double Z_step_time = 0.01;
+            moveLegsZ(robot, -z_const_stand_up, Z_speed, Z_step_time);
+            robot->_robotStepFase = SIT_DOWN;
+            printf("Stan robota: SIT_DOWN\n");
+        }
+        if ((input_state->buttons[CONTROLLER_START]) & (robot->_robotStepFase == STAND_UP))
+        {
+            // przygotowanie do ruchu
+
+            robot->_robotStepFase = PREPARE_FOR_WALK;
+            printf("Stan robota: PREPARE_FOR_WALK\n");
+        }
+        if ((input_state->buttons[CONTROLLER_Y]) & ((robot->_robotStepFase == PREPARE_FOR_WALK) || (robot->_robotStepFase == STOP_WALK)))
+        {
+            // start ruchu
+            robot->_robotStepFase = WALK;
+            printf("Stan robota: WALK\n");
+        }
+        if ((input_state->buttons[CONTROLLER_A]) & (robot->_robotStepFase == WALK))
+        {
+            // stop ruchu
+            robot->_robotStepFase = STOP_WALK;
+            printf("Stan robota: STOP_WALK\n");
+        }
+    }
+}
+
+// Funkcja do obsługi osi
+void handle_axes(const ControllerStates *input_state, Robot *robot, int *arc)
+{
+    for (int i = 0; i < MAX_AXES; i++)
+    {
+        robot->_robot_velocity = map(input_state->axes[CONTROLLER_RIGHT_AXIS_Y], -MAX_AXIS_VALUE, MAX_AXIS_VALUE, MAX_SPEED, -MAX_SPEED);
+        *arc = calculateArc(input_state->axes[CONTROLLER_RIGHT_AXIS_X]);
+
+        // printf("Oś %d: %d\n", i, input_state->axes[i]);
+         printf("Predkość: %d\t, promień łuku: %d\n", robot->_robot_velocity, *arc);
+    }
+}
+
 // Funkcja, która obsługuje sygnał SIGINT (Ctrl+C)
 void handle_sigint(int sig)
 {
@@ -51,14 +109,17 @@ int main()
 {
 
     /*======CONSTANTS_TIME_S======*/
-    double delta_t = 0.001;
+    double delta_time = 0.001;
     double step_time = 1;
     double period = step_time * 2;
     /*======CONSTANTS======*/
 
     /*=====CONTROL=======*/
-    double robot_velocity = 0;    // mm/s
-    double arc_radius = 10000000; // mm
+    // int robot_velocity = 0;    // mm/s
+    int arc_radius = 10000000; // mm
+
+    double t;
+    double loop_time;
     /*=====CONTROL=======*/
 
     // Rejestracja handlera dla sygnału SIGINT (Ctrl+C)
@@ -70,8 +131,11 @@ int main()
     if (InitPCA9685(&pca_right, PCA_ADDRESS_RIGHT) == -1)
         return -1;
 
-    Robot Robal;
-    initRobot(&Robal);
+    Robot hexapod;
+    initRobot(&hexapod);
+    delay(500);
+
+    setWalkingPosition(&hexapod, 500);
 
     SDL_Joystick *joystick = initialize_joystick();
     if (!joystick)
@@ -82,29 +146,103 @@ int main()
     // Struktura przechowująca stan przycisków i osi
     ControllerStates input_state = {0}; // Początkowy stan bez przycisków i osi
 
+    hexapod._legs[RIGHT_MIDDLE]._leg_fase = FRONT_POS;
     // Główna pętla
     int running = 1;
     while (running)
     {
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
+
+        printf("=========== ROZPOCZĘCIE SYMULACJI RUCHU ===========\n");
+        // Vector3 actual_pos;
+        // actual_q = start_angles_rad;
+        // actual_pos = getPositionFromAngles(leg_type, robot_side, actual_q);
+
+        int iteration_count = 0;
+        for (;;)
         {
-            if (event.type == SDL_QUIT)
+
+            // Pętla czasowa - symulacja ruchu
+            unsigned long interval_ms = (unsigned long)(delta_time * 1000);
+            unsigned long start_time = millis();
+            unsigned long previous_time = start_time;
+            unsigned long target_duration_ms = (unsigned long)(period * 1000);
+
+            t = 0;
+            bool was_period_middle = false;
+            int x = 1;
+            printf("FAZA RETRAKCJI: \n");
+            do
             {
-                running = 0;
-            }
+
+                unsigned long current_time = millis();
+
+                if (current_time - previous_time >= interval_ms)
+                {
+                    previous_time = current_time;
+                    iteration_count++;
+
+                    /**
+                     * Petla wykonująca się co delta_time
+                     */
+
+                    SDL_Event event;
+                    while (SDL_PollEvent(&event))
+                    {
+                        if (event.type == SDL_QUIT)
+                        {
+                            running = 0;
+                        }
+                    }
+
+                    // Odczyt wszystkich danych z kontrolera
+                    read_controller_input(joystick, &input_state);
+
+                    // Obsługuje przyciski
+                    handle_buttons(&input_state, &hexapod);
+
+                    // Obsługuje osie
+                    handle_axes(&input_state, &hexapod, &arc_radius);
+
+                    if ((t >= step_time) & (!was_period_middle))
+                    {
+                        for (int it = 0; it < 6; it++)
+                        {
+
+                            if (hexapod._legs[it]._leg_fase = IN_PROTRACTION)
+                            {
+                                hexapod._legs[it]._leg_fase = FRONT_POS;
+                            }
+                            else if (hexapod._legs[it]._leg_fase = IN_RETRACTION)
+                            {
+                                hexapod._legs[it]._leg_fase = BACK_POS;
+                            }
+                        }
+                        was_period_middle = true;
+                    }
+                    // else
+                    // {
+                    //     if (x)
+                    //     {
+                    //         printf("FAZA PROTRAKCJI: \n");
+                    //         x = 0;
+                    //     }
+                    // }
+                    // printf("faza nogi prawej srodkowej:%d\n", hexapod._legs[RIGHT_MIDDLE]._leg_fase);
+                    actualizeLegs(&hexapod, t, delta_time, period);
+                    // printTwoVectors("actual_angles_deg", vectorMultiplyByConst(actual_q, RAD2DEG), "actual_pos", actual_pos);
+                    t += delta_time;
+                    loop_time += delta_time;
+                }
+
+            } while (millis() - start_time < target_duration_ms);
+            // tutaj korekcja bledow, ustawienie katow i pozycji początkowych
+            //  actual_q = start_angles_rad;
+            //  actual_pos = getPositionFromAngles(leg_type, robot_side, actual_q);
+
+            // printTwoVectors("ustawiam pozycjcje pocz angles", vectorMultiplyByConst(actual_q, RAD2DEG), "ustawiam pozycje pocz", actual_pos);
         }
 
-        // Odczyt wszystkich danych z kontrolera
-        read_controller_input(joystick, &input_state);
-
-        // Obsługuje przyciski
-        handle_buttons(&input_state);
-
-        // Obsługuje osie
-        handle_axes(&input_state);
-
-        SDL_Delay(16); // Opóźnienie dla odciążenia CPU
+        // SDL_Delay(16); // Opóźnienie dla odciążenia CPU
     }
 
     // Zamknięcie joysticka i wyczyszczenie SDL

@@ -4,6 +4,13 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
+#define MAX_AXIS_VALUE 32767
+#define AXIS_ZERO 128
+#define MAX_SPEED 160
+#define MIN_ARC 500
+#define MAX_ARC 10000
+#define ARC_STRAIGHT 10000000
+
 #define CONTROLLER_A 0
 #define CONTROLLER_B 1
 #define CONTROLLER_Y 4
@@ -21,12 +28,12 @@
 #define CONTROLLER_LT 8
 #define CONTROLLER_RT 9
 
-#define LEFT_AXIS_X 0
-#define LEFT_AXIS_Y 1
-#define RIGHT_AXIS_X 2
-#define RIGHT_AXIS_Y 3
-#define LEFT_TRIGGER_AXIS 5
-#define RIGHT_TRIGGER_AXIS 6
+#define CONTROLLER_LEFT_AXIS_X 0
+#define CONTROLLER_LEFT_AXIS_Y 1
+#define CONTROLLER_RIGHT_AXIS_X 2
+#define CONTROLLER_RIGHT_AXIS_Y 3
+#define CONTROLLER_LEFT_TRIGGER_AXIS 5
+#define CONTROLLER_RIGHT_TRIGGER_AXIS 6
 
 #define MAX_BUTTONS 15 // Maksymalna liczba przycisków
 #define MAX_AXES 6     // Maksymalna liczba osi
@@ -83,31 +90,6 @@ void read_controller_input(SDL_Joystick *joystick, ControllerStates *input_state
     for (int i = 0; i < num_axes; i++)
     {
         input_state->axes[i] = SDL_JoystickGetAxis(joystick, i);
-    }
-}
-
-// Funkcja do obsługi stanu przycisków
-void handle_buttons(const ControllerStates *input_state)
-{
-    for (int i = 0; i < MAX_BUTTONS; i++)
-    {
-        if (input_state->buttons[i])
-        {
-            printf("Przycisk %d wciśnięty\n", i);
-        }
-        else
-        {
-            printf("Przycisk %d puszczony\n", i);
-        }
-    }
-}
-
-// Funkcja do obsługi osi
-void handle_axes(const ControllerStates *input_state)
-{
-    for (int i = 0; i < MAX_AXES; i++)
-    {
-        printf("Oś %d: %d\n", i, input_state->axes[i]);
     }
 }
 

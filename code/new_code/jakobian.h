@@ -157,7 +157,7 @@ Matrix3 createInversedJacobian(Vector3 initial_angles)
     return inversed_jacobian;
 }
 
-Vector3 makeProtractionCurve(Vector3 dp, double t, double period)
+Vector3 makeProtractionCurve(Vector3 dp, double t, double period, double v)
 {
 
     Vector3 result;
@@ -166,7 +166,14 @@ Vector3 makeProtractionCurve(Vector3 dp, double t, double period)
     result.data[X] = result.data[X] * -1;
     result.data[Y] = result.data[Y] * -1;
 
-    result.data[Z] = -sin((MY_PI * (t - (period / 2))) / (period / 2)) * h_const;
+    if (v != 0)
+    {
+        result.data[Z] = -sin((MY_PI * (t - (period / 2))) / (period / 2)) * h_const;
+    }
+    else
+    {
+        result.data[Z] = 0;
+    }
 
     return result;
 }

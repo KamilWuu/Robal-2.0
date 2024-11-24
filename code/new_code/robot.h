@@ -46,8 +46,15 @@ typedef struct Leg
 
     Vector3 _leg_linear_velocity;
 
-    Vector3 _leg_joint_angles;
-    Vector3 _leg_joint_velocities;
+    Vector3 _leg_curve_t;
+    Vector3 _leg_curve_t_delta_t;
+
+    Vector3 _leg_q_delta;
+    Vector3 _leg_actual_q;
+
+    LegFase _leg_fase;
+
+    Vector3 _leg_start_angles;
 
 } Leg;
 
@@ -56,8 +63,9 @@ typedef struct Robot
 {
     Leg _legs[6]; // Tablica sześciu nóg (po trzy na każdą stronę)
     Vector3 _LegsPositionRobotCenter[6];
+    Vector3 _LegsStartPositions[6];
     StepFase _robotStepFase;
-    double _robot_velocity; // mm/s
+    int _robot_velocity; // mm/s
 
 } Robot;
 
@@ -84,22 +92,31 @@ void printRobotStepFase(Robot *robot)
     case SIT_DOWN:
         printf("Stan robota: SIT DOWN\n");
         break;
-
-    case LF_LB_RM_PROT:
-        printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE PROTRACTION\n");
+    case PREPARE_FOR_WALK:
+        printf("Stan robota: PREPARE_FOR_WALK\n");
+        break;
+    case WALK:
+        printf("Stan robota: WALK\n");
+        break;
+    case STOP_WALK:
+        printf("Stan robota: STOP_WALK\n");
         break;
 
-    case LM_RF_RB_PROT:
-        printf("Stan robota: LEFT MIDDLE RIGHT FRONT RIGHT BACK PROTRACTION\n");
-        break;
+        // case LF_LB_RM_PROT:
+        //     printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE PROTRACTION\n");
+        //     break;
 
-    case LF_LB_RM_PROT__LM_RF_RB_RETR:
-        printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE PROTRACTION with LEFT MIDDLE RIGHT FRONT RIGHT BACK RETRACTION\n");
-        break;
+        // case LM_RF_RB_PROT:
+        //     printf("Stan robota: LEFT MIDDLE RIGHT FRONT RIGHT BACK PROTRACTION\n");
+        //     break;
 
-    case LF_LB_RM_RETR__LM_RF_RB_PROT:
-        printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE RETRACTION with LEFT MIDDLE RIGHT FRONT RIGHT BACK PROTRACTION\n");
-        break;
+        // case LF_LB_RM_PROT__LM_RF_RB_RETR:
+        //     printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE PROTRACTION with LEFT MIDDLE RIGHT FRONT RIGHT BACK RETRACTION\n");
+        //     break;
+
+        // case LF_LB_RM_RETR__LM_RF_RB_PROT:
+        //     printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE RETRACTION with LEFT MIDDLE RIGHT FRONT RIGHT BACK PROTRACTION\n");
+        //     break;
 
     default:
         printf("Stan robota: NIEZNANY STAN\n");
@@ -622,13 +639,13 @@ void calculateInvertedKinematics(Leg *leg)
     }*/
 
     leg->_q1_servo._target_angle = Q1;
-    leg->_leg_joint_angles.data[0] = Q1;
+    leg->_leg_actual_q.data[0] = Q1;
 
     leg->_q2_servo._target_angle = Q2;
-    leg->_leg_joint_angles.data[1] = Q2;
+    leg->_leg_actual_q.data[1] = Q2;
 
     leg->_q3_servo._target_angle = Q3;
-    leg->_leg_joint_angles.data[2] = Q3;
+    leg->_leg_actual_q.data[2] = Q3;
     // printf("Q1 = %.2f\n", leg->_q1_servo._target_angle);
     // printf("Q2 = %.2f\n", leg->_q2_servo._target_angle);
     // printf("Q3 = %.2f\n", leg->_q3_servo._target_angle);
@@ -921,16 +938,16 @@ void printLeg(Leg leg)
     printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 }
 
-void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, Vector3 pos)
+void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, double x, double y, double z)
 {
-    Vector3 calc_pos;
+    Vector3 calc_pos, pos;
     double xp, yp, zp;
-    double x, y, z;
+
     zp = z + z_0;
 
-    x = pos.data[X];
-    y = pos.data[Y];
-    z = pos.data[Z];
+    pos.data[0] = x;
+    pos.data[1] = y;
+    pos.data[2] = z;
 
     if (checkPosition(leg_type, pos))
     {
@@ -988,39 +1005,92 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, Vector3 pos)
     }
 }
 
-void calculatePosFromAngles(Leg *leg)
-{
-}
+// void calculatePosFromAngles(Leg *leg)
+// {
+// }
 
-void calculatePosError(Leg *leg)
-{
+// void calculatePosError(Leg *leg)
+// {
 
-    for (int i = 0; i < 3; i++)
-    {
-        leg->_pos_error.data[i] = leg->_target_pos.data[i] - leg->_calculated_leg_pos.data[i];
-    }
-}
+//     for (int i = 0; i < 3; i++)
+//     {
+//         leg->_pos_error.data[i] = leg->_target_pos.data[i] - leg->_calculated_leg_pos.data[i];
+//     }
+// }
 
-void positionCorrection(Leg *leg)
-{
+// void positionCorrection(Leg *leg)
+// {
 
-    if (fabs(leg->_pos_error.data[X]) > X_POS_MAX_ERROR)
-    {
-    }
-    if (fabs(leg->_pos_error.data[Y]) > Y_POS_MAX_ERROR)
-    {
-    }
-    if (fabs(leg->_pos_error.data[Z]) > Z_POS_MAX_ERROR)
-    {
-    }
-}
+//     if (fabs(leg->_pos_error.data[X]) > X_POS_MAX_ERROR)
+//     {
+//     }
+//     if (fabs(leg->_pos_error.data[Y]) > Y_POS_MAX_ERROR)
+//     {
+//     }
+//     if (fabs(leg->_pos_error.data[Z]) > Z_POS_MAX_ERROR)
+//     {
+//     }
+// }
 
-Vector3 calculateLegsVelocities(Robot *robot, double arc_radius)
+Vector3 calculateLegsVelocities(Robot *robot, int arc_radius, int robot_velocity)
 {
 
     for (int i = 0; i < 6; i++)
     {
-        calculateLegVelocity(robot->_legs[i]._current_pos, robot->_robot_velocity, arc_radius);
+        robot->_legs[i]._leg_linear_velocity = calculateLegVelocity(robot->_legs[i]._current_pos, robot_velocity, arc_radius);
+    }
+}
+
+void calculateLegsCurvesT(Robot *robot, double t, double delta_time, double period)
+{
+
+    for (int i = 0; i < 6; i++)
+    {
+
+        if ((robot->_legs[i]._leg_fase == BACK_POS) || (robot->_legs[i]._leg_fase == IN_PROTRACTION))
+        {
+            // calculate protraction curve
+            robot->_legs[i]._leg_curve_t = makeProtractionCurve(robot->_legs[i]._leg_linear_velocity, t, period, robot->_robot_velocity);
+            robot->_legs[i]._leg_curve_t_delta_t = makeProtractionCurve(robot->_legs[i]._leg_linear_velocity, t + delta_time, period, robot->_robot_velocity);
+            robot->_legs[i]._leg_fase = IN_PROTRACTION;
+        }
+        else if ((robot->_legs[i]._leg_fase == FRONT_POS) || (robot->_legs[i]._leg_fase == IN_RETRACTION))
+        {
+            // calculate retraction curve
+            robot->_legs[i]._leg_curve_t = vectorMultiplyByConst(robot->_legs[i]._leg_linear_velocity, t);
+            robot->_legs[i]._leg_curve_t_delta_t = vectorMultiplyByConst(robot->_legs[i]._leg_linear_velocity, t + delta_time);
+            robot->_legs[i]._leg_fase = IN_RETRACTION;
+        }
+    }
+
+    // if (t < step_time)
+    // {
+    //     curve_t = vectorMultiplyByConst(d_p, t);
+    //     curve_t_delta_t = vectorMultiplyByConst(d_p, t + delta_time);
+    // }
+    // else
+    // {
+    //     if (x)
+    //     {
+    //         printf("FAZA PROTRAKCJI: \n");
+    //         x = 0;
+    //     }
+    //     curve_t = makeProtractionCurve(d_p, t, period, robot_velocity);
+    //     curve_t_delta_t = makeProtractionCurve(d_p, t + delta_time, period, robot_velocity);
+    // }
+}
+
+void actualizeLegs(Robot *robot, double t, double delta_time, double period)
+{
+
+    calculateLegsCurvesT(robot, t, delta_time, period);
+
+    for (int i = 0; i < 6; i++)
+    {
+        robot->_legs[i]._leg_q_delta = calculateDeltaQ(robot->_legs[i]._leg_type, robot->_legs[i]._side, robot->_legs[i]._leg_actual_q, t, delta_time, robot->_legs[i]._leg_curve_t, robot->_legs[i]._leg_curve_t_delta_t);
+        robot->_legs[i]._leg_actual_q = vectorAdd(robot->_legs[i]._leg_actual_q, robot->_legs[i]._leg_q_delta);
+        robot->_LegsPositionRobotCenter[i] = getPositionFromAngles(robot->_legs[i]._leg_type, robot->_legs[i]._side, robot->_legs[i]._leg_actual_q);
+        // tutaj trzeba ustawić kąty
     }
 }
 
