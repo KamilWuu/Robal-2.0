@@ -10,7 +10,6 @@
 #include "kinematics.h"
 #include "transformMatrix.h"
 
-
 // Definicja typu dla stron robota (lewa, prawa)
 typedef enum
 {
@@ -57,35 +56,30 @@ typedef struct
     float _current_pos[3]; // Aktualna pozycja końcówki nogi [x, y, z]
     float _target_pos[3];  // Docelowa pozycja końcówki nogi [x, y, z]
 
-
-
 } Leg;
 
-
-
 /*
-Protraction – This is the phase where the robot’s leg is lifted and moved forward in preparation 
-for contact with the ground in a new position. During protraction, the leg swings forward to set 
+Protraction – This is the phase where the robot’s leg is lifted and moved forward in preparation
+for contact with the ground in a new position. During protraction, the leg swings forward to set
 up the next step. This phase is essential for redistributing weight and preparing for the next stride.
 
-Retraction – This phase occurs when the robot’s leg presses down against the ground and moves backward 
-relative to the robot's body, pushing the robot forward. Retraction is when the leg is in contact with 
+Retraction – This phase occurs when the robot’s leg presses down against the ground and moves backward
+relative to the robot's body, pushing the robot forward. Retraction is when the leg is in contact with
 the ground and generates the propulsive force needed for movement.
 */
 
-
-typedef enum {
+typedef enum
+{
     UNKNOWN,
     TRANSPORT_POSITION,
     WALKING_POSITION,
     STAND_UP,
     SIT_DOWN,
-    LF_LB_RM_PROT, //przygotowanie do ruchu, protrakcja LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE  bez retrakcji pozostalych
-    LM_RF_RB_PROT, //przygotowanie do ruchu, protrakcja LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK bez retrakcji pozostalych
-    LF_LB_RM_PROT__LM_RF_RB_RETR,   // LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE_PROTRACTION__LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK_RETRACTION
-    LF_LB_RM_RETR__LM_RF_RB_PROT    // LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE_RETRACTION__LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK_PROTRACTION
+    LF_LB_RM_PROT,                // przygotowanie do ruchu, protrakcja LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE  bez retrakcji pozostalych
+    LM_RF_RB_PROT,                // przygotowanie do ruchu, protrakcja LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK bez retrakcji pozostalych
+    LF_LB_RM_PROT__LM_RF_RB_RETR, // LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE_PROTRACTION__LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK_RETRACTION
+    LF_LB_RM_RETR__LM_RF_RB_PROT  // LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE_RETRACTION__LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK_PROTRACTION
 } StepFase;
-
 
 // Struktura dla robota, który ma 6 nóg
 typedef struct
@@ -95,70 +89,66 @@ typedef struct
     StepFase _robotStepFase;
 } Robot;
 
+void printRobotStepFase(Robot *robot)
+{
+    switch (robot->_robotStepFase)
+    {
+    case UNKNOWN:
+        printf("Stan robota: UNKNOWN\n");
+        break;
 
+    case TRANSPORT_POSITION:
+        printf("Stan robota: TRANSPORT POSITION\n");
+        break;
 
+    case WALKING_POSITION:
+        printf("Stan robota: WALKING POSITION\n");
+        break;
 
-void printRobotStepFase(Robot *robot) {
-    switch (robot->_robotStepFase) {
-        case UNKNOWN:
-            printf("Stan robota: UNKNOWN\n");
-            break;
+    case STAND_UP:
+        printf("Stan robota: STAND UP\n");
+        break;
 
-        case TRANSPORT_POSITION:
-            printf("Stan robota: TRANSPORT POSITION\n");
-            break;
+    case SIT_DOWN:
+        printf("Stan robota: SIT DOWN\n");
+        break;
 
-        case WALKING_POSITION:
-            printf("Stan robota: WALKING POSITION\n");
-            break;
+    case LF_LB_RM_PROT:
+        printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE PROTRACTION\n");
+        break;
 
-        case STAND_UP:
-            printf("Stan robota: STAND UP\n");
-            break;
+    case LM_RF_RB_PROT:
+        printf("Stan robota: LEFT MIDDLE RIGHT FRONT RIGHT BACK PROTRACTION\n");
+        break;
 
-        case SIT_DOWN:
-            printf("Stan robota: SIT DOWN\n");
-            break;
+    case LF_LB_RM_PROT__LM_RF_RB_RETR:
+        printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE PROTRACTION with LEFT MIDDLE RIGHT FRONT RIGHT BACK RETRACTION\n");
+        break;
 
-        case LF_LB_RM_PROT:
-            printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE PROTRACTION\n");
-            break;
+    case LF_LB_RM_RETR__LM_RF_RB_PROT:
+        printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE RETRACTION with LEFT MIDDLE RIGHT FRONT RIGHT BACK PROTRACTION\n");
+        break;
 
-        case LM_RF_RB_PROT:
-            printf("Stan robota: LEFT MIDDLE RIGHT FRONT RIGHT BACK PROTRACTION\n");
-            break;
-
-        case LF_LB_RM_PROT__LM_RF_RB_RETR:
-            printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE PROTRACTION with LEFT MIDDLE RIGHT FRONT RIGHT BACK RETRACTION\n");
-            break;
-
-        case LF_LB_RM_RETR__LM_RF_RB_PROT:
-            printf("Stan robota: LEFT FRONT LEFT BACK RIGHT MIDDLE RETRACTION with LEFT MIDDLE RIGHT FRONT RIGHT BACK PROTRACTION\n");
-            break;
-
-        default:
-            printf("Stan robota: NIEZNANY STAN\n");
-            break;
+    default:
+        printf("Stan robota: NIEZNANY STAN\n");
+        break;
     }
 }
 
+void printLegsPositions(Robot *robot)
+{
 
-
-void printLegsPositions(Robot *robot) {
-    
-    
-    // Wyczyść terminal
-    #ifdef _WIN32
-        system("cls"); // Windows
-    #else
-        system("clear"); // Unix/Linux/MacOS
-    #endif
-    
+// Wyczyść terminal
+#ifdef _WIN32
+    system("cls"); // Windows
+#else
+    system("clear"); // Unix/Linux/MacOS
+#endif
 
     // Definicje kolorów
-    const char* RED = "\033[1;31m";
-    const char* BLUE = "\033[1;34m";
-    const char* RESET = "\033[0m";
+    const char *RED = "\033[1;31m";
+    const char *BLUE = "\033[1;34m";
+    const char *RESET = "\033[0m";
 
     // Wyświetlenie pozycji nóg
     printf("====================");
@@ -201,10 +191,6 @@ void printLegsPositions(Robot *robot) {
            RESET);
     printf("=================================================================================================================\n\n\n\n");
 }
-
-
-
-
 
 // Funkcja do pobierania kanału PCA na podstawie pozycji i kąta
 int getPCAChannel(LegPosition pos, int Q)
@@ -541,7 +527,6 @@ void initLeg(Leg *leg, LegPosition leg_position)
     }
 }
 
-
 int checkPosition(LegPosition pos, double x, double y, double z)
 {
 
@@ -632,8 +617,6 @@ int checkPosition(LegPosition pos, double x, double y, double z)
     }
 }
 
-
-
 void calculateInvertedKinematics(Leg *leg)
 {
 
@@ -696,13 +679,10 @@ void setTargetPos(Leg *leg, double xp, double yp, double zp)
     leg->_target_pos[2] = zp;
 }
 
-
 void initLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, double y, double z)
 {
     double xp, yp, zp;
     zp = z + z_0;
-
-    
 
     if (checkPosition(pos, x, y, z))
     {
@@ -765,7 +745,6 @@ void initRobot(Robot *robot)
     initLeg(&robot->_legs[4], RIGHT_MIDDLE);
     initLeg(&robot->_legs[5], RIGHT_BACK);
 
-
     initLegPositionRobotCenter(robot, LEFT_FRONT, -x_const, y_const, z_const_zero);
     initLegPositionRobotCenter(robot, LEFT_MIDDLE, -x_const, 0, z_const_zero);
     initLegPositionRobotCenter(robot, LEFT_FRONT, -x_const, -y_const, z_const_zero);
@@ -774,11 +753,8 @@ void initRobot(Robot *robot)
     initLegPositionRobotCenter(robot, RIGHT_MIDDLE, x_const, 0, z_const_zero);
     initLegPositionRobotCenter(robot, RIGHT_BACK, x_const, -y_const, z_const_zero);
 
-
     robot->_robotStepFase == UNKNOWN;
 }
-
-
 
 void moveToTargetPosition(Leg *leg)
 {
@@ -805,12 +781,15 @@ void moveToTargetPosition(Leg *leg)
         {
             SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._min_angle);
             leg->_q1_servo._current_angle = leg->_q1_servo._min_angle;
+            printf("q1_target angle = %2.f", leg->_q1_servo._target_angle);
             printf("Osiagnieto minimalna wartosc dla q1!\n");
         }
         else if (leg->_q1_servo._target_angle > leg->_q1_servo._max_angle)
         {
             SetServoAngle(leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._max_angle);
             leg->_q1_servo._current_angle = leg->_q1_servo._max_angle;
+
+            printf("q1_target angle = %2.f", leg->_q1_servo._target_angle);
             printf("Osiagnieto maksymalna wartosc dla q1!\n");
         }
         pos_true = 0;
@@ -907,20 +886,12 @@ void printLeg(Leg leg)
     printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 }
 
-
-
 void evaluateLegPositionArcCenter()
 
-
-
-
-
-void evaluateLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, double y, double z)
+    void evaluateLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, double y, double z)
 {
     double xp, yp, zp;
     zp = z + z_0;
-
-    
 
     if (checkPosition(pos, x, y, z))
     {
@@ -972,11 +943,8 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegPosition pos, double x, dou
         setTargetPos(&robot->_legs[pos], xp, yp, zp);
         calculateInvertedKinematics(&robot->_legs[pos]);
         moveToTargetPosition(&robot->_legs[pos]);
-        //printLeg(robot->_legs[pos]);
+        // printLeg(robot->_legs[pos]);
     }
 }
-
-
-
 
 #endif // ROBOT_H

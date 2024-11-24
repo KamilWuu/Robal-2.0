@@ -1,7 +1,6 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-
 // Definicja typu dla stron robota (lewa, prawa)
 typedef enum
 {
@@ -18,14 +17,12 @@ typedef enum
     ROT_Z
 } Rot;
 
-
 // Definicja typu dla stron robota (lewa, prawa)
 typedef enum
 {
     LEFT,
     RIGHT
 } RobotSide;
-
 
 // Definicja typu dla nóg robota
 typedef enum
@@ -38,18 +35,18 @@ typedef enum
     RIGHT_BACK    // Prawa tylna
 } LegType;
 
-
 /*
-Protraction – This is the phase where the robot’s leg is lifted and moved forward in preparation 
-for contact with the ground in a new position. During protraction, the leg swings forward to set 
+Protraction – This is the phase where the robot’s leg is lifted and moved forward in preparation
+for contact with the ground in a new position. During protraction, the leg swings forward to set
 up the next step. This phase is essential for redistributing weight and preparing for the next stride.
 
-Retraction – This phase occurs when the robot’s leg presses down against the ground and moves backward 
-relative to the robot's body, pushing the robot forward. Retraction is when the leg is in contact with 
+Retraction – This phase occurs when the robot’s leg presses down against the ground and moves backward
+relative to the robot's body, pushing the robot forward. Retraction is when the leg is in contact with
 the ground and generates the propulsive force needed for movement.
 */
 
-typedef enum {
+typedef enum
+{
     UNKNOWN,
     TRANSPORT_POSITION,
     WALKING_POSITION,
@@ -64,16 +61,23 @@ typedef enum {
     // LF_LB_RM_RETR__LM_RF_RB_PROT    // LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE_RETRACTION__LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK_PROTRACTION
 } StepFase;
 
-typedef enum {
+typedef enum
+{
     UNKNOWN_LEG_FASE,
-    BACK_POS,
+
     FRONT_POS,
-    IN_PROTRACTION,
-    IN_RETRACTION
+    IN_RETRACTION,
+    BACK_POS,
+    IN_PROTRACTION
 
-    } LegFase;
+} LegFase;
 
+const char *LegFaseTab[] = {
+        "UNKNOWN_LEG_FASE",
+        "FRONT_POS",
+        "IN_RETRACTION",
+        "BACK_POS",
+        "IN_PROTRACTION"
+    };
 
-
-
-#endif //ENUMS.H
+#endif // ENUMS.H

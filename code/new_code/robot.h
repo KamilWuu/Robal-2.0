@@ -518,95 +518,97 @@ void initLeg(Leg *leg, LegType leg_type)
 
 int checkPosition(LegType leg_type, Vector3 pos)
 {
-    double x = pos.data[X];
-    double y = pos.data[Y];
-    double z = pos.data[Z];
+    //
+    //     double x = pos.data[X];
+    //     double y = pos.data[Y];
+    //     double z = pos.data[Z];
 
-    switch (leg_type)
-    {
-    case LEFT_FRONT:
-        if (x < -L1 - d1 - L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi LEFT FRONT, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
-            global_error++;
-            return 0;
-        }
-        break;
+    //     switch (leg_type)
+    //     {
+    //     case LEFT_FRONT:
+    //         if (x < -L1 - d1 - L23)
+    //         {
+    //             return 1;
+    //         }
+    //         else
+    //         {
+    //             printf("Nieprawidlowa pozycja X dla nogi LEFT FRONT, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
+    //             global_error++;
+    //             return 0;
+    //         }
+    //         break;
 
-    case LEFT_MIDDLE:
-        if (x < -L1 - d2 - L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi LEFT MIDDLE, x = %2.f, warunek: X < %2.f\n", x, -L1 - d2 - L23);
-            global_error++;
-            return 0;
-        }
-        break;
+    //     case LEFT_MIDDLE:
+    //         if (x < -L1 - d2 - L23)
+    //         {
+    //             return 1;
+    //         }
+    //         else
+    //         {
+    //             printf("Nieprawidlowa pozycja X dla nogi LEFT MIDDLE, x = %2.f, warunek: X < %2.f\n", x, -L1 - d2 - L23);
+    //             global_error++;
+    //             return 0;
+    //         }
+    //         break;
 
-    case LEFT_BACK:
-        if (x < -L1 - d1 - L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi LEFT BACK, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
-            global_error++;
-            return 0;
-        }
-        break;
+    //     case LEFT_BACK:
+    //         if (x < -L1 - d1 - L23)
+    //         {
+    //             return 1;
+    //         }
+    //         else
+    //         {
+    //             printf("Nieprawidlowa pozycja X dla nogi LEFT BACK, x = %2.f, warunek: X < %2.f\n", x, -L1 - d1 - L23);
+    //             global_error++;
+    //             return 0;
+    //         }
+    //         break;
 
-    case RIGHT_FRONT:
-        if (x > L1 + d1 + L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
-            global_error++;
-            return 0;
-        }
-        break;
+    //     case RIGHT_FRONT:
+    //         if (x > L1 + d1 + L23)
+    //         {
+    //             return 1;
+    //         }
+    //         else
+    //         {
+    //             printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
+    //             global_error++;
+    //             return 0;
+    //         }
+    //         break;
 
-    case RIGHT_MIDDLE:
-        if (x > L1 + d2 + L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d2 + L23);
-            global_error++;
-            return 0;
-        }
-        break;
+    //     case RIGHT_MIDDLE:
+    //         if (x > L1 + d2 + L23)
+    //         {
+    //             return 1;
+    //         }
+    //         else
+    //         {
+    //             printf("Nieprawidlowa pozycja X dla nogi RIGHT FRONT, x = %2.f, warunek: X > %2.f\n", x, L1 + d2 + L23);
+    //             global_error++;
+    //             return 0;
+    //         }
+    //         break;
 
-    case RIGHT_BACK:
-        if (x > L1 + d1 + L23)
-        {
-            return 1;
-        }
-        else
-        {
-            printf("Nieprawidlowa pozycja X dla nogi RIGHT BACK, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
-            global_error++;
-            return 0;
-        }
-        break;
+    //     case RIGHT_BACK:
+    //         if (x > L1 + d1 + L23)
+    //         {
+    //             return 1;
+    //         }
+    //         else
+    //         {
+    //             printf("Nieprawidlowa pozycja X dla nogi RIGHT BACK, x = %2.f, warunek: X > %2.f\n", x, L1 + d1 + L23);
+    //             global_error++;
+    //             return 0;
+    //         }
+    //         break;
 
-    default:
-        printf("Nieprawidlowa pozycja nogi\n");
-        global_error++;
-        break;
-    }
+    //     default:
+    //         printf("Nieprawidlowa typ nogi\n");
+    //         global_error++;
+    //         break;
+    //     }
+    return true;
 }
 
 void calculateInvertedKinematics(Leg *leg)
@@ -621,10 +623,10 @@ void calculateInvertedKinematics(Leg *leg)
 
     double Xpz;
 
-    /**if (leg->_side == LEFT)
+    if (leg->_side == LEFT)
     {
         Xp = -Xp;
-    }*/
+    }
 
     Xpz = sqrt((Xp * Xp) + (Yp * Yp));
     Q1 = atan2(Yp, Xp);
@@ -633,10 +635,10 @@ void calculateInvertedKinematics(Leg *leg)
     Q3 = -Q3_1; // lub -Q3_2
     Q2 = atan2(Zp, (Xpz - L1)) + atan2(L3 * sin(-Q3), (L2 + L3 * cos(-Q3)));
 
-    /*if (leg->_side == LEFT)
+    if (leg->_side == LEFT)
     {
         Q1 += 180 * DEG2RAD;
-    }*/
+    }
 
     leg->_q1_servo._target_angle = Q1;
     leg->_leg_actual_q.data[0] = Q1;
@@ -836,12 +838,16 @@ void moveToTargetPosition(Leg *leg)
         {
             SetServoAngle(leg->_side, 1, leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._min_angle);
             leg->_q1_servo._current_angle = leg->_q1_servo._min_angle;
+            printf("q1_target angle rad= %.2f\n", leg->_q1_servo._target_angle);
+            printf("q1_target angle deg= %.2f\n", leg->_q1_servo._target_angle * RAD2DEG);
             printf("Osiagnieto minimalna wartosc dla q1!\n");
         }
         else if (leg->_q1_servo._target_angle > leg->_q1_servo._max_angle)
         {
             SetServoAngle(leg->_side, 1, leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._max_angle);
             leg->_q1_servo._current_angle = leg->_q1_servo._max_angle;
+            printf("q1_target angle rad= %.2f\n", leg->_q1_servo._target_angle);
+            printf("q1_target angle deg= %.2f\n", leg->_q1_servo._target_angle * RAD2DEG);
             printf("Osiagnieto maksymalna wartosc dla q1!\n");
         }
         pos_true = 0;
@@ -997,10 +1003,11 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, double x, do
         calc_pos.data[Y] = yp;
         calc_pos.data[Z] = zp;
 
-        // printf("pozycja %d dla: %.2f, %.2f, %.2f: \n" , pos, xp, yp, zp);
+        // printf("pozycja %d dla: %.2f, %.2f, %.2f: \n", leg_type, xp, yp, zp);
         setTargetPos(&robot->_legs[leg_type], calc_pos);
         calculateInvertedKinematics(&robot->_legs[leg_type]);
         moveToTargetPosition(&robot->_legs[leg_type]);
+
         // printLeg(robot->_legs[pos]);
     }
 }
@@ -1032,7 +1039,7 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, double x, do
 //     }
 // }
 
-Vector3 calculateLegsVelocities(Robot *robot, int arc_radius, int robot_velocity)
+void calculateLegsVelocities(Robot *robot, int arc_radius, int robot_velocity)
 {
 
     for (int i = 0; i < 6; i++)
@@ -1062,36 +1069,119 @@ void calculateLegsCurvesT(Robot *robot, double t, double delta_time, double peri
             robot->_legs[i]._leg_fase = IN_RETRACTION;
         }
     }
-
-    // if (t < step_time)
-    // {
-    //     curve_t = vectorMultiplyByConst(d_p, t);
-    //     curve_t_delta_t = vectorMultiplyByConst(d_p, t + delta_time);
-    // }
-    // else
-    // {
-    //     if (x)
-    //     {
-    //         printf("FAZA PROTRAKCJI: \n");
-    //         x = 0;
-    //     }
-    //     curve_t = makeProtractionCurve(d_p, t, period, robot_velocity);
-    //     curve_t_delta_t = makeProtractionCurve(d_p, t + delta_time, period, robot_velocity);
-    // }
 }
 
-void actualizeLegs(Robot *robot, double t, double delta_time, double period)
+void moveToActual_Q(Leg *leg)
 {
+    /*
+    Funkcja sprawdza, czy dany kąt docelowy (Q_docelowe) mieści się w przedziale ograniczonym jako min i max.
+    Jeśli tak, ustawia ten kąt na serwie i aktualizuje aktualny kąt jako docelowy.
+    Jeśli nie, ustawia odpowiednio wartość min lub max, zależnie od tego, która granica została przekroczona.
+    */
 
+    int pos_true = 1;
+
+    // Obsługa q1
+    if ((leg->_leg_actual_q.data[0] > leg->_q1_servo._min_angle) && (leg->_leg_actual_q.data[0] < leg->_q1_servo._max_angle))
+    {
+        SetServoAngle(leg->_side, 1, leg->_pca, leg->_q1_servo._pca_channel, leg->_leg_actual_q.data[0]);
+        leg->_q1_servo._current_angle = leg->_leg_actual_q.data[0];
+    }
+    else
+    {
+        if (leg->_leg_actual_q.data[0] < leg->_q1_servo._min_angle)
+        {
+            SetServoAngle(leg->_side, 1, leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._min_angle);
+            leg->_q1_servo._current_angle = leg->_q1_servo._min_angle;
+            leg->_leg_actual_q.data[0] = leg->_q1_servo._min_angle;
+            printf("Osiagnieto minimalna wartosc dla q1 w moveToActualQ!\n");
+        }
+        else if (leg->_leg_actual_q.data[0] > leg->_q1_servo._max_angle)
+        {
+            SetServoAngle(leg->_side, 1, leg->_pca, leg->_q1_servo._pca_channel, leg->_q1_servo._max_angle);
+            leg->_q1_servo._current_angle = leg->_q1_servo._max_angle;
+            leg->_leg_actual_q.data[0] = leg->_q1_servo._max_angle;
+            printf("Osiagnieto maksymalna wartosc dla q1 w moveToActualQ!\n");
+        }
+        pos_true = 0;
+    }
+
+    // Obsługa q2
+    if ((leg->_leg_actual_q.data[1] > leg->_q2_servo._min_angle) && (leg->_leg_actual_q.data[1] < leg->_q2_servo._max_angle))
+    {
+        SetServoAngle(leg->_side, 2, leg->_pca, leg->_q2_servo._pca_channel, leg->_leg_actual_q.data[1]);
+        leg->_q2_servo._current_angle = leg->_leg_actual_q.data[1];
+    }
+    else
+    {
+        if (leg->_leg_actual_q.data[1] < leg->_q2_servo._min_angle)
+        {
+            SetServoAngle(leg->_side, 2, leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._min_angle);
+            leg->_q2_servo._current_angle = leg->_q2_servo._min_angle;
+            leg->_leg_actual_q.data[1] = leg->_q2_servo._min_angle;
+            printf("Osiagnieto minimalna wartosc dla q2 w moveToActualQ!\n");
+        }
+        else if (leg->_leg_actual_q.data[1] > leg->_q2_servo._max_angle)
+        {
+            SetServoAngle(leg->_side, 2, leg->_pca, leg->_q2_servo._pca_channel, leg->_q2_servo._max_angle);
+            leg->_q2_servo._current_angle = leg->_q2_servo._max_angle;
+            leg->_leg_actual_q.data[1] = leg->_q2_servo._max_angle;
+            printf("Osiagnieto maksymalna wartosc dla q2 w moveToActualQ!\n");
+        }
+        pos_true = 0;
+    }
+
+    // Obsługa q3
+    if ((leg->_leg_actual_q.data[2] > leg->_q3_servo._min_angle) && (leg->_leg_actual_q.data[2] < leg->_q3_servo._max_angle))
+    {
+        SetServoAngle(leg->_side, 3, leg->_pca, leg->_q3_servo._pca_channel, leg->_leg_actual_q.data[2]);
+        leg->_q3_servo._current_angle = leg->_leg_actual_q.data[2];
+    }
+    else
+    {
+        if (leg->_leg_actual_q.data[2] < leg->_q3_servo._min_angle)
+        {
+            SetServoAngle(leg->_side, 3, leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._min_angle);
+            leg->_q3_servo._current_angle = leg->_q3_servo._min_angle;
+            leg->_leg_actual_q.data[2] = leg->_q3_servo._min_angle;
+            printf("Osiagnieto minimalna wartosc dla q3 w moveToActualQ!\n");
+        }
+        else if (leg->_leg_actual_q.data[2] > leg->_q3_servo._max_angle)
+        {
+            SetServoAngle(leg->_side, 3, leg->_pca, leg->_q3_servo._pca_channel, leg->_q3_servo._max_angle);
+            leg->_q3_servo._current_angle = leg->_q3_servo._max_angle;
+            leg->_leg_actual_q.data[2] = leg->_q3_servo._max_angle;
+            printf("Osiagnieto maksymalna wartosc dla q3 w moveToActualQ!\n");
+        }
+        pos_true = 0;
+    }
+
+    // Aktualizacja pozycji, jeśli wszystkie kąty są prawidłowe
+    if (pos_true == 1)
+    {
+        leg->_current_pos.data[X] = leg->_target_pos.data[X];
+        leg->_current_pos.data[Y] = leg->_target_pos.data[Y];
+        leg->_current_pos.data[Z] = leg->_target_pos.data[Z];
+    }
+}
+
+void actualizeLegs(Robot *robot, double t, double delta_time, double period, double arc)
+{
+    calculateLegsVelocities(robot, arc, robot->_robot_velocity);
     calculateLegsCurvesT(robot, t, delta_time, period);
 
     for (int i = 0; i < 6; i++)
     {
         robot->_legs[i]._leg_q_delta = calculateDeltaQ(robot->_legs[i]._leg_type, robot->_legs[i]._side, robot->_legs[i]._leg_actual_q, t, delta_time, robot->_legs[i]._leg_curve_t, robot->_legs[i]._leg_curve_t_delta_t);
+
         robot->_legs[i]._leg_actual_q = vectorAdd(robot->_legs[i]._leg_actual_q, robot->_legs[i]._leg_q_delta);
         robot->_LegsPositionRobotCenter[i] = getPositionFromAngles(robot->_legs[i]._leg_type, robot->_legs[i]._side, robot->_legs[i]._leg_actual_q);
+        initLegPositionRobotCenter(robot, i, robot->_LegsPositionRobotCenter[i].data[X], robot->_LegsPositionRobotCenter[i].data[Y], robot->_LegsPositionRobotCenter[i].data[Z]);
+
         // tutaj trzeba ustawić kąty
+        // moveToActual_Q(&robot->_legs[i]);
     }
+   // printVector("leg_q_delta ", vectorMultiplyByConst(robot->_legs[4]._leg_q_delta, RAD2DEG));
 }
 
 #endif // ROBOT_H

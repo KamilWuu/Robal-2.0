@@ -52,6 +52,7 @@ void SetServoAngle(RobotSide side, int q, int pca, int channel, double calculate
         switch (q)
         {
         case 1:
+        
             angle = 135 - (calculated_angle_rad * RAD2DEG);
             break;
         case 2:
@@ -71,7 +72,9 @@ void SetServoAngle(RobotSide side, int q, int pca, int channel, double calculate
         switch (q)
         {
         case 1:
-            angle = 135 + (calculated_angle_rad * RAD2DEG);
+            // printf("calcl angle %.2f\n", calculated_angle_rad * RAD2DEG);
+            angle = 135 + (calculated_angle_rad * RAD2DEG) - 180;
+            // printf("angle1 = %.2f\n", angle);
             break;
         case 2:
             angle = 135 - (calculated_angle_rad * RAD2DEG);
@@ -90,16 +93,19 @@ void SetServoAngle(RobotSide side, int q, int pca, int channel, double calculate
     if (angle > 270)
         angle = 270;
 
-    if(!BLOCK_SERVOS){
-    int pulse_length = SERVO_MIN + (angle * (SERVO_MAX - SERVO_MIN) / 270);
-    int on_time = 0;
-    int off_time = pulse_length;
+    // printf("angle = %.2f\n", angle);
 
-    int led_on_l = LED0_ON_L + 4 * channel;
-    int led_off_l = led_on_l + 2;
+    if (!BLOCK_SERVOS)
+    {
+        int pulse_length = SERVO_MIN + (angle * (SERVO_MAX - SERVO_MIN) / 270);
+        int on_time = 0;
+        int off_time = pulse_length;
 
-    wiringPiI2CWriteReg16(pca, led_on_l, on_time);
-    wiringPiI2CWriteReg16(pca, led_off_l, off_time);
+        int led_on_l = LED0_ON_L + 4 * channel;
+        int led_off_l = led_on_l + 2;
+
+        wiringPiI2CWriteReg16(pca, led_on_l, on_time);
+        wiringPiI2CWriteReg16(pca, led_off_l, off_time);
     }
 }
 
