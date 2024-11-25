@@ -18,9 +18,8 @@ typedef struct Servo
     uint8_t _pca_channel;  // Kanał na PCA
     double _min_angle;     // Minimalny kąt serwa
     double _max_angle;     // Maksymalny kąt serwa
-    double _current_angle; // Aktualny kąt serwa
-    double _last_angle;    // Ostatni zapisany kąt serwa
-    double _target_angle;
+
+    double _servo_angle; // Aktualny kąt serwa w kątach z rzeczywistą korektą na rzeczywiste kąty  (135stopni)
 
 } Servo;
 
@@ -30,42 +29,39 @@ typedef struct Leg
 
     LegType _leg_type; // Pozycja: przód, środek, tył
     RobotSide _side;   // Lewa (LEFT) lub prawa (RIGHT) strona
-    int _pca;          // które pca
+    uint8_t _pca;          // które pca
 
-    Servo _q1_servo; // Serwo dla kąta Q1
-    Servo _q2_servo; // Serwo dla kąta Q2
-    Servo _q3_servo; // Serwo dla kąta Q3
-
-    Vector3 _current_pos; // Aktualna pozycja końcówki nogi [x, y, z]
-    Vector3 _last_pos;
-    Vector3 _target_pos;
-
-    Vector3 _calculated_leg_pos;
-
-    Vector3 _pos_error;
-
-    Vector3 _leg_linear_velocity;
-
-    Vector3 _leg_curve_t;
-    Vector3 _leg_curve_t_delta_t;
-
-    Vector3 _leg_q_delta;
-    Vector3 _leg_actual_q;
+    Servo _leg_servos[3]; // Serwa dla nogi
 
     LegFase _leg_fase;
 
-    Vector3 _leg_start_angles;
+    Vector3 _leg_position; // Aktualna pozycja końcówki nogi [x, y, z]
+    Vector3 _leg_linear_velocity;   //predkosc liniowa nogi [x_d, y_d, z_d]
+
+    Vector3 _leg_curve_t;           //trajektoria nogi od t
+    Vector3 _leg_curve_t_delta_t;   //trajektoria nogi od t + delta_t
+
+    Vector3 _leg_q_delta;           //zmiana kątów w danej chwili , prędkosc rad/delta_t
+    Vector3 _leg_actual_q;          //aktualne kąty w przegubach w danej chwili w radianach
+
+    
+
+    Vector3 _leg_start_angles;      //kąty początkowe do korekcji błędów
+
+
+    // Vector3 _calculated_leg_pos; //wyliczona pozycja z kątów do korekcji bledow
+    // Vector3 _pos_error;          //blad pozycji
 
 } Leg;
 
 // Struktura dla robota, który ma 6 nóg
 typedef struct Robot
 {
-    Leg _legs[6]; // Tablica sześciu nóg (po trzy na każdą stronę)
-    Vector3 _LegsPositionRobotCenter[6];
-    Vector3 _LegsStartPositions[6];
-    StepFase _robotStepFase;
-    int _robot_velocity; // mm/s
+    Leg _legs[6];                           // Tablica sześciu nóg (po trzy na każdą stronę)
+    Vector3 _LegsPositionRobotCenter[6];    //pozycje koncowek nóg względem środka robota
+    Vector3 _LegsStartPositions[6];         //pozycje początkowe wzgledem srodka robota do korekcji bledow 
+    StepFase _robotStepFase;                //faza w jakiej znajduje się robot
+    int _robot_velocity;                    // predkosc srodka robota wzdluz osi y w ukladzie jego srodka mm/s
 
 } Robot;
 
@@ -448,6 +444,32 @@ int getMaxAngle(LegType leg_type, int Q)
     }
 }
 
+int getServoInitialAngle(Leg * leg, int Q){
+
+
+    return 0;
+}
+
+void initServos(Leg * leg){
+
+
+    for(int i = 0; i < 3; i++){
+
+        leg->_leg_servos[i].pca_channel = getPCAChannel(leg->_leg_type, i+1);
+
+        if (leg->_leg_servos[i]._pca_channel > 15)
+        {
+            printf("Cos poszlo nie tak dla pca channel q%d\n", i+1);
+            global_error++;
+        }
+
+        leg->leg_servos[i]._max_angle = getMaxAngle(leg->_leg_type, i+1);
+        leg->leg_servos[i]._min_angle = getMinAngle(leg->_leg_type, i+1);
+        leg->_leg_servos[i]._servo_angle = getServoInitialAngle(leg, i+1);
+    }
+
+}
+
 void initLeg(Leg *leg, LegType leg_type)
 {
     // Przypisz stronę i pozycję nogi
@@ -463,57 +485,21 @@ void initLeg(Leg *leg, LegType leg_type)
         leg->_pca = pca_right;
     }
 
-    // Inicjalizacja serw Q1
-    leg->_q1_servo._pca_channel = getPCAChannel(leg->_leg_type, 1);
-    if (leg->_q1_servo._pca_channel > 15)
-    {
-        printf("Cos poszlo nie tak dla pca channel q1\n");
-        global_error++;
+    initServos(leg);
+
+    leg->_leg_fase = UNKNOWN_LEG_FASE;
+
+    for(int i = 0; i < 3; i++){
+        leg->_leg_position.data[i] = 0;
+        leg->_leg_linear_velocity.data[i] = 0;
+        leg->_leg_curve_t.data[i] = 0;
+        leg->_leg_curve_t_delta_t.data[i] = 0;
+        leg->_leg_q_delta.data[i] = 0;
+        leg->_leg_actual_q.data[i] = 0;
+        leg->leg_start_angles.data[i] = 0;
     }
-
-    leg->_q1_servo._min_angle = getMinAngle(leg->_leg_type, 1);
-    leg->_q1_servo._max_angle = getMaxAngle(leg->_leg_type, 1);
-
-    leg->_q1_servo._current_angle = getInitialAngle(1, leg->_side);
-    leg->_q1_servo._target_angle = getInitialAngle(1, leg->_side);
-    leg->_q1_servo._last_angle = getInitialAngle(1, leg->_side);
-
-    // Inicjalizacja serw Q2
-    leg->_q2_servo._pca_channel = getPCAChannel(leg->_leg_type, 2);
-    if (leg->_q2_servo._pca_channel > 15)
-    {
-        printf("Cos poszlo nie tak dla pca channel q2\n");
-        global_error++;
-    }
-
-    leg->_q2_servo._min_angle = getMinAngle(leg->_leg_type, 2);
-    leg->_q2_servo._max_angle = getMaxAngle(leg->_leg_type, 2);
-
-    leg->_q2_servo._current_angle = getInitialAngle(2, leg->_side);
-    leg->_q2_servo._target_angle = getInitialAngle(2, leg->_side);
-    leg->_q2_servo._last_angle = getInitialAngle(2, leg->_side);
-
-    // Inicjalizacja serw Q3
-    leg->_q3_servo._pca_channel = getPCAChannel(leg->_leg_type, 3);
-    if (leg->_q3_servo._pca_channel > 15)
-    {
-        printf("Cos poszlo nie tak dla pca channel q3\n");
-        global_error++;
-    }
-
-    leg->_q3_servo._min_angle = getMinAngle(leg->_leg_type, 3);
-    leg->_q3_servo._max_angle = getMaxAngle(leg->_leg_type, 3);
-
-    leg->_q3_servo._current_angle = getInitialAngle(3, leg->_side);
-    leg->_q3_servo._target_angle = getInitialAngle(3, leg->_side);
-    leg->_q3_servo._last_angle = getInitialAngle(3, leg->_side);
-
-    for (int i = 0; i < 3; i++)
-    {
-        leg->_current_pos.data[i] = 0;
-        leg->_target_pos.data[i] = 0;
-        leg->_last_pos.data[i] = 0;
-    }
+    
+    
 }
 
 int checkPosition(LegType leg_type, Vector3 pos)
@@ -810,7 +796,12 @@ void initRobot(Robot *robot)
     initLegPositionRobotCenter(robot, RIGHT_MIDDLE, x_const, 0, z_const_zero);
     initLegPositionRobotCenter(robot, RIGHT_BACK, x_const, -y_const, z_const_zero);
 
-    robot->_robotStepFase == UNKNOWN;
+    for(int i = 0 ; i < 6; i++){
+        robot->_LegsStartPositions[i] = robot->_LegsPositionRobotCenter[i];
+    }
+
+    robot->_robotStepFase = UNKNOWN;
+    robot->_robot_velocity = 0;
 }
 
 void moveToTargetPosition(Leg *leg)
