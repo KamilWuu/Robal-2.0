@@ -118,7 +118,7 @@ void setServoAngle(Leg *leg, Servo *servo, int q, double angle_rad) // zwraca fa
     else
     {
         servo->_servo_angle = servo_angle_deg_temp;
-        printf("na serwie %d, na nodze: %d, ustawiono kąt: %.2f\n", q, leg->_leg_type, servo_angle_deg_temp);
+        // printf("na serwie %d, na nodze: %d, ustawiono kąt: %.2f\n", q, leg->_leg_type, servo_angle_deg_temp);
     }
 
     writeServo(servo, leg->_pca);
@@ -162,59 +162,56 @@ void printRobotStepFase(Robot *robot)
     }
 }
 
-void printLegsPositions(Robot *robot)
+void printLegsPositions(Robot robot)
 {
 
-// Wyczyść terminal
-#ifdef _WIN32
-    system("cls"); // Windows
-#else
-    system("clear"); // Unix/Linux/MacOS
-#endif
+    // Wyczyść terminal
+    // #ifdef _WIN32
+    //     system("cls"); // Windows
+    // #else
+    //     system("clear"); // Unix/Linux/MacOS
+    // #endif
 
     // Definicje kolorów
     const char *RED = "\033[1;31m";
     const char *BLUE = "\033[1;34m";
     const char *RESET = "\033[0m";
 
-    // Wyświetlenie pozycji nóg
-    printf("====================");
-    printRobotStepFase(robot);
     printf("===========================================================================\n");
-    printf("%sLEFT_FRONT\t->\t[%lf; %lf; %lf]%s\t\t\t%s[%lf; %lf; %lf] <- RIGHT_FRONT%s\n",
+    printf("%sLEFT_FRONT\t->\t[%.2f; %.2f; %.2f]%s\t\t\t%s[%.2f; %.2f; %.2f] <- RIGHT_FRONT%s\n",
            RED,
-           robot->_LegsPositionRobotCenter[LEFT_FRONT].data[X],
-           robot->_LegsPositionRobotCenter[LEFT_FRONT].data[Y],
-           robot->_LegsPositionRobotCenter[LEFT_FRONT].data[Z],
+           robot._LegsPositionRobotCenter[LEFT_FRONT].data[X],
+           robot._LegsPositionRobotCenter[LEFT_FRONT].data[Y],
+           robot._LegsPositionRobotCenter[LEFT_FRONT].data[Z],
            RESET,
            BLUE,
-           robot->_LegsPositionRobotCenter[RIGHT_FRONT].data[X],
-           robot->_LegsPositionRobotCenter[RIGHT_FRONT].data[Y],
-           robot->_LegsPositionRobotCenter[RIGHT_FRONT].data[Z],
+           robot._LegsPositionRobotCenter[RIGHT_FRONT].data[X],
+           robot._LegsPositionRobotCenter[RIGHT_FRONT].data[Y],
+           robot._LegsPositionRobotCenter[RIGHT_FRONT].data[Z],
            RESET);
 
-    printf("%sLEFT_MIDDLE\t->\t[%lf; %lf; %lf]%s\t\t\t%s[%lf; %lf; %lf] <- RIGHT_MIDDLE%s\n",
+    printf("%sLEFT_MIDDLE\t->\t[%.2f; %.2f; %.2f]%s\t\t\t%s[%.2f; %.2f; %.2f] <- RIGHT_MIDDLE%s\n",
            BLUE,
-           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].data[X],
-           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].data[Y],
-           robot->_LegsPositionRobotCenter[LEFT_MIDDLE].data[Z],
+           robot._LegsPositionRobotCenter[LEFT_MIDDLE].data[X],
+           robot._LegsPositionRobotCenter[LEFT_MIDDLE].data[Y],
+           robot._LegsPositionRobotCenter[LEFT_MIDDLE].data[Z],
            RESET,
            RED,
-           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].data[X],
-           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].data[Y],
-           robot->_LegsPositionRobotCenter[RIGHT_MIDDLE].data[Z],
+           robot._LegsPositionRobotCenter[RIGHT_MIDDLE].data[X],
+           robot._LegsPositionRobotCenter[RIGHT_MIDDLE].data[Y],
+           robot._LegsPositionRobotCenter[RIGHT_MIDDLE].data[Z],
            RESET);
 
-    printf("%sLEFT_BACK\t->\t[%lf; %lf; %lf]%s\t\t\t%s[%lf; %lf; %lf] <- RIGHT_BACK%s\n",
+    printf("%sLEFT_BACK\t->\t[%.2f; %.2f; %.2f]%s\t\t\t%s[%.2f; %.2f; %.2f] <- RIGHT_BACK%s\n",
            RED,
-           robot->_LegsPositionRobotCenter[LEFT_BACK].data[X],
-           robot->_LegsPositionRobotCenter[LEFT_BACK].data[Y],
-           robot->_LegsPositionRobotCenter[LEFT_BACK].data[Z],
+           robot._LegsPositionRobotCenter[LEFT_BACK].data[X],
+           robot._LegsPositionRobotCenter[LEFT_BACK].data[Y],
+           robot._LegsPositionRobotCenter[LEFT_BACK].data[Z],
            RESET,
            BLUE,
-           robot->_LegsPositionRobotCenter[RIGHT_BACK].data[X],
-           robot->_LegsPositionRobotCenter[RIGHT_BACK].data[Y],
-           robot->_LegsPositionRobotCenter[RIGHT_BACK].data[Z],
+           robot._LegsPositionRobotCenter[RIGHT_BACK].data[X],
+           robot._LegsPositionRobotCenter[RIGHT_BACK].data[Y],
+           robot._LegsPositionRobotCenter[RIGHT_BACK].data[Z],
            RESET);
     printf("=================================================================================================================\n\n\n\n");
 }

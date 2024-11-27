@@ -109,7 +109,7 @@ int main()
 {
 
     /*======CONSTANTS_TIME_S======*/
-    double delta_time = 0.5;
+    double delta_time = 0.05;
     double step_time = 1;
     double period = step_time * 2;
     /*======CONSTANTS======*/
@@ -146,8 +146,27 @@ int main()
     // Struktura przechowująca stan przycisków i osi
     ControllerStates input_state = {0}; // Początkowy stan bez przycisków i osi
 
-    hexapod._legs[RIGHT_MIDDLE]._leg_fase = BACK_POS;
-    hexapod._legs[RIGHT_FRONT]._leg_fase = BACK_POS;
+    for (int i = 0; i < 6; i++)
+    {
+        if (i % 2 == 0)
+        { // Indeksy parzyste (0, 2, 4)
+            hexapod._legs[i]._leg_fase = FRONT_POS;
+        }
+        else
+        { // Indeksy nieparzyste (1, 3, 5)
+            hexapod._legs[i]._leg_fase = BACK_POS;
+        }
+    }
+
+    // for (int i = 0; i < 6; i++)
+    // {
+
+    //     hexapod._legs[i]._leg_fase = FRONT_POS;
+    // }
+
+    hexapod._robot_velocity = 20;
+    arc_radius = ARC_STRAIGHT;
+
     // Główna pętla
     int running = 1;
     while (running)
@@ -171,13 +190,21 @@ int main()
             t = 0;
             bool was_period_middle = false;
             int x = 1;
-            for (int i = 0; i < 6; i++)
-            {
-                hexapod._legs[i]._leg_start_q = hexapod._legs[i]._leg_actual_q;
-                hexapod._LegsStartPositions[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
-            }
-
+            // for (int i = 0; i < 6; i++)
+            // {
+            //     hexapod._legs[i]._leg_start_q = hexapod._legs[i]._leg_actual_q;
+            //     hexapod._LegsStartPositions[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
+            //     printTwoVectors("katy", vectorMultiplyByConst(hexapod._legs[i]._leg_start_q, RAD2DEG), "pozycja", hexapod._LegsStartPositions[i]);
+            // }
+            // printf("\n\n");
             // printf("FAZA RETRAKCJI: \n");
+            // for (int i = 0; i < 6; i++)
+            // {
+            //     hexapod._legs[i]._leg_start_q = hexapod._legs[i]._leg_actual_q;
+            //     hexapod._LegsStartPositions[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
+            //     printTwoVectors("katy", vectorMultiplyByConst(hexapod._legs[i]._leg_start_q, RAD2DEG), "pozycja", hexapod._LegsStartPositions[i]);
+            // }
+
             do
             {
 
@@ -209,11 +236,11 @@ int main()
                     handle_buttons(&input_state, &hexapod);
 
                     // Obsługuje osie
-                    handle_axes(&input_state, &hexapod, &arc_radius);
+                    // handle_axes(&input_state, &hexapod, &arc_radius);
 
                     if ((t >= step_time) & (!was_period_middle))
                     {
-                        printf("faza nogi prawej srodkowej:%d\t\t\tfaza nogi prawej przedniej:%d \n", hexapod._legs[RIGHT_MIDDLE]._leg_fase, hexapod._legs[RIGHT_FRONT]._leg_fase);
+                        // printf("faza nogi prawej srodkowej:%d\t\t\tfaza nogi prawej przedniej:%d \n", hexapod._legs[RIGHT_MIDDLE]._leg_fase, hexapod._legs[RIGHT_FRONT]._leg_fase);
                         for (int it = 0; it < 6; it++)
                         {
 
@@ -241,9 +268,11 @@ int main()
                     if (hexapod._robot_velocity != 0)
                     {
                         actualizeLegs(&hexapod, t, delta_time, period, arc_radius);
-                        printTwoVectors("prawa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[RIGHT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[RIGHT_MIDDLE]);
+
+                        // printTwoVectors("prawa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[RIGHT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[RIGHT_MIDDLE]);
                     }
-                    // printTwoVectors("actual_angles_deg", vectorMultiplyByConst(actual_q, RAD2DEG), "actual_pos", actual_pos);
+                    printLegsPositions(hexapod);
+                    //  printTwoVectors("actual_angles_deg", vectorMultiplyByConst(actual_q, RAD2DEG), "actual_pos", actual_pos);
                     t += delta_time;
                     loop_time += delta_time;
                 }
@@ -251,14 +280,11 @@ int main()
             } while (millis() - start_time < target_duration_ms);
             // tutaj korekcja bledow, ustawienie katow i pozycji początkowych
 
-            for (int i = 0; i < 6; i++)
-            {
-                hexapod._legs[i]._leg_actual_q = hexapod._legs[i]._leg_start_q;
-                hexapod._LegsPositionRobotCenter[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
-            }
-
-            //  actual_q = start_angles_rad;
-            //  actual_pos = getPositionFromAngles(leg_type, robot_side, actual_q);
+            // for (int i = 0; i < 6; i++)
+            // {
+            //     hexapod._legs[i]._leg_actual_q = hexapod._legs[i]._leg_start_q;
+            //     hexapod._LegsPositionRobotCenter[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
+            // }
 
             // printTwoVectors("ustawiam pozycjcje pocz angles", vectorMultiplyByConst(actual_q, RAD2DEG), "ustawiam pozycje pocz", actual_pos);
         }
