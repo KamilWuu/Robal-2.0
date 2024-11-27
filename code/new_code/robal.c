@@ -109,7 +109,7 @@ int main()
 {
 
     /*======CONSTANTS_TIME_S======*/
-    double delta_time = 0.1;
+    double delta_time = 0.5;
     double step_time = 1;
     double period = step_time * 2;
     /*======CONSTANTS======*/
@@ -173,8 +173,8 @@ int main()
             int x = 1;
             for (int i = 0; i < 6; i++)
             {
-                hexapod._legs[i]._leg_start_angles = hexapod._legs[i]._leg_actual_q;
-                hexapod._LegsStartPositions[i] = getPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_angles);
+                hexapod._legs[i]._leg_start_q = hexapod._legs[i]._leg_actual_q;
+                hexapod._LegsStartPositions[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
             }
 
             // printf("FAZA RETRAKCJI: \n");
@@ -185,6 +185,7 @@ int main()
 
                 if (current_time - previous_time >= interval_ms)
                 {
+
                     previous_time = current_time;
                     iteration_count++;
 
@@ -212,7 +213,7 @@ int main()
 
                     if ((t >= step_time) & (!was_period_middle))
                     {
-                        printf("faza nogi prawej srodkowej:%s\t\t\tfaza nogi prawej przedniej:%s \n", LegFaseTab[hexapod._legs[RIGHT_MIDDLE]._leg_fase], LegFaseTab[hexapod._legs[RIGHT_FRONT]._leg_fase]);
+                        printf("faza nogi prawej srodkowej:%d\t\t\tfaza nogi prawej przedniej:%d \n", hexapod._legs[RIGHT_MIDDLE]._leg_fase, hexapod._legs[RIGHT_FRONT]._leg_fase);
                         for (int it = 0; it < 6; it++)
                         {
 
@@ -252,8 +253,8 @@ int main()
 
             for (int i = 0; i < 6; i++)
             {
-                hexapod._legs[i]._leg_actual_q = hexapod._legs[i]._leg_start_angles;
-                hexapod._LegsPositionRobotCenter[i] = getPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_angles);
+                hexapod._legs[i]._leg_actual_q = hexapod._legs[i]._leg_start_q;
+                hexapod._LegsPositionRobotCenter[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
             }
 
             //  actual_q = start_angles_rad;

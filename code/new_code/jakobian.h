@@ -6,7 +6,7 @@
 #include "math.h"
 #include "kinematics.h"
 
-Vector3 getPositionFromAngles(LegType leg_type, RobotSide side, Vector3 angles)
+Vector3 getRobotCenterPositionFromAngles(LegType leg_type, RobotSide side, Vector3 angles)
 {
     double Q1 = angles.data[0];
     double Q2 = angles.data[1];
@@ -181,7 +181,7 @@ Vector3 makeProtractionCurve(Vector3 dp, double t, double period, double v)
 Vector3 calculateDeltaQ(LegType leg_type, RobotSide robot_side, Vector3 q_actual, double t, double delta_t, Vector3 curve_t, Vector3 curve_t_delta_t)
 {
     // Oblicz aktualną pozycję końcówki nogi na podstawie kątów przegubów
-    Vector3 p_actual = getPositionFromAngles(leg_type, robot_side, q_actual);
+    Vector3 p_actual = getRobotCenterPositionFromAngles(leg_type, robot_side, q_actual);
 
     // Oblicz przewidywane pozycje trajektorii w chwili t i t + delta_t
     Vector3 y_tray_t = vectorAdd(p_actual, curve_t);

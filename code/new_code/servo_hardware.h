@@ -19,6 +19,17 @@
 
 int pca_left, pca_right;
 
+// Struktura dla jednego serwa
+typedef struct Servo
+{
+    uint8_t _pca_channel; // Kanał na PCA
+    double _min_angle;    // Minimalny kąt serwa
+    double _max_angle;    // Maksymalny kąt serwa
+
+    double _servo_angle; // Aktualny kąt serwa w kątach z rzeczywistą korektą na rzeczywiste kąty  (135stopni)
+
+} Servo;
+
 // Function to initialize a specific PCA9685 address
 int InitPCA9685(int *pca, int address)
 {
@@ -41,67 +52,20 @@ int InitPCA9685(int *pca, int address)
     return 0;
 }
 
-// Function to set the angle of a servo on a given PCA and channel
-void SetServoAngle(RobotSide side, int q, int pca, int channel, double calculated_angle_rad)
+
+
+// Function to set the angle of a servo on a given PCA and servo
+void writeServo(Servo * servo,  uint8_t pca)
 {
 
-    double angle;
-
-    if (side == RIGHT)
-    {
-        switch (q)
-        {
-        case 1:
-        
-            angle = 135 - (calculated_angle_rad * RAD2DEG);
-            break;
-        case 2:
-            angle = 135 + (calculated_angle_rad * RAD2DEG);
-            break;
-        case 3:
-            angle = 135 + (calculated_angle_rad * RAD2DEG);
-            break;
-
-        default:
-            break;
-        }
-    }
-
-    if (side == LEFT)
-    {
-        switch (q)
-        {
-        case 1:
-            // printf("calcl angle %.2f\n", calculated_angle_rad * RAD2DEG);
-            angle = 135 + (calculated_angle_rad * RAD2DEG) - 180;
-            // printf("angle1 = %.2f\n", angle);
-            break;
-        case 2:
-            angle = 135 - (calculated_angle_rad * RAD2DEG);
-            break;
-        case 3:
-            angle = 135 - (calculated_angle_rad * RAD2DEG);
-            break;
-
-        default:
-            break;
-        }
-    }
-
-    if (angle < 0)
-        angle = 0;
-    if (angle > 270)
-        angle = 270;
-
-    // printf("angle = %.2f\n", angle);
-
+   
     if (!BLOCK_SERVOS)
     {
-        int pulse_length = SERVO_MIN + (angle * (SERVO_MAX - SERVO_MIN) / 270);
+        int pulse_length = SERVO_MIN + (servo->_servo_angle * (SERVO_MAX - SERVO_MIN) / 270);
         int on_time = 0;
         int off_time = pulse_length;
 
-        int led_on_l = LED0_ON_L + 4 * channel;
+        int led_on_l = LED0_ON_L + 4 * servo->_pca_channel;
         int led_off_l = led_on_l + 2;
 
         wiringPiI2CWriteReg16(pca, led_on_l, on_time);
