@@ -1,7 +1,7 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-// Definicja typu dla stron robota (lewa, prawa)
+// pomocniczy enum do uzywania X Y Z w wektorach pozycji zamiast 0,1,2
 typedef enum
 {
     X,
@@ -9,7 +9,7 @@ typedef enum
     Z
 } Coord;
 
-// Definicja typu dla stron robota (lewa, prawa)
+// pomocniczy enum do uzywania ROT_XYZ w wektorach kątów zamiast 0,1,2
 typedef enum
 {
     ROT_X,
@@ -55,16 +55,12 @@ typedef enum
     PREPARE_FOR_WALK,
     STOP_WALK,
     WALK
-    // LF_LB_RM_PROT, //przygotowanie do ruchu, protrakcja LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE  bez retrakcji pozostalych
-    // LM_RF_RB_PROT, //przygotowanie do ruchu, protrakcja LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK bez retrakcji pozostalych
-    // LF_LB_RM_PROT__LM_RF_RB_RETR,   // LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE_PROTRACTION__LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK_RETRACTION
-    // LF_LB_RM_RETR__LM_RF_RB_PROT    // LEFT_FRONT_LEFT_BACK_RIGHT_MIDDLE_RETRACTION__LEFT_MIDDLE_RIGHT_FRONT_RIGHT_BACK_PROTRACTION
+    
 } StepFase;
 
 typedef enum
 {
     UNKNOWN_LEG_FASE,
-
     FRONT_POS,
     IN_RETRACTION,
     BACK_POS,
@@ -72,12 +68,5 @@ typedef enum
 
 } LegFase;
 
-const char *LegFaseTab[] = {
-        "UNKNOWN_LEG_FASE",
-        "FRONT_POS",
-        "IN_RETRACTION",
-        "BACK_POS",
-        "IN_PROTRACTION"
-    };
 
 #endif // ENUMS.H
