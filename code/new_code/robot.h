@@ -178,6 +178,7 @@ void printLegsPositions(Robot robot)
     const char *RESET = "\033[0m";
 
     printf("=================================================================================================================\n");
+    printf("Faza robota: %d ==================================================================================================\n", robot._robotStepFase);
     printf("%sLEFT_FRONT\t->\t[%.2f; %.2f; %.2f]%s\t\t\t%s[%.2f; %.2f; %.2f] <- RIGHT_FRONT%s\n",
            RED,
            robot._LegsPositionRobotCenter[LEFT_FRONT].data[X],

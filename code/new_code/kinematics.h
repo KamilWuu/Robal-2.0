@@ -20,7 +20,7 @@
 
 #define x_const 245.0
 #define y_const (d3 + 50.0) // d3
-#define z_const_zero -60.0
+#define z_const_zero 0.0
 #define z_const_stand_up (-60.0)
 
 #define h_const 35 // elipse h

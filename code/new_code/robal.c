@@ -198,6 +198,24 @@ int main()
             }
             printf("\n\n");
 
+            SDL_Event event;
+            while (SDL_PollEvent(&event))
+            {
+                if (event.type == SDL_QUIT)
+                {
+                    running = 0;
+                }
+            }
+
+            // Odczyt wszystkich danych z kontrolera
+            read_controller_input(joystick, &input_state);
+
+            // Obsługuje przyciski
+            handle_buttons(&input_state, &hexapod);
+
+            // Obsługuje osie
+            handle_axes(&input_state, &hexapod, &arc_radius);
+
             do
             {
 
@@ -212,24 +230,6 @@ int main()
                     /**
                      * Petla wykonująca się co delta_time
                      */
-
-                    SDL_Event event;
-                    while (SDL_PollEvent(&event))
-                    {
-                        if (event.type == SDL_QUIT)
-                        {
-                            running = 0;
-                        }
-                    }
-
-                    // Odczyt wszystkich danych z kontrolera
-                    read_controller_input(joystick, &input_state);
-
-                    // Obsługuje przyciski
-                    handle_buttons(&input_state, &hexapod);
-
-                    // Obsługuje osie
-                    handle_axes(&input_state, &hexapod, &arc_radius);
 
                     if ((move_t == 0) || (move_t >= step_time))
                     {
