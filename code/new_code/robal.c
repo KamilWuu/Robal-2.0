@@ -110,7 +110,7 @@ int main()
 {
 
     /*======CONSTANTS_TIME_S======*/
-    double delta_time = 0.1;
+    double delta_time = 0.01;
     double step_time = 1;
     double period = step_time * 2;
     /*======CONSTANTS======*/
@@ -233,6 +233,7 @@ int main()
 
                     if ((move_t == 0) || (move_t >= step_time))
                     {
+
                         // printf("faza nogi prawej srodkowej:%d\t\t\tfaza nogi prawej przedniej:%d \n", hexapod._legs[RIGHT_MIDDLE]._leg_fase, hexapod._legs[RIGHT_FRONT]._leg_fase);
                         for (int it = 0; it < 6; it++)
                         {
@@ -246,7 +247,6 @@ int main()
                                 hexapod._legs[it]._leg_fase = BACK_POS;
                             }
                         }
-                        printf("========================================== pol okresu ====================================================================\n");
 
                         move_t = 0;
                     }

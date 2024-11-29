@@ -165,19 +165,19 @@ void printRobotStepFase(Robot *robot)
 void printLegsPositions(Robot robot)
 {
 
-    // Wyczyść terminal
-    // #ifdef _WIN32
-    //     system("cls"); // Windows
-    // #else
-    //     system("clear"); // Unix/Linux/MacOS
-    // #endif
+// Wyczyść terminal
+#ifdef _WIN32
+    system("cls"); // Windows
+#else
+    system("clear"); // Unix/Linux/MacOS
+#endif
 
     // Definicje kolorów
     const char *RED = "\033[1;31m";
     const char *BLUE = "\033[1;34m";
     const char *RESET = "\033[0m";
 
-    printf("===========================================================================\n");
+    printf("=================================================================================================================\n");
     printf("%sLEFT_FRONT\t->\t[%.2f; %.2f; %.2f]%s\t\t\t%s[%.2f; %.2f; %.2f] <- RIGHT_FRONT%s\n",
            RED,
            robot._LegsPositionRobotCenter[LEFT_FRONT].data[X],
