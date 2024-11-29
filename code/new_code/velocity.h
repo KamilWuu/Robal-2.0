@@ -30,7 +30,7 @@ Vector3 calculateLegVelocity(Vector3 leg_start_pos, double robot_center_velocity
     leg_velocity_arc_center.data[Y] = omega * leg_radius.data[X];
     leg_velocity_arc_center.data[Z] = 0;
 
-    leg_velocity_arc_center = vectorMultiplyByConst(leg_velocity_arc_center, 0.5);
+    leg_velocity_arc_center = vectorMultiplyByConst(leg_velocity_arc_center, 1);
 
     return leg_velocity_arc_center;
 

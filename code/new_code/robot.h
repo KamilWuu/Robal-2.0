@@ -741,63 +741,69 @@ void printServo(Servo servo)
     printf("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS\n");
 }
 
-void printLeg(Leg leg)
+void printLeg(Leg leg, double t, double loop_time)
 {
-    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+    // printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 
     // Wyświetlanie informacji o pozycji nogi i stronie robota
-    printf("Leg Type (Position): %d\n", leg._leg_type); // Zakładam, że LegType jest typu int lub enum
-    printf("Side: %d\n", leg._side);                    // Zakładam, że RobotSide jest typu int lub enum
-    printf("PCA: %d\n", leg._pca);
+    //   printf("Leg Type (Position): %d\n", leg._leg_type); // Zakładam, że LegType jest typu int lub enum
+    // printf("Leg  Fase: %d\n", leg._leg_fase);
+    // //  printf("Side: %d\n", leg._side); // Zakładam, że RobotSide jest typu int lub enum
+    // //  printf("PCA: %d\n", leg._pca);
 
-    // Wyświetlanie informacji o serwach
-    for (int i = 0; i < 3; i++)
-    {
-        printf("\nServo %d:\n", i + 1);
-        printServo(leg._leg_servos[i]); // Wyświetlanie informacji o każdym serwie
-    }
+    // // Wyświetlanie informacji o serwach
+    // // for (int i = 0; i < 3; i++)
+    // // {
+    // //     printf("\nServo %d:\n", i + 1);
+    // //     printServo(leg._leg_servos[i]); // Wyświetlanie informacji o każdym serwie
+    // // }
 
-    // Wyświetlanie pozycji końcówki nogi
-    printf("\nLeg Position (Tip): [%.2f, %.2f, %.2f]\n",
-           leg._leg_position.data[0],
-           leg._leg_position.data[1],
-           leg._leg_position.data[2]);
+    // // Wyświetlanie pozycji końcówki nogi
+    // printf("\nLeg Position (Tip): [%.2f, %.2f, %.2f]\n",
+    //        leg._leg_position.data[0],
+    //        leg._leg_position.data[1],
+    //        leg._leg_position.data[2]);
 
-    // Wyświetlanie prędkości liniowej nogi
-    printf("Linear Velocity: [%.2f, %.2f, %.2f]\n",
-           leg._leg_linear_velocity.data[0],
-           leg._leg_linear_velocity.data[1],
-           leg._leg_linear_velocity.data[2]);
+    // // Wyświetlanie prędkości liniowej nogi
+    // // printf("Linear Velocity: [%.2f, %.2f, %.2f]\n",
+    // //        leg._leg_linear_velocity.data[0],
+    // //        leg._leg_linear_velocity.data[1],
+    // //        leg._leg_linear_velocity.data[2]);
 
-    // Wyświetlanie trajektorii
-    printf("Leg Curve at t: [%.2f, %.2f, %.2f]\n",
-           leg._leg_curve_t.data[0],
-           leg._leg_curve_t.data[1],
-           leg._leg_curve_t.data[2]);
+    // // Wyświetlanie trajektorii
+    // printf("Leg Curve at t: [%.2f, %.2f, %.2f]\n",
+    //        leg._leg_curve_t.data[0],
+    //        leg._leg_curve_t.data[1],
+    //        leg._leg_curve_t.data[2]);
 
-    printf("Leg Curve at t + delta_t: [%.2f, %.2f, %.2f]\n",
-           leg._leg_curve_t_delta_t.data[0],
-           leg._leg_curve_t_delta_t.data[1],
-           leg._leg_curve_t_delta_t.data[2]);
+    // printf("Leg Curve at t + delta_t: [%.2f, %.2f, %.2f]\n",
+    //        leg._leg_curve_t_delta_t.data[0],
+    //        leg._leg_curve_t_delta_t.data[1],
+    //        leg._leg_curve_t_delta_t.data[2]);
 
-    // Wyświetlanie kątów w przegubach
-    printf("\nJoint Angles (Delta): [%.2f, %.2f, %.2f]\n",
-           leg._leg_q_delta.data[0],
-           leg._leg_q_delta.data[1],
-           leg._leg_q_delta.data[2]);
+    // // // Wyświetlanie kątów w przegubach
+    // printf("\nJoint Angles (Delta): [%.2f, %.2f, %.2f]\n",
+    //        leg._leg_q_delta.data[0],
+    //        leg._leg_q_delta.data[1],
+    //        leg._leg_q_delta.data[2]);
 
-    printf("Joint Angles (Actual): [%.2f, %.2f, %.2f]\n",
-           leg._leg_actual_q.data[0],
-           leg._leg_actual_q.data[1],
-           leg._leg_actual_q.data[2]);
+    // // printf("Joint Angles (Actual): [%.2f, %.2f, %.2f]\n",
+    // //        leg._leg_actual_q.data[0],
+    // //        leg._leg_actual_q.data[1],
+    // //        leg._leg_actual_q.data[2]);
+
+    // printf("Joint Angles (Actual): [%.2f, %.2f, %.2f]\n",
+    //        leg._leg_actual_q.data[0] * RAD2DEG,
+    //        leg._leg_actual_q.data[1] * RAD2DEG,
+    //        leg._leg_actual_q.data[2] * RAD2DEG);
 
     // Wyświetlanie kątów początkowych
-    printf("Initial Joint Angles: [%.2f, %.2f, %.2f]\n",
-           leg._leg_start_q.data[0],
-           leg._leg_start_q.data[1],
-           leg._leg_start_q.data[2]);
-
-    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+    // printf("Initial Joint Angles: [%.2f, %.2f, %.2f]\n",
+    //        leg._leg_start_q.data[0],
+    //        leg._leg_start_q.data[1],
+    //        leg._leg_start_q.data[2]);
+    printf("time: %.2f, step_t: %.2f faza: %d, pos Y = %.2f, pos Z = %.2f\n", loop_time, t, leg._leg_fase, leg._leg_position.data[1], leg._leg_position.data[2]);
+    // printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 }
 
 void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, double x, double y, double z)
@@ -869,6 +875,7 @@ void calculateLegsVelocities(Robot *robot, int arc_radius, int robot_velocity)
     for (int i = 0; i < 6; i++)
     {
         robot->_legs[i]._leg_linear_velocity = calculateLegVelocity(robot->_legs[i]._leg_position, robot_velocity, arc_radius);
+        // robot->_legs[i]._leg_linear_velocity.data[Y] = 40;
     }
 }
 
@@ -881,6 +888,7 @@ void calculateLegsCurvesT(Robot *robot, double t, double delta_time, double peri
         if ((robot->_legs[i]._leg_fase == BACK_POS) || (robot->_legs[i]._leg_fase == IN_PROTRACTION))
         {
             // calculate protraction curve
+
             robot->_legs[i]._leg_curve_t = makeProtractionCurve(robot->_legs[i]._leg_linear_velocity, t, period, robot->_robot_velocity);
             robot->_legs[i]._leg_curve_t_delta_t = makeProtractionCurve(robot->_legs[i]._leg_linear_velocity, t + delta_time, period, robot->_robot_velocity);
             robot->_legs[i]._leg_fase = IN_PROTRACTION;
@@ -888,6 +896,7 @@ void calculateLegsCurvesT(Robot *robot, double t, double delta_time, double peri
         else if ((robot->_legs[i]._leg_fase == FRONT_POS) || (robot->_legs[i]._leg_fase == IN_RETRACTION))
         {
             // calculate retraction curve
+
             robot->_legs[i]._leg_curve_t = vectorMultiplyByConst(robot->_legs[i]._leg_linear_velocity, t);
             robot->_legs[i]._leg_curve_t_delta_t = vectorMultiplyByConst(robot->_legs[i]._leg_linear_velocity, t + delta_time);
             robot->_legs[i]._leg_fase = IN_RETRACTION;

@@ -168,7 +168,7 @@ Vector3 makeProtractionCurve(Vector3 dp, double t, double period, double v)
 
     if (v != 0)
     {
-        result.data[Z] = -sin((MY_PI * (t - (period))) / (period)) * h_const;
+        result.data[Z] = sin((MY_PI * (t - (period / 2))) / (period / 2)) * h_const;
     }
     else
     {
