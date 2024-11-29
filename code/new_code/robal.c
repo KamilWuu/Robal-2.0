@@ -137,6 +137,8 @@ int main()
     delay(500);
 
     setWalkingPosition(&hexapod, 500);
+    delay(1000);
+    setReadyToWalk(&hexapod, 500);
     printTwoVectors("lewa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[LEFT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[LEFT_MIDDLE]);
     SDL_Joystick *joystick = initialize_joystick();
     if (!joystick)
@@ -147,17 +149,17 @@ int main()
     // Struktura przechowująca stan przycisków i osi
     ControllerStates input_state = {0}; // Początkowy stan bez przycisków i osi
 
-    for (int i = 0; i < 6; i++)
-    {
-        if (i % 2 == 0)
-        { // Indeksy parzyste (0, 2, 4)
-            hexapod._legs[i]._leg_fase = FRONT_POS;
-        }
-        else
-        { // Indeksy nieparzyste (1, 3, 5)
-            hexapod._legs[i]._leg_fase = BACK_POS;
-        }
-    }
+    // for (int i = 0; i < 6; i++)
+    // {
+    //     if (i % 2 == 0)
+    //     { // Indeksy parzyste (0, 2, 4)
+    //         hexapod._legs[i]._leg_fase = FRONT_POS;
+    //     }
+    //     else
+    //     { // Indeksy nieparzyste (1, 3, 5)
+    //         hexapod._legs[i]._leg_fase = BACK_POS;
+    //     }
+    // }
 
     // for (int i = 0; i < 6; i++)
     // {
@@ -267,7 +269,8 @@ int main()
 
                     // printTwoVectors("prawa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[RIGHT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[RIGHT_MIDDLE]);
                     // }
-                    printLegsPositions(hexapod);
+                    //printLegsPositions(hexapod);
+                    printServosAngles(hexapod);
                     //  Wyczyść terminal
 
                     // system("clear"); // Unix/Linux/MacOS

@@ -25,6 +25,38 @@ void setWalkingPosition(Robot *Hexapod, int delay_time)
     Hexapod->_robotStepFase = WALKING_POSITION;
 }
 
+
+void setReadyToWalk(Robot *Hexapod, int delay_time)
+{
+
+    evaluateLegPositionRobotCenter(Hexapod, LEFT_FRONT, -x_const, +y_const + 40 , z_const_zero);
+    delay(delay_time);
+    evaluateLegPositionRobotCenter(Hexapod, LEFT_MIDDLE, -x_const,0, z_const_zero);
+    delay(delay_time);
+    evaluateLegPositionRobotCenter(Hexapod, LEFT_BACK, -x_const, -y_const + 40, z_const_zero);
+    delay(delay_time);
+    evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT, x_const, +y_const , z_const_zero);
+    delay(delay_time);
+    evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE, x_const, 0 + 40, z_const_zero);
+    delay(delay_time);
+    evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK, x_const, -y_const, z_const_zero);
+    delay(delay_time);
+
+     for (int i = 0; i < 6; i++)
+    {
+        if (i % 2 == 0)
+        { // Indeksy parzyste (0, 2, 4)
+            Hexapod->_legs[i]._leg_fase = FRONT_POS;
+        }
+        else
+        { // Indeksy nieparzyste (1, 3, 5)
+            Hexapod->_legs[i]._leg_fase = BACK_POS;
+        }
+    }
+
+    Hexapod->_robotStepFase = WALKING_POSITION;
+}
+
 bool isRobotStanding(Robot *Hexapod)
 {
     double z_tab[6];

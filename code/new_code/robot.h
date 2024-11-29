@@ -162,15 +162,45 @@ void printRobotStepFase(Robot *robot)
     }
 }
 
+void printServosAngles(Robot robot){
+    system("clear"); // Unix/Linux/MacOS
+
+    printf("=================================================================================================================\n");
+    printf("Faza robota: %d ==================================================================================================\n", robot._robotStepFase);
+
+    printf("LEFT_FRONT-> [%.2f, %.2f, %.2f]\t\t\t[%.2f, %.2f, %.2f] <- RIGHT_FRONT\n",
+        robot._legs[LEFT_FRONT]._leg_servos[0]._servo_angle,
+        robot._legs[LEFT_FRONT]._leg_servos[1]._servo_angle,
+        robot._legs[LEFT_FRONT]._leg_servos[2]._servo_angle,
+        robot._legs[RIGHT_FRONT]._leg_servos[0]._servo_angle,
+        robot._legs[RIGHT_FRONT]._leg_servos[1]._servo_angle,
+        robot._legs[RIGHT_FRONT]._leg_servos[2]._servo_angle);
+
+    printf("LEFT_MIDDLE-> [%.2f, %.2f, %.2f]\t\t\t[%.2f, %.2f, %.2f] <- RIGHT_MIDDLE\n",
+        robot._legs[LEFT_MIDDLE]._leg_servos[0]._servo_angle,
+        robot._legs[LEFT_MIDDLE]._leg_servos[1]._servo_angle,
+        robot._legs[LEFT_MIDDLE]._leg_servos[2]._servo_angle,
+        robot._legs[RIGHT_MIDDLE]._leg_servos[0]._servo_angle,
+        robot._legs[RIGHT_MIDDLE]._leg_servos[1]._servo_angle,
+        robot._legs[RIGHT_MIDDLE]._leg_servos[2]._servo_angle);
+
+    printf("LEFT_BACK-> [%.2f, %.2f, %.2f]\t\t\t[%.2f, %.2f, %.2f] <- RIGHT_BACK\n",
+        robot._legs[LEFT_BACK]._leg_servos[0]._servo_angle,
+        robot._legs[LEFT_BACK]._leg_servos[1]._servo_angle,
+        robot._legs[LEFT_BACK]._leg_servos[2]._servo_angle,
+        robot._legs[RIGHT_BACK]._leg_servos[0]._servo_angle,
+        robot._legs[RIGHT_BACK]._leg_servos[1]._servo_angle,
+        robot._legs[RIGHT_BACK]._leg_servos[2]._servo_angle);
+
+    printf("=================================================================================================================\n");
+}
+
 void printLegsPositions(Robot robot)
 {
 
-// Wyczyść terminal
-#ifdef _WIN32
-    system("cls"); // Windows
-#else
+
     system("clear"); // Unix/Linux/MacOS
-#endif
+
 
     // Definicje kolorów
     const char *RED = "\033[1;31m";
