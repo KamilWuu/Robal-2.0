@@ -90,7 +90,7 @@ void handle_axes(const ControllerStates *input_state, Robot *robot, int *arc)
     for (int i = 0; i < MAX_AXES; i++)
     {
         robot->_robot_velocity = map(input_state->axes[CONTROLLER_RIGHT_AXIS_Y], -MAX_AXIS_VALUE, MAX_AXIS_VALUE, MAX_SPEED, -MAX_SPEED);
-        *arc = calculateArc(input_state->axes[CONTROLLER_RIGHT_AXIS_X]);
+        *arc = calculateArc(input_state->axes[CONTROLLER_LEFT_AXIS_X]);
 
         // printf("Oś %d: %d\n", i, input_state->axes[i]);
         // printf("Predkość: %d\t, promień łuku: %d\n", robot->_robot_velocity, *arc);
@@ -165,8 +165,8 @@ int main()
     //     hexapod._legs[i]._leg_fase = FRONT_POS;
     // }
 
-    hexapod._robot_velocity = 20;
-    arc_radius = ARC_STRAIGHT;
+    // hexapod._robot_velocity = 20;
+    // arc_radius = ARC_STRAIGHT;
 
     // Główna pętla
     int running = 1;
@@ -229,7 +229,7 @@ int main()
                     handle_buttons(&input_state, &hexapod);
 
                     // Obsługuje osie
-                    // handle_axes(&input_state, &hexapod, &arc_radius);
+                    handle_axes(&input_state, &hexapod, &arc_radius);
 
                     if ((move_t == 0) || (move_t >= step_time))
                     {
@@ -261,12 +261,12 @@ int main()
                     // }
                     // system("vcgencmd measure_temp");
 
-                    if (hexapod._robot_velocity != 0)
-                    {
-                        actualizeLegs(&hexapod, move_t, delta_time, period, arc_radius);
+                    // if (hexapod._robot_velocity != 0)
+                    // {
+                    actualizeLegs(&hexapod, move_t, delta_time, period, arc_radius);
 
-                        // printTwoVectors("prawa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[RIGHT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[RIGHT_MIDDLE]);
-                    }
+                    // printTwoVectors("prawa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[RIGHT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[RIGHT_MIDDLE]);
+                    // }
                     printLegsPositions(hexapod);
                     //  Wyczyść terminal
 
@@ -280,11 +280,13 @@ int main()
                 }
             } while (millis() - start_time < target_duration_ms);
             // tutaj korekcja bledow, ustawienie katow i pozycji początkowych
-
-            for (int i = 0; i < 6; i++)
+            if (hexapod._robot_velocity != 0)
             {
-                hexapod._legs[i]._leg_actual_q = hexapod._legs[i]._leg_start_q;
-                hexapod._LegsPositionRobotCenter[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
+                for (int i = 0; i < 6; i++)
+                {
+                    hexapod._legs[i]._leg_actual_q = hexapod._legs[i]._leg_start_q;
+                    hexapod._LegsPositionRobotCenter[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
+                }
             }
 
             // printTwoVectors("ustawiam pozycjcje pocz angles", vectorMultiplyByConst(actual_q, RAD2DEG), "ustawiam pozycje pocz", actual_pos);
