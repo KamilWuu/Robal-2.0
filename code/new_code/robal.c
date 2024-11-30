@@ -46,7 +46,7 @@ void handle_buttons(const ControllerStates *input_state, Robot *robot)
     for (int i = 0; i < MAX_BUTTONS; i++)
     {
 
-        if ((input_state->buttons[CONTROLLER_SETUP]) & ((robot->_robotStepFase == SIT_DOWN) || (robot->_robotStepFase == WALKING_POSITION)))
+        if ((input_state->buttons[CONTROLLER_SETUP]) && ((robot->_robotStepFase == SIT_DOWN) || (robot->_robotStepFase == WALKING_POSITION)))
         {
             double Z_speed = 100;
             double Z_step_time = 0.01;
@@ -54,7 +54,7 @@ void handle_buttons(const ControllerStates *input_state, Robot *robot)
             robot->_robotStepFase = STAND_UP;
             printf("Stan robota: STAND_UP\n");
         }
-        if ((input_state->buttons[CONTROLLER_BACK]) & ((robot->_robotStepFase == STAND_UP) || (robot->_robotStepFase == STOP_WALK) || (robot->_robotStepFase == PREPARE_FOR_WALK)))
+        if ((input_state->buttons[CONTROLLER_BACK]) && ((robot->_robotStepFase == STAND_UP) || (robot->_robotStepFase == STOP_WALK) || (robot->_robotStepFase == PREPARE_FOR_WALK)))
         {
             double Z_speed = 100;
             double Z_step_time = 0.01;
@@ -62,20 +62,20 @@ void handle_buttons(const ControllerStates *input_state, Robot *robot)
             robot->_robotStepFase = SIT_DOWN;
             printf("Stan robota: SIT_DOWN\n");
         }
-        if ((input_state->buttons[CONTROLLER_START]) & (robot->_robotStepFase == STAND_UP))
+        if ((input_state->buttons[CONTROLLER_START]) && (robot->_robotStepFase == STAND_UP))
         {
             // przygotowanie do ruchu
 
             robot->_robotStepFase = PREPARE_FOR_WALK;
             printf("Stan robota: PREPARE_FOR_WALK\n");
         }
-        if ((input_state->buttons[CONTROLLER_Y]) & ((robot->_robotStepFase == PREPARE_FOR_WALK) || (robot->_robotStepFase == STOP_WALK)))
+        if ((input_state->buttons[CONTROLLER_Y]) && ((robot->_robotStepFase == PREPARE_FOR_WALK) || (robot->_robotStepFase == STOP_WALK)))
         {
             // start ruchu
             robot->_robotStepFase = WALK;
             printf("Stan robota: WALK\n");
         }
-        if ((input_state->buttons[CONTROLLER_A]) & (robot->_robotStepFase == WALK))
+        if ((input_state->buttons[CONTROLLER_A]) && (robot->_robotStepFase == WALK))
         {
             // stop ruchu
             robot->_robotStepFase = STOP_WALK;
@@ -139,7 +139,7 @@ int main()
     setWalkingPosition(&hexapod, 500);
     delay(1000);
     setReadyToWalk(&hexapod, 500);
-    printTwoVectors("lewa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[LEFT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[LEFT_MIDDLE]);
+    // printTwoVectors("lewa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[LEFT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[LEFT_MIDDLE]);
     SDL_Joystick *joystick = initialize_joystick();
     if (!joystick)
     {

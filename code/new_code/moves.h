@@ -4,7 +4,7 @@
 #include "robot.h"
 #include "kinematics.h"
 
-double y_front_fix = 0.0;
+
 
 void setWalkingPosition(Robot *Hexapod, int delay_time)
 {
@@ -54,7 +54,7 @@ void setReadyToWalk(Robot *Hexapod, int delay_time)
         }
     }
 
-    Hexapod->_robotStepFase = WALKING_POSITION;
+   // Hexapod->_robotStepFase = WALKING_POSITION;
 }
 
 bool isRobotStanding(Robot *Hexapod)
@@ -82,22 +82,22 @@ bool isRobotStanding(Robot *Hexapod)
 void moveLegsZ(Robot *Hexapod, double Z_distance, double Z_speed, double step_time)
 { // [mm],  [mm/s], [s]
 
-    if (((Z_distance < 0) && (Hexapod->_robotStepFase == STAND_UP) && isRobotStanding(Hexapod)) || ((Z_distance > 0) && (Hexapod->_robotStepFase == SIT_DOWN) && (isRobotStanding(Hexapod) == false)))
-    {
+    // if (((Z_distance < 0) && (Hexapod->_robotStepFase == STAND_UP) && isRobotStanding(Hexapod)) || ((Z_distance > 0) && (Hexapod->_robotStepFase == SIT_DOWN) && (isRobotStanding(Hexapod) == false)))
+    // {
 
-        if (Hexapod->_robotStepFase == STAND_UP)
-        {
-            printf("Robot juz stoi -> blad w robotMoveZ\n");
-            global_error++;
-        }
-        else if (Hexapod->_robotStepFase == SIT_DOWN)
-        {
-            printf("Robot juz siedzi -> blad w robotMoveZ\n");
-            global_error++;
-        }
-    }
-    else
-    {
+    //     if (Hexapod->_robotStepFase == STAND_UP)
+    //     {
+    //         printf("Robot juz stoi -> blad w robotMoveZ\n");
+    //         global_error++;
+    //     }
+    //     else if (Hexapod->_robotStepFase == SIT_DOWN)
+    //     {
+    //         printf("Robot juz siedzi -> blad w robotMoveZ\n");
+    //         global_error++;
+    //     }
+    // }
+    // else
+    // {
 
         if (Z_speed == 0)
         {
@@ -143,19 +143,19 @@ void moveLegsZ(Robot *Hexapod, double Z_distance, double Z_speed, double step_ti
             delay(step_time * 1000);
         }
 
-        if (delta_z < 0)
-        {
-            Hexapod->_robotStepFase = STAND_UP;
-        }
-        else if (delta_z > 0)
-        {
-            Hexapod->_robotStepFase = SIT_DOWN;
-        }
-        else
-        {
-            Hexapod->_robotStepFase = UNKNOWN;
-        }
-    }
+        // if (delta_z < 0)
+        // {
+        //     Hexapod->_robotStepFase = STAND_UP;
+        // }
+        // else if (delta_z > 0)
+        // {
+        //     Hexapod->_robotStepFase = SIT_DOWN;
+        // }
+        // else
+        // {
+        //     Hexapod->_robotStepFase = UNKNOWN;
+        // }
+    // }
 }
 
 #endif // MOVES_H
