@@ -166,6 +166,8 @@ int main()
 
     // Główna pętla
     int running = 1;
+    bool minus_velocity = false;
+    bool plus_velocity = false;
     while (running)
     {
 
@@ -242,6 +244,7 @@ int main()
                             {
                                 hexapod._legs[it]._leg_fase = BACK_POS;
                             }
+                            
                         }
 
                         move_t = 0;
@@ -259,6 +262,32 @@ int main()
 
                     // if (hexapod._robot_velocity != 0)
                     // {
+                    if((hexapod._robot_velocity > 0) && !plus_velocity){
+                        for(int i = 0; i < 6; i ++){
+                        
+                            if(hexapod._legs[i]._leg_fase == BACK_POS){
+                                hexapod._legs[i]._leg_fase = FRONT_POS;
+                            }else if(hexapod._legs[i]._leg_fase == FRONT_POS){
+                                hexapod._legs[i]._leg_fase = BACK_POS;
+                            }
+                        }
+                        minus_velocity = false;
+                        plus_velocity = true;
+
+                    }else if((hexapod._robot_velocity < 0) && !minus_velocity){
+                        for(int i = 0; i < 6; i ++){
+                        
+                            if(hexapod._legs[i]._leg_fase == BACK_POS){
+                                hexapod._legs[i]._leg_fase = FRONT_POS;
+                            }else if(hexapod._legs[i]._leg_fase == FRONT_POS){
+                                hexapod._legs[i]._leg_fase = BACK_POS;
+                            }
+                        }
+                        minus_velocity = true;
+                        plus_velocity = false;
+                    }
+
+
                     actualizeLegs(&hexapod, move_t, delta_time, period, arc_radius);
 
                     // printTwoVectors("prawa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[RIGHT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[RIGHT_MIDDLE]);

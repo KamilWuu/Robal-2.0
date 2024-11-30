@@ -11,15 +11,15 @@ void setWalkingPosition(Robot *Hexapod, int delay_time)
 
     evaluateLegPositionRobotCenter(Hexapod, LEFT_FRONT, -x_const, 150, z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, LEFT_MIDDLE, -x_const,-40, z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, LEFT_MIDDLE, -x_const,40, z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, LEFT_BACK, -x_const, -150  , z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, LEFT_BACK, -x_const, -210  , z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT, x_const, 150 , z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT, x_const, 180 , z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE, x_const, 40, z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE, x_const, -40, z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK, x_const, -190 , z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK, x_const, -150 , z_const_zero);
     delay(delay_time);
 
      Hexapod->_robotStepFase = WALKING_POSITION;
@@ -27,11 +27,11 @@ void setWalkingPosition(Robot *Hexapod, int delay_time)
     {
         if (i % 2 == 0)
         { // Indeksy parzyste (0, 2, 4)
-            Hexapod->_legs[i]._leg_fase = FRONT_POS;
+            Hexapod->_legs[i]._leg_fase = BACK_POS;
         }
         else
         { // Indeksy nieparzyste (1, 3, 5)
-            Hexapod->_legs[i]._leg_fase = BACK_POS;
+            Hexapod->_legs[i]._leg_fase = FRONT_POS;
         }
     }
 
@@ -80,11 +80,11 @@ void setReadyToWalk(Robot *Hexapod, int delay_time)
     {
         if (i % 2 == 0)
         { // Indeksy parzyste (0, 2, 4)
-            Hexapod->_legs[i]._leg_fase = FRONT_POS;
+            Hexapod->_legs[i]._leg_fase = BACK_POS;
         }
         else
         { // Indeksy nieparzyste (1, 3, 5)
-            Hexapod->_legs[i]._leg_fase = BACK_POS;
+            Hexapod->_legs[i]._leg_fase = FRONT_POS;
         }
     }
 

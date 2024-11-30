@@ -34,7 +34,7 @@ Vector3 calculateLegVelocity(Vector3 leg_start_pos, double robot_center_velocity
 
     return leg_velocity_arc_center;
 
-    // printVector("leg_velocity_arc_2", leg_velocity_arc_center); // spytac sie po co to jest
+    //printVector("leg_velocity_arc_2", leg_velocity_arc_center); // spytac sie po co to jest
 
     // leg_velocity_robot_center.data[X] = -leg_velocity_arc_center.data[X] - 0;
     // leg_velocity_robot_center.data[Y] = -leg_velocity_arc_center.data[Y] - robot_center_velocity;
