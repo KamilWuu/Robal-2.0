@@ -138,7 +138,20 @@ int main()
 
     setWalkingPosition(&hexapod, 500);
     delay(100);
-    setReadyToWalk(&hexapod, 500);
+    //setReadyToWalk(&hexapod, 500);
+    printLegsPositions(hexapod);
+    printLegsAngles(hexapod);
+    printServosAngles(hexapod);
+
+    // for(int i = 0; i< 6; i++){
+    // hexapod._LegsPositionRobotCenter[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
+    // }
+    printf("po\n");
+    printLegsPositions(hexapod);
+    printLegsAngles(hexapod);
+    printServosAngles(hexapod);
+
+
     printTwoVectors("lewa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[LEFT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[LEFT_MIDDLE]);
     SDL_Joystick *joystick = initialize_joystick();
     if (!joystick)
@@ -251,6 +264,8 @@ int main()
                     // printTwoVectors("prawa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[RIGHT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[RIGHT_MIDDLE]);
                     // }
                     printLegsPositions(hexapod);
+                    printServosAngles(hexapod);
+                    printLegsAngles(hexapod);
                     //  Wyczyść terminal
 
                     // system("clear"); // Unix/Linux/MacOS

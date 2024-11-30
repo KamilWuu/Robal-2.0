@@ -16,10 +16,25 @@ Vector3 getRobotCenterPositionFromAngles(LegType leg_type, RobotSide side, Vecto
     Vector3 position;
 
     // Oblicz współrzędne końcówki nogi w układzie odniesienia nogi
-    double Xpz = L1 + L2 * cos(Q2) + L3 * cos(Q2 + Q3);
-    double Xp = Xpz * cos(Q1);
-    double Yp = Xpz * sin(Q1);
-    double Zp = L2 * sin(Q2) + L3 * sin(Q2 + Q3);
+    // double Xpz = L1 + L2 * cos(Q2) + L3 * cos(Q2 + Q3);
+    // double Xp = Xpz * cos(Q1);
+    // double Yp = Xpz * sin(Q1);
+    // double Zp = L2 * sin(Q2) + L3 * sin(Q2 + Q3);
+
+    double c1 = cos(Q1);
+    double s1 = sin(Q1);
+
+    double s2 = sin(Q2);
+    double c2 = cos(Q2);
+
+    double s23 = sin(Q2+Q3);
+    double c23 = cos(Q2+Q3);
+
+
+    //kinematyka z denavita hartenberga
+    double Xp = c1*(c23*L3 + c2*L2 + L1);
+    double Yp = s1*(c23*L3 + c2*L2 + L1);
+    double Zp = (s23*L3 + s2*L2);
 
     // // Dopasuj znak osi X zależnie od strony robota
     // if (side == LEFT)
@@ -65,6 +80,8 @@ Vector3 getRobotCenterPositionFromAngles(LegType leg_type, RobotSide side, Vecto
         global_error++;
         break;
     }
+
+
 
     return position;
 }

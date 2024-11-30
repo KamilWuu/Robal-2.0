@@ -5,7 +5,7 @@
 #include <wiringPiI2C.h>
 #include "enums.h"
 
-#define BLOCK_SERVOS 1 //<- 1 - zablokowane, 0 - odblokowane
+#define BLOCK_SERVOS 0 //<- 1 - zablokowane, 0 - odblokowane
 
 #define PCA9685_MODE1 0x00
 #define PCA9685_PRESCALE 0xFE
