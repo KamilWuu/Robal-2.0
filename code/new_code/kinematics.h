@@ -18,7 +18,7 @@
 
 #define MY_PI 3.14159265358979323846
 
-#define x_const 260.0
+#define x_const 250.0
 #define y_const d3+50//(d3 + 50.0) // d3
 #define z_const_zero 0.0
 #define z_const_stand_up (-60.0)

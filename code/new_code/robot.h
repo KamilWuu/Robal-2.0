@@ -124,7 +124,7 @@ void setServoAngle(Leg *leg, Servo *servo, int q, double angle_rad) // zwraca fa
         // printf("na serwie %d, na nodze: %d, ustawiono kąt: %.2f\n", q, leg->_leg_type, servo_angle_deg_temp);
     }
 
-    writeServo(servo, leg->_pca);
+    writeServo(*servo, leg->_pca);
 }
 
 void printRobotStepFase(Robot *robot)

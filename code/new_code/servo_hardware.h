@@ -55,17 +55,17 @@ int InitPCA9685(int *pca, int address)
 
 
 // Function to set the angle of a servo on a given PCA and servo
-void writeServo(Servo * servo,  uint8_t pca)
+void writeServo(Servo  servo,  uint8_t pca)
 {
 
    
     if (!BLOCK_SERVOS)
     {
-        int pulse_length = SERVO_MIN + (servo->_servo_angle * (SERVO_MAX - SERVO_MIN) / 270);
+        int pulse_length = SERVO_MIN + (servo._servo_angle * (SERVO_MAX - SERVO_MIN) / 270);
         int on_time = 0;
         int off_time = pulse_length;
 
-        int led_on_l = LED0_ON_L + 4 * servo->_pca_channel;
+        int led_on_l = LED0_ON_L + 4 * servo._pca_channel;
         int led_off_l = led_on_l + 2;
 
         wiringPiI2CWriteReg16(pca, led_on_l, on_time);
