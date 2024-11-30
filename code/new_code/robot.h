@@ -48,7 +48,7 @@ typedef struct Robot
     Vector3 _LegsPositionRobotCenter[6]; // pozycje koncowek nóg względem środka robota
     Vector3 _LegsStartPositions[6];      // pozycje początkowe wzgledem srodka robota do korekcji bledow
     StepFase _robotStepFase;             // faza w jakiej znajduje się robot
-    int _robot_velocity;                 // predkosc srodka robota wzdluz osi y w ukladzie jego srodka mm/s
+    double _robot_velocity;                 // predkosc srodka robota wzdluz osi y w ukladzie jego srodka mm/s
 
 } Robot;
 
@@ -88,8 +88,10 @@ void setServoAngle(Leg *leg, Servo *servo, int q, double angle_rad) // zwraca fa
         {
         case 1:
 
-            servo_angle_deg_temp = 135 + angle_deg - 180;
-
+            servo_angle_deg_temp = 135 - angle_deg - 180;
+            if(servo_angle_deg_temp < 0){
+                servo_angle_deg_temp = servo_angle_deg_temp + 360;
+            }
             break;
         case 2:
             servo_angle_deg_temp = 135 - angle_deg;
@@ -101,6 +103,7 @@ void setServoAngle(Leg *leg, Servo *servo, int q, double angle_rad) // zwraca fa
         default:
             break;
         }
+        
     }
 
     if (servo_angle_deg_temp < servo->_min_angle)
@@ -112,7 +115,7 @@ void setServoAngle(Leg *leg, Servo *servo, int q, double angle_rad) // zwraca fa
     else if (servo_angle_deg_temp > servo->_max_angle)
     {
         servo->_servo_angle = servo->_max_angle;
-        printf("error: na serwie %d, na nodze: %d, osiagnieto mkasymalny kąt, ustawiono kąt: %.2f\n", q, leg->_leg_type, servo_angle_deg_temp);
+        printf("error: na serwie %d, na nodze: %d, osiagnieto mkasymalny kąt równy: %.2f, ustawiono kąt: %.2f\n", q, leg->_leg_type, servo_angle_deg_temp, servo->_max_angle);
         global_error++;
     }
     else
@@ -163,7 +166,7 @@ void printRobotStepFase(Robot *robot)
 }
 
 void printServosAngles(Robot robot){
-    system("clear"); // Unix/Linux/MacOS
+    //system("clear"); // Unix/Linux/MacOS
 
     printf("=================================================================================================================\n");
     printf("Faza robota: %d ==================================================================================================\n", robot._robotStepFase);
@@ -195,17 +198,57 @@ void printServosAngles(Robot robot){
     printf("=================================================================================================================\n");
 }
 
+
+void printLegsAngles(Robot robot){
+    //system("clear"); // Unix/Linux/MacOS
+
+    printf("=================================================================================================================\n");
+    printf("Faza robota: %d ==================================================================================================\n", robot._robotStepFase);
+
+    printf("LEFT_FRONT-> [%.2f, %.2f, %.2f]\t\t\t[%.2f, %.2f, %.2f] <- RIGHT_FRONT\n",
+        robot._legs[LEFT_FRONT]._leg_actual_q.data[0]*RAD2DEG,
+        robot._legs[LEFT_FRONT]._leg_actual_q.data[1]*RAD2DEG,
+        robot._legs[LEFT_FRONT]._leg_actual_q.data[2]*RAD2DEG,
+        robot._legs[RIGHT_FRONT]._leg_actual_q.data[0]*RAD2DEG,
+        robot._legs[RIGHT_FRONT]._leg_actual_q.data[1]*RAD2DEG,
+        robot._legs[RIGHT_FRONT]._leg_actual_q.data[2]*RAD2DEG);
+
+    printf("LEFT_MIDDLE-> [%.2f, %.2f, %.2f]\t\t\t[%.2f, %.2f, %.2f] <- RIGHT_MIDDLE\n",
+        robot._legs[LEFT_MIDDLE]._leg_actual_q.data[0]*RAD2DEG,
+        robot._legs[LEFT_MIDDLE]._leg_actual_q.data[1]*RAD2DEG,
+        robot._legs[LEFT_MIDDLE]._leg_actual_q.data[2]*RAD2DEG,
+        robot._legs[RIGHT_MIDDLE]._leg_actual_q.data[0]*RAD2DEG,
+        robot._legs[RIGHT_MIDDLE]._leg_actual_q.data[1]*RAD2DEG,
+        robot._legs[RIGHT_MIDDLE]._leg_actual_q.data[2]*RAD2DEG);
+
+    printf("LEFT_BACK-> [%.2f, %.2f, %.2f]\t\t\t[%.2f, %.2f, %.2f] <- RIGHT_BACK\n",
+        robot._legs[LEFT_BACK]._leg_actual_q.data[0]*RAD2DEG,
+        robot._legs[LEFT_BACK]._leg_actual_q.data[1]*RAD2DEG,
+        robot._legs[LEFT_BACK]._leg_actual_q.data[2]*RAD2DEG,
+        robot._legs[RIGHT_BACK]._leg_actual_q.data[0]*RAD2DEG,
+        robot._legs[RIGHT_BACK]._leg_actual_q.data[1]*RAD2DEG,
+        robot._legs[RIGHT_BACK]._leg_actual_q.data[2]*RAD2DEG);
+
+    printf("=================================================================================================================\n");
+}
+
+
 void printLegsPositions(Robot robot)
 {
 
 
-    system("clear"); // Unix/Linux/MacOS
+    system("clear"); 
 
 
     // Definicje kolorów
     const char *RED = "\033[1;31m";
     const char *BLUE = "\033[1;34m";
     const char *RESET = "\033[0m";
+
+    //printf("Pozycje:\n");
+    // for(int  i = 0; i < 6; i++){
+    //     printVector("rzeczywiscie ustawiona: ", robot._LegsPositionRobotCenter[i]);
+    // }
 
     printf("=================================================================================================================\n");
     printf("Faza robota: %d ==================================================================================================\n", robot._robotStepFase);
@@ -629,10 +672,10 @@ Vector3 calculateLegInvertedKinematics(RobotSide leg_side, Vector3 leg_position)
 
     Vector3 leg_angles;
 
-    if (leg_side == LEFT)
-    {
-        Xp = -Xp;
-    }
+    // if (leg_side == LEFT)
+    // {
+    //     Xp = -Xp;
+    // }
 
     Xpz = sqrt((Xp * Xp) + (Yp * Yp));
     Q1 = atan2(Yp, Xp);
@@ -641,10 +684,12 @@ Vector3 calculateLegInvertedKinematics(RobotSide leg_side, Vector3 leg_position)
     Q3 = -Q3_1; // lub -Q3_2
     Q2 = atan2(Zp, (Xpz - L1)) + atan2(L3 * sin(-Q3), (L2 + L3 * cos(-Q3)));
 
-    if (leg_side == LEFT)
-    {
-        Q1 += 180 * DEG2RAD;
-    }
+    // if (leg_side == LEFT)
+    // {
+    //     Q1 += 180 * DEG2RAD;
+    // }
+
+    
 
     leg_angles.data[0] = Q1;
     leg_angles.data[1] = Q2;
@@ -852,6 +897,9 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, double x, do
     {
 
         robot->_LegsPositionRobotCenter[leg_type] = pos;
+   
+        // printVector("Ustawiam pozycje wzgledem robota: ", pos);
+        // printVector("rzeczywiscie ustawiona: ", robot->_LegsPositionRobotCenter[leg_type]);
 
         switch (leg_type)
         {
@@ -896,23 +944,25 @@ void evaluateLegPositionRobotCenter(Robot *robot, LegType leg_type, double x, do
         calc_pos.data[Y] = yp;
         calc_pos.data[Z] = zp;
 
+        //printVector("a pozycja w ukladzie nogi:", calc_pos);
         setLegPosition(&robot->_legs[leg_type], calc_pos);
     }
 }
 
-void calculateLegsVelocities(Robot *robot, int arc_radius, int robot_velocity)
+void calculateLegsVelocities(Robot *robot, int arc_radius)
 {
-
+    
     for (int i = 0; i < 6; i++)
     {
-        robot->_legs[i]._leg_linear_velocity = calculateLegVelocity(robot->_legs[i]._leg_position, robot_velocity, arc_radius);
+        robot->_legs[i]._leg_linear_velocity = calculateLegVelocity(robot->_legs[i]._leg_position, robot->_robot_velocity, arc_radius);
+        //printVector("predkosc nogi", robot->_legs[i]._leg_linear_velocity );
         // robot->_legs[i]._leg_linear_velocity.data[Y] = 40;
     }
 }
 
 void calculateLegsCurvesT(Robot *robot, double t, double delta_time, double period)
 {
-
+    
     for (int i = 0; i < 6; i++)
     {
 
@@ -937,7 +987,8 @@ void calculateLegsCurvesT(Robot *robot, double t, double delta_time, double peri
 
 void actualizeLegs(Robot *robot, double t, double delta_time, double period, double arc)
 {
-    calculateLegsVelocities(robot, arc, robot->_robot_velocity);
+    //printf("predkosc w actualize: %.2f\n", robot->_robot_velocity);
+    calculateLegsVelocities(robot, arc);
     calculateLegsCurvesT(robot, t, delta_time, period);
 
     for (int i = 0; i < 6; i++)

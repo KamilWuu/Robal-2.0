@@ -9,13 +9,13 @@
 void setWalkingPosition(Robot *Hexapod, int delay_time)
 {
 
-    evaluateLegPositionRobotCenter(Hexapod, LEFT_FRONT, -x_const, +y_const , z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, LEFT_FRONT, -x_const, y_const , z_const_zero);
     delay(delay_time);
     evaluateLegPositionRobotCenter(Hexapod, LEFT_MIDDLE, -x_const,0, z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, LEFT_BACK, -x_const, -y_const , z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, LEFT_BACK, -x_const, -y_const, z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT, x_const, +y_const , z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT, x_const, y_const , z_const_zero);
     delay(delay_time);
     evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE, x_const, 0, z_const_zero);
     delay(delay_time);

@@ -9,6 +9,7 @@
 Vector3 getRobotCenterPositionFromAngles(LegType leg_type, RobotSide side, Vector3 angles)
 {
     double Q1 = angles.data[0];
+    
     double Q2 = angles.data[1];
     double Q3 = angles.data[2];
 
