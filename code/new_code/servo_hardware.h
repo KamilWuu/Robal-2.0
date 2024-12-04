@@ -52,13 +52,10 @@ int InitPCA9685(int *pca, int address)
     return 0;
 }
 
-
-
 // Function to set the angle of a servo on a given PCA and servo
-void writeServo(Servo  servo,  uint8_t pca)
+void writeServo(Servo servo, uint8_t pca)
 {
 
-   
     if (!BLOCK_SERVOS)
     {
         int pulse_length = SERVO_MIN + (servo._servo_angle * (SERVO_MAX - SERVO_MIN) / 270);
