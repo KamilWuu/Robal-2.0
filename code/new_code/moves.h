@@ -7,15 +7,28 @@
 void setWalkingPosition(Robot *Hexapod, int delay_time)
 {
 
+    // evaluateLegPositionRobotCenter(Hexapod, LEFT_FRONT, -220, 150, z_const_zero);
+    // delay(delay_time);
+    // evaluateLegPositionRobotCenter(Hexapod, LEFT_MIDDLE, -250, 100, z_const_zero);
+    // delay(delay_time);
+    // evaluateLegPositionRobotCenter(Hexapod, LEFT_BACK, -210, -260, z_const_zero);
+    // delay(delay_time);
+    // evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT, 220, 230, z_const_zero);
+    // delay(delay_time);
+    // evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE, 250, -100, z_const_zero);
+    // delay(delay_time);
+    // evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK, 210, -200, z_const_zero);
+    // delay(delay_time);
+
     evaluateLegPositionRobotCenter(Hexapod, LEFT_FRONT, -220, 150, z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, LEFT_MIDDLE, -250, 100, z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, LEFT_MIDDLE, -250, 40, z_const_zero);
     delay(delay_time);
     evaluateLegPositionRobotCenter(Hexapod, LEFT_BACK, -210, -260, z_const_zero);
     delay(delay_time);
     evaluateLegPositionRobotCenter(Hexapod, RIGHT_FRONT, 220, 230, z_const_zero);
     delay(delay_time);
-    evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE, 250, -100, z_const_zero);
+    evaluateLegPositionRobotCenter(Hexapod, RIGHT_MIDDLE, 250, -40, z_const_zero);
     delay(delay_time);
     evaluateLegPositionRobotCenter(Hexapod, RIGHT_BACK, 210, -200, z_const_zero);
     delay(delay_time);

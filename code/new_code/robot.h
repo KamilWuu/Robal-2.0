@@ -995,19 +995,25 @@ void calculateLegsCurvesT(Robot *robot, double t, double delta_time, double peri
 
     for (int i = 0; i < 6; i++)
     {
-
+        double vz_t;
+        double vz_t_delta_t;
         if ((robot->_legs[i]._leg_fase == BACK_POS) || (robot->_legs[i]._leg_fase == IN_PROTRACTION))
         {
             // calculate protraction curve
 
-            robot->_legs[i]._leg_curve_t = makeProtractionCurve(robot->_legs[i]._leg_linear_velocity, t, period, robot->_robot_velocity);
-            robot->_legs[i]._leg_curve_t_delta_t = makeProtractionCurve(robot->_legs[i]._leg_linear_velocity, t + delta_time, period, robot->_robot_velocity);
+            robot->_legs[i]._leg_curve_t = makeProtractionCurve(robot->_legs[i]._leg_linear_velocity, t, period, robot->_robot_velocity, &vz_t);
+
+            robot->_legs[i]._leg_curve_t_delta_t = makeProtractionCurve(robot->_legs[i]._leg_linear_velocity, t + delta_time, period, robot->_robot_velocity, &vz_t_delta_t);
+            robot->_legs[i]._leg_linear_velocity.data[Z] = vz_t; // + vz_t_delta_t; // Przypisanie prędkości Z
             robot->_legs[i]._leg_fase = IN_PROTRACTION;
         }
         else if ((robot->_legs[i]._leg_fase == FRONT_POS) || (robot->_legs[i]._leg_fase == IN_RETRACTION))
         {
+            // minus bo retrakcja
+            robot->_legs[i]._leg_linear_velocity.data[X] = (-1) * robot->_legs[i]._leg_linear_velocity.data[X];
+            robot->_legs[i]._leg_linear_velocity.data[Y] = (-1) * robot->_legs[i]._leg_linear_velocity.data[Y];
+            robot->_legs[i]._leg_linear_velocity.data[Z] = 0.0;
             // calculate retraction curve
-
             robot->_legs[i]._leg_curve_t = vectorMultiplyByConst(robot->_legs[i]._leg_linear_velocity, t);
             robot->_legs[i]._leg_curve_t_delta_t = vectorMultiplyByConst(robot->_legs[i]._leg_linear_velocity, t + delta_time);
             robot->_legs[i]._leg_fase = IN_RETRACTION;

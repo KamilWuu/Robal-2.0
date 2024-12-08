@@ -29,7 +29,7 @@ int calculateArc(int x_axis_v)
     }
     else
     {
-        arc_ = map(fabs(x_axis_v), MAX_ARC, MAX_AXIS_VALUE, MAX_ARC, MIN_ARC);
+        arc_ = -map(fabs(x_axis_v), MAX_ARC, MAX_AXIS_VALUE, MAX_ARC, MIN_ARC);
 
         if (x_axis_v < 0)
         {
@@ -87,11 +87,23 @@ void handle_buttons(const ControllerStates *input_state, Robot *robot)
 // Funkcja do obsługi osi
 void handle_axes(const ControllerStates *input_state, Robot *robot, int *arc)
 {
+    double arc_temp;
     for (int i = 0; i < MAX_AXES; i++)
     {
-        robot->_robot_velocity = (-1) * map(input_state->axes[CONTROLLER_RIGHT_AXIS_Y], -MAX_AXIS_VALUE, MAX_AXIS_VALUE, MAX_SPEED, -MAX_SPEED);
-        *arc = calculateArc(input_state->axes[CONTROLLER_LEFT_AXIS_X]);
-
+        robot->_robot_velocity = map(input_state->axes[CONTROLLER_RIGHT_AXIS_Y], -MAX_AXIS_VALUE, MAX_AXIS_VALUE, MAX_SPEED, -MAX_SPEED);
+        arc_temp = calculateArc(input_state->axes[CONTROLLER_LEFT_AXIS_X]);
+        *arc = arc_temp;
+        if (((arc_temp < 250) && (arc_temp >= MIN_ARC)) || ((arc_temp > -250) && (arc_temp <= -MIN_ARC)))
+        {
+            if (robot->_robot_velocity > 0)
+            {
+                robot->_robot_velocity = 20;
+            }
+            else if (robot->_robot_velocity < 0)
+            {
+                robot->_robot_velocity = -20;
+            }
+        }
         // printf("Oś %d: %d\n", i, input_state->axes[i]);
         // printf("Predkość: %d\t, promień łuku: %d\n", robot->_robot_velocity, *arc);
     }
@@ -110,9 +122,17 @@ int main()
 {
 
     /*======CONSTANTS_TIME_S======*/
-    double delta_time = 0.05;
-    double step_time = 0.6;
+    double delta_time = 0.03;
+    // double dist_step = 90;
+    double step_time = 0.6; // dist_step / MAX_SPEED;
+    //     if (step_time < 0.6)
+    // {
+    //     step_time = 0.6;
+    // }
+
+    // double delta_time = step_time / (10 * 2);
     double period = step_time * 2;
+
     /*======CONSTANTS======*/
 
     /*=====CONTROL=======*/

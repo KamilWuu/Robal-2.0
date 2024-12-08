@@ -9,7 +9,7 @@
 Vector3 getRobotCenterPositionFromAngles(LegType leg_type, RobotSide side, Vector3 angles)
 {
     double Q1 = angles.data[0];
-    
+
     double Q2 = angles.data[1];
     double Q3 = angles.data[2];
 
@@ -27,14 +27,13 @@ Vector3 getRobotCenterPositionFromAngles(LegType leg_type, RobotSide side, Vecto
     double s2 = sin(Q2);
     double c2 = cos(Q2);
 
-    double s23 = sin(Q2+Q3);
-    double c23 = cos(Q2+Q3);
+    double s23 = sin(Q2 + Q3);
+    double c23 = cos(Q2 + Q3);
 
-
-    //kinematyka z denavita hartenberga
-    double Xp = c1*(c23*L3 + c2*L2 + L1);
-    double Yp = s1*(c23*L3 + c2*L2 + L1);
-    double Zp = (s23*L3 + s2*L2);
+    // kinematyka z denavita hartenberga
+    double Xp = c1 * (c23 * L3 + c2 * L2 + L1);
+    double Yp = s1 * (c23 * L3 + c2 * L2 + L1);
+    double Zp = (s23 * L3 + s2 * L2);
 
     // // Dopasuj znak osi X zależnie od strony robota
     // if (side == LEFT)
@@ -80,8 +79,6 @@ Vector3 getRobotCenterPositionFromAngles(LegType leg_type, RobotSide side, Vecto
         global_error++;
         break;
     }
-
-
 
     return position;
 }
@@ -175,24 +172,28 @@ Matrix3 createInversedJacobian(Vector3 initial_angles)
     return inversed_jacobian;
 }
 
-Vector3 makeProtractionCurve(Vector3 dp, double t, double period, double v)
+Vector3 makeProtractionCurve(Vector3 dp, double t, double period, double v, double *vz_out)
 {
 
     Vector3 result;
 
     result = vectorMultiplyByConst(dp, t);
-    result.data[X] = result.data[X] * -1;
-    result.data[Y] = result.data[Y] * -1;
+    // result.data[X] = result.data[X] * -1;
+    // result.data[Y] = result.data[Y] * -1;
 
     if (v != 0)
     {
         result.data[Z] = sin((MY_PI * (t - (period / 2))) / (period / 2)) * h_const;
+        // Obliczanie prędkości w Z
+        *vz_out = -cos((MY_PI * (t - (period / 2))) / (period / 2)) * (2 * MY_PI / period) * h_const;
     }
     else
     {
         result.data[Z] = 0;
+        *vz_out = 0.0;
     }
     // printf("Z curve: %.2f", result.data[Z]);
+
     return result;
 }
 
