@@ -23,7 +23,7 @@
 #define z_const_zero 0.0
 #define z_const_stand_up (-60.0)
 
-#define h_const 35 // elipse h
+#define h_const 45 // elipse h
 
 #define DEG2RAD (MY_PI / 180)
 #define RAD2DEG (180 / MY_PI)

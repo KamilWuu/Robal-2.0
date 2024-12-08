@@ -6,7 +6,7 @@
 
 #define MAX_AXIS_VALUE 32767
 #define AXIS_ZERO 128
-#define MAX_SPEED 60
+#define MAX_SPEED 150
 #define MIN_ARC (-400)
 #define MAX_ARC (-10000)
 #define ARC_STRAIGHT (-1000000000)

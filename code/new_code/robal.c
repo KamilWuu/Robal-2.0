@@ -111,7 +111,7 @@ int main()
 
     /*======CONSTANTS_TIME_S======*/
     double delta_time = 0.05;
-    double step_time = 1;
+    double step_time = 0.6;
     double period = step_time * 2;
     /*======CONSTANTS======*/
 
