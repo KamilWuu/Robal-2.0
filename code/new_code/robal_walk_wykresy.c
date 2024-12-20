@@ -10,6 +10,20 @@
 #include "velocity.h"
 #include "controller.h"
 #include "moves.h"
+// Zmienna do zapisu wyników
+FILE *log_file;
+
+void log_data(FILE *file, double total_time, double time, const Robot *robot, int arc_radius, int leg) {
+    int i = leg;
+        fprintf(file,
+                "%d,%.3f,%.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f;\n",
+                i, total_time, time,
+                robot->_LegsPositionRobotCenter[i].data[0], robot->_LegsPositionRobotCenter[i].data[1], robot->_LegsPositionRobotCenter[i].data[2],
+                robot->_legs[i]._leg_linear_velocity.data[0], robot->_legs[i]._leg_linear_velocity.data[1], robot->_legs[i]._leg_linear_velocity.data[2],
+                robot->_legs[i]._leg_actual_q.data[0]*RAD2DEG, robot->_legs[i]._leg_actual_q.data[1]*RAD2DEG, robot->_legs[i]._leg_actual_q.data[2]*RAD2DEG, robot->_legs[i]._leg_q_delta.data[0]*RAD2DEG, robot->_legs[i]._leg_q_delta.data[1]*RAD2DEG, robot->_legs[i]._leg_q_delta.data[2]*RAD2DEG);
+    
+    
+}
 
 
 // Funkcja mapująca
@@ -118,39 +132,60 @@ void handle_sigint(int sig)
     exit(0); // Zakończ program
 }
 
-int main()
-{
+int main(int argc, char *argv[]) {
 
-    /*======CONSTANTS_TIME_S======*/
-    double delta_time = 0.03;
-    // double dist_step = 90;
-    double step_time = 0.6; // dist_step / MAX_SPEED;
-    //     if (step_time < 0.6)
-    // {
-    //     step_time = 0.6;
-    // }
 
-    // double delta_time = step_time / (10 * 2);
-    double period = step_time * 2;
 
-    /*======CONSTANTS======*/
-
-    /*=====CONTROL=======*/
-    // int robot_velocity = 0;    // mm/s
-    int arc_radius = 10000000; // mm
-
-    double move_t;
-    double time;
-    /*=====CONTROL=======*/
-
-    // Rejestracja handlera dla sygnału SIGINT (Ctrl+C)
+    // Rejestracja handlera dla sygnału SIGINT
     signal(SIGINT, handle_sigint);
 
+    if (argc != 5) {
+        fprintf(stderr, "Błąd: Należy podać dokładnie cztery wartości: test_v [mm/s], test_arc [mm], indeks nogi i czas symulacji [s].\n");
+        return 1;
+    }
+
+
+    // Przypisanie wartości z argumentów do zmiennych
+    double test_v = atof(argv[1]);  // Pierwszy argument - test_v
+    double test_arc = atof(argv[2]); // Drugi argument - test_arc
+    int export_leg = atof(argv[3]); // trzeci argument - indeks nogi
+    double simulation_time = atof(argv[4]); // trzeci argument - indeks nogi
+    if(export_leg > 5){
+        fprintf(stderr, "Błąd: Zly indeks nogi, nalezy podac z przedzielu <0,5>\n");
+        return 1;
+    }
+    if(export_leg < 0){
+        fprintf(stderr, "Błąd: Zly indeks nogi, nalezy podac z przedzielu <0,5>\n");
+        return 1;
+    }
+
+    // Tworzymy nazwę folderu, w którym zapisujemy pliki
+    const char *folder_name = "dane_csv";  // Nazwa folderu
+    char filename[200];  // Bufor na pełną ścieżkę i nazwę pliku
+
+    // Formatujemy nazwę pliku z folderem i zmiennymi
+    snprintf(filename, sizeof(filename), "%s/R_%.0f_V_%.0f_leg_%d.csv", folder_name, test_arc, test_v, export_leg);
+
+    // Tworzenie folderu, jeśli nie istnieje (opcjonalnie)
+    if (system("mkdir -p logs") == -1) {
+        perror("Błąd przy tworzeniu folderu.");
+        return 1;
+    }
+
+    // Otwieramy plik do zapisu
+    FILE *log_file = fopen(filename, "w");
+    if (!log_file) {
+        perror("Nie można otworzyć pliku logowania.");
+        return 1;
+    }
+
+    // Nagłówki w pliku logowania
+    fprintf(log_file, "%% LegID, total_time, time, PosX, PosY, PosZ, VelX, VelY, VelZ, Q1, Q2, Q3, Delta_Q1, Delta_Q2, Delta_Q3\n");
+
+    // Inicjalizacja robota
     StartGPIO();
-    if (InitPCA9685(&pca_left, PCA_ADDRESS_LEFT) == -1)
-        return -1;
-    if (InitPCA9685(&pca_right, PCA_ADDRESS_RIGHT) == -1)
-        return -1;
+    if (InitPCA9685(&pca_left, PCA_ADDRESS_LEFT) == -1) return -1;
+    if (InitPCA9685(&pca_right, PCA_ADDRESS_RIGHT) == -1) return -1;
 
     Robot hexapod;
     initRobot(&hexapod);
@@ -158,127 +193,83 @@ int main()
 
     setWalkingPosition(&hexapod, 500);
     delay(100);
-    // setReadyToWalk(&hexapod, 500);
-    printLegsPositions(hexapod);
-    printLegsAngles(hexapod);
-    printServosAngles(hexapod);
 
-    // for(int i = 0; i< 6; i++){
-    // hexapod._LegsPositionRobotCenter[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
-    // }
-    printf("po\n");
-    printLegsPositions(hexapod);
-    printLegsAngles(hexapod);
-    printServosAngles(hexapod);
+    double Z_speed = 100;
+            double Z_step_time = 0.01;
+            moveLegsZ(&hexapod, z_const_stand_up, Z_speed, Z_step_time);
+            hexapod._robotStepFase = STAND_UP;
+            printf("Stan robota: STAND_UP\n");
 
-    printTwoVectors("lewa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[LEFT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[LEFT_MIDDLE]);
     SDL_Joystick *joystick = initialize_joystick();
-    if (!joystick)
-    {
-        return 1; // Jeśli joystick się nie otworzył, kończymy program
+    if (!joystick) {
+        printf("Nie można otworzyć joysticka.\n");
+        return 1;
     }
 
-    // Struktura przechowująca stan przycisków i osi
-    ControllerStates input_state = {0}; // Początkowy stan bez przycisków i osi
+    // Główne zmienne
 
-    // Główna pętla
+    double delta_time = 0.01;
+    double step_time = 0.6;
+    double period = step_time * 2;
+    int arc_radius = 10000000;
+    double total_time = 0;
+
+    ControllerStates input_state = {0};
     int running = 1;
     bool minus_velocity = false;
     bool plus_velocity = false;
-    while (running)
-    {
 
+
+    // Główna pętla
+    while (running) {
         printf("=========== ROZPOCZĘCIE SYMULACJI RUCHU ===========\n");
 
-        int iteration_count = 0;
-        for (;;)
-        {
-
-            // Pętla czasowa - symulacja ruchu
+        while (1) {
             unsigned long interval_ms = (unsigned long)(delta_time * 1000);
             unsigned long start_time = millis();
             unsigned long previous_time = start_time;
-            unsigned long target_duration_ms = (unsigned long)(period * 1000);
 
-            move_t = 0;
-            time = 0;
+            double move_t = 0;
+            double time = 0;
             bool was_period_middle = false;
-            int x = 1;
 
-            for (int i = 0; i < 6; i++)
-            {
+            for (int i = 0; i < 6; i++) {
                 hexapod._legs[i]._leg_start_q = hexapod._legs[i]._leg_actual_q;
-                hexapod._LegsStartPositions[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
-                // printTwoVectors("katy", vectorMultiplyByConst(hexapod._legs[i]._leg_start_q, RAD2DEG), "pozycja", hexapod._LegsStartPositions[i]);
+                hexapod._LegsPositionRobotCenter[i] = getRobotCenterPositionFromAngles(
+                    hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
             }
-            printf("\n\n");
 
             SDL_Event event;
-            while (SDL_PollEvent(&event))
-            {
-                if (event.type == SDL_QUIT)
-                {
+            while (SDL_PollEvent(&event)) {
+                if (event.type == SDL_QUIT) {
                     running = 0;
                 }
             }
 
-            // Odczyt wszystkich danych z kontrolera
-            read_controller_input(joystick, &input_state);
+            //read_controller_input(joystick, &input_state);
+            //handle_buttons(&input_state, &hexapod);
+            //handle_axes(&input_state, &hexapod, &arc_radius);
+            hexapod._robot_velocity = test_v;
+            arc_radius = test_arc;
 
-            // Obsługuje przyciski
-            handle_buttons(&input_state, &hexapod);
-
-            // Obsługuje osie
-            handle_axes(&input_state, &hexapod, &arc_radius);
-
-            do
-            {
-
+            fprintf(log_file, "%% Robot velocity: %.3f, Arc radius: %d, Leg fase: %d\n", hexapod._robot_velocity, arc_radius, hexapod._legs[export_leg]._leg_fase);
+            do {
                 unsigned long current_time = millis();
-
-                if (current_time - previous_time >= interval_ms)
-                {
-
+                if (current_time - previous_time >= interval_ms) {
                     previous_time = current_time;
-                    iteration_count++;
 
-                    /**
-                     * Petla wykonująca się co delta_time
-                     */
-
-                    if ((move_t == 0) || (move_t >= step_time))
-                    {
-
-                        // printf("faza nogi prawej srodkowej:%d\t\t\tfaza nogi prawej przedniej:%d \n", hexapod._legs[RIGHT_MIDDLE]._leg_fase, hexapod._legs[RIGHT_FRONT]._leg_fase);
-                        for (int it = 0; it < 6; it++)
-                        {
-
-                            if (hexapod._legs[it]._leg_fase == IN_PROTRACTION)
-                            {
-                                hexapod._legs[it]._leg_fase = FRONT_POS;
-                            }
-                            else if (hexapod._legs[it]._leg_fase == IN_RETRACTION)
-                            {
-                                hexapod._legs[it]._leg_fase = BACK_POS;
+                    if (move_t == 0 || move_t >= step_time) {
+                        for (int i = 0; i < 6; i++) {
+                            if (hexapod._legs[i]._leg_fase == IN_PROTRACTION) {
+                                hexapod._legs[i]._leg_fase = FRONT_POS;
+                            } else if (hexapod._legs[i]._leg_fase == IN_RETRACTION) {
+                                hexapod._legs[i]._leg_fase = BACK_POS;
                             }
                         }
-
                         move_t = 0;
                     }
 
-                    // else if (t < step_time)
-                    // {
-                    //     if (x)
-                    //     {
-                    //         //printf("FAZA PROTRAKCJI: \n");
-                    //         x = 0;
-                    //     }
-                    // }
-                    // system("vcgencmd measure_temp");
-
-                    // if (hexapod._robot_velocity != 0)
-                    // {
-                    if ((hexapod._robot_velocity > 0) && !plus_velocity)
+                     if ((hexapod._robot_velocity > 0) && !plus_velocity)
                     {
                         for (int i = 0; i < 6; i++)
                         {
@@ -313,28 +304,25 @@ int main()
                         plus_velocity = false;
                     }
 
+
                     actualizeLegs(&hexapod, move_t, delta_time, period, arc_radius);
+                    system("clear");
+                    printLegsPositions(hexapod);
+                    printLegsVelocities(hexapod);
+                    printf("robot center velocity: %.2f\n", hexapod._robot_velocity);                   
 
-                    // printTwoVectors("prawa srodkowa kąty", vectorMultiplyByConst(hexapod._legs[RIGHT_MIDDLE]._leg_actual_q, RAD2DEG), "pozycja", hexapod._LegsPositionRobotCenter[RIGHT_MIDDLE]);
-                    // }
-                    //system("clear");
-                    //printLegsPositions(hexapod);
-                    //printLegsVelocities(hexapod);
-                    //printf("robot center velocity: %.2f\n", hexapod._robot_velocity);
-
-                    // printServosAngles(hexapod);
-                    // printLegsAngles(hexapod);
-                    //  Wyczyść terminal
-
-                    // system("clear"); // Unix/Linux/MacOS
-
-                    // printLeg(hexapod._legs[LEFT_MIDDLE], move_t, time);
-                    //   printLeg(hexapod._legs[RIGHT_MIDDLE]);
-                    //     printTwoVectors("actual_angles_deg", vectorMultiplyByConst(actual_q, RAD2DEG), "actual_pos", actual_pos);
+                    
+                    log_data(log_file, total_time,time, &hexapod, arc_radius, export_leg);
+                    
                     move_t += delta_time;
                     time += delta_time;
+                    total_time += delta_time;
+                    if(total_time > simulation_time){
+                        fprintf(stderr, "Koniec symulacji\n");
+                    return 1;
+                    }
                 }
-            } while (millis() - start_time < target_duration_ms);
+            } while (millis() - start_time < (unsigned long)(period * 1000));
             // tutaj korekcja bledow, ustawienie katow i pozycji początkowych
             if (hexapod._robot_velocity != 0)
             {
@@ -344,15 +332,12 @@ int main()
                     hexapod._LegsPositionRobotCenter[i] = getRobotCenterPositionFromAngles(hexapod._legs[i]._leg_type, hexapod._legs[i]._side, hexapod._legs[i]._leg_start_q);
                 }
             }
-
-            // printTwoVectors("ustawiam pozycjcje pocz angles", vectorMultiplyByConst(actual_q, RAD2DEG), "ustawiam pozycje pocz", actual_pos);
         }
-
-        // SDL_Delay(16); // Opóźnienie dla odciążenia CPU
     }
 
-    // Zamknięcie joysticka i wyczyszczenie SDL
+    // Zamknięcie joysticka i pliku
     SDL_JoystickClose(joystick);
+    fclose(log_file);
     SDL_Quit();
 
     return 0;

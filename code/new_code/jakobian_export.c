@@ -61,10 +61,10 @@ int main()
     Robot hexapod;
 
     initRobot(&hexapod);
-    initLegPositionRobotCenter(&hexapod, leg_type, 245, 40, -50);
+    evaluateLegPositionRobotCenter(&hexapod, leg_type, 245, 40, -50);
 
     start_pos = hexapod._LegsPositionRobotCenter[leg_type];
-    start_angles_rad = hexapod._legs[leg_type]._leg_joint_angles;
+    start_angles_rad = hexapod._legs[leg_type]._leg_q_delta;
     start_angles_deg = vectorMultiplyByConst(start_angles_rad, RAD2DEG);
 
     // // Zapis warunków początkowych
@@ -83,7 +83,7 @@ int main()
     printf("=========== ROZPOCZĘCIE SYMULACJI RUCHU ===========\n");
     Vector3 actual_pos;
     actual_q = start_angles_rad;
-    actual_pos = getPositionFromAngles(leg_type, robot_side, actual_q);
+    actual_pos = getRobotCenterPositionFromAngles(leg_type, robot_side, actual_q);
 
     Vector3 curve_t, curve_t_delta_t;
 
