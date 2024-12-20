@@ -167,7 +167,7 @@ int main(int argc, char *argv[]) {
     snprintf(filename, sizeof(filename), "%s/R_%.0f_V_%.0f_leg_%d.csv", folder_name, test_arc, test_v, export_leg);
 
     // Tworzenie folderu, jeśli nie istnieje (opcjonalnie)
-    if (system("mkdir -p logs") == -1) {
+    if (system("mkdir -p dane_csv") == -1) {
         perror("Błąd przy tworzeniu folderu.");
         return 1;
     }
@@ -319,7 +319,8 @@ int main(int argc, char *argv[]) {
                     total_time += delta_time;
                     if(total_time > simulation_time){
                         fprintf(stderr, "Koniec symulacji\n");
-                    return 1;
+                        printf("bylo %d errorow\n", global_error);
+                        return 1;
                     }
                 }
             } while (millis() - start_time < (unsigned long)(period * 1000));
