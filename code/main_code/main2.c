@@ -261,13 +261,14 @@ int main(void)
 
     printf("#ROBAL: Cześć, to ja Robal!\n\n");
 
-    printf("#ROBAL: Ustawiam pozycje chodu!\n\n");
-    SetTransportPosition(500);
+    printf("#ROBAL: Ustawiam zereowe pozycje serw\n\n");
+setZeroPosition(1000);
+//SetTransportPosition(500);
     // SetWalkingPosition(500, 45, 0, 0);
 
     // AlgorytmWstawaniaZPozycjaTransportową();
     // printf("#ROBAL: Dobranoc :) !!!\n");
-    delay(1000);
+    delay(100);
     // system("sudo shutdown now");
     /*while(1){
         digitalWrite(LED_RED, HIGH);
